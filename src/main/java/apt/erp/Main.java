@@ -9,10 +9,11 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-	    ApplicationService applicationService = new ApplicationService(
-                new DemoCustomerRepository(10000), new ZipTownMap());
-        
-        new ErpServer(8888, applicationService).startServer();
+	    final int port = Integer.parseInt(System.getenv("PORT"));
+	    
+	    ApplicationService applicationService = new ApplicationService(new DemoCustomerRepository(10000), new ZipTownMap());
+
+        new ErpServer(port, applicationService).startServer();
 	}
 
 }
