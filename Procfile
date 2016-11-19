@@ -1,1 +1,1 @@
-web: build/install/apt-erp/bin/apt-erp
+web: java -jar build/libs/apt-erp-1.0-all.jar

@@ -12,10 +12,6 @@ jar {
     }
 }
 
-task stage {
-  dependsOn installDist
-}
-
 repositories {
     mavenCentral()
 }
@@ -38,3 +34,23 @@ dependencies {
 }
 
 mainClassName = "apt.erp.Main"
+
+// required for building the "fat jar" or "shadow jar"
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+  mergeServiceFiles()
+}
+
+task stage {
+  dependsOn shadowJar
+}
