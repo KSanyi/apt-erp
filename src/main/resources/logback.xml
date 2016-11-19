@@ -2,7 +2,7 @@
 
     <timestamp key="bySecond" datePattern="yyyy-MM-dd-HH-mm-ss"/>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <File>logs/kits-erp_${bySecond}.log</File>
+        <File>logs/APT-ERP_${bySecond}.log</File>
         <encoder>
             <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{0} - %msg%n</pattern>
         </encoder>
@@ -14,12 +14,11 @@
         </encoder>
     </appender>
 
-  <logger name="kits.erp" level="DEBUG"/>
+  <logger name="apt.erp" level="DEBUG"/>
   <logger name="com.vaadin" level="INFO"/>
   <logger name="org.eclipse.jetty" level="INFO"/>
 
   <root level="INFO">
-    <appender-ref ref="FILE"/>
 	<appender-ref ref="STDOUT"/>
   </root>
 </configuration>

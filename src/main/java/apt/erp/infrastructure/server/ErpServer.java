@@ -15,7 +15,7 @@ public class ErpServer extends Server {
 	public ErpServer(int httpPort, ApplicationService applicationService) {
 		super(httpPort);
 		setHandler(createServletContextHandler(applicationService));
-		logger.info("KITS-ERP Server initialised on port " + httpPort);
+		logger.info("APT-ERP Server initialised on port " + httpPort);
 	}
 	
 	public void startServer() throws Exception {
