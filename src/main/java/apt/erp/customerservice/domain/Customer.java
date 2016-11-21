@@ -23,5 +23,9 @@ public class Customer {
 	public String toString(){
 		return customerId + " " + customerData;
 	}
+	
+    public String toDetailedString(){
+        return customerId + " " + customerData.toDetailedString();
+    }
 
 }

@@ -1,15 +1,18 @@
 package apt.erp.customerservice.application;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import apt.erp.common.demo.RandomWordPicker;
 import apt.erp.customerservice.domain.Address;
 import apt.erp.customerservice.domain.Customer;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerId;
-import apt.erp.customerservice.domain.EmailAddress;
+import apt.erp.customerservice.domain.Domain;
 import apt.erp.customerservice.domain.Name;
-import apt.erp.customerservice.domain.PhoneNumber;
 import apt.erp.infrastructure.ResourceFileLoader;
 
 public class DemoCustomerFactory {
@@ -18,6 +21,16 @@ public class DemoCustomerFactory {
 	private final RandomWordPicker firstNamePicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/FirstNames.txt"));
 	private final RandomWordPicker townPicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Towns.txt"));
 	private final RandomWordPicker streetPicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Streets.txt"));
+	
+	private final List<Domain> domains = Arrays.asList(
+	        new Domain("FI", "Finance"),
+	        new Domain("HC", "Healthcare"),
+	        new Domain("IN", "Industry"),
+	        new Domain("AG", "Agreeculture"),
+	        new Domain("IT", "IT"),
+	        new Domain("SP", "Sport"),
+	        new Domain("TR", "Transport"),
+	        new Domain("HI", "History"));
 	
 	private Random random = new Random();
 	
@@ -30,12 +43,21 @@ public class DemoCustomerFactory {
 		if(!invoiceAddressIsTheSame) {
 			invoiceAddress = generateRandomAddress();
 		}
-		EmailAddress emailAddress = generateEmailAddress(name);
-		PhoneNumber phoneNumber = generatePhoneNumber();
 		String comment = random.nextInt(10) == 0 ? "Fontos ugyfel" : "";
 		
-		CustomerData customerData = new CustomerData(name, address, invoiceAddressIsTheSame, invoiceAddress, emailAddress, phoneNumber, comment);
+		Domain[] customerDomains = generateCustomerDomains();
+		
+		CustomerData customerData = new CustomerData(name, address, invoiceAddressIsTheSame, invoiceAddress, comment, customerDomains);
 		return new Customer(generateCustomerId(), customerData);
+	}
+	
+	private Domain[] generateCustomerDomains() {
+	    Set<Domain> customerDomains = new HashSet<>();
+	    customerDomains.add(domains.get(random.nextInt(domains.size())));
+	    if(random.nextInt(10) == 0) {
+	        customerDomains.add(domains.get(random.nextInt(domains.size())));
+	    }
+	    return customerDomains.toArray(new Domain[0]);
 	}
 	
 	private CustomerId generateCustomerId() {
@@ -59,26 +81,6 @@ public class DemoCustomerFactory {
 		String street = streetPicker.pickRandomWord() + " " + streetTypes[random.nextInt(3)];
 		String number = String.valueOf(random.nextInt(100));
 		return new Address(zip, town, street, number);	
-	}
-	
-	private EmailAddress generateEmailAddress(Name name) {
-		String[] carriers = new String[]{"gmail.com", "fremail.hu", "hotmail.com"};
-		switch(random.nextInt(3)) {
-			case 0: return new EmailAddress(name.cleanName().replaceAll("\\s+","")+ "@" + carriers[random.nextInt(3)]);
-			case 1: return new EmailAddress(name.cleanName().replaceAll("\\s+","") + random.nextInt(100) + "@" + carriers[random.nextInt(3)]);
-			default: return new EmailAddress("");
-		}
-	}
-	
-	private PhoneNumber generatePhoneNumber() {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("+36");
-		String[] carriers = new String[]{"20", "30", "70"};
-		stringBuilder.append(carriers[random.nextInt(3)]);
-		for(int i=0;i<7;i++){
-			stringBuilder.append(createRandomDigit());	
-		}
-		return new PhoneNumber(stringBuilder.toString());
 	}
 	
 	private char createRandomChar() {

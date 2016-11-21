@@ -21,7 +21,6 @@ class CustomersTable extends Table {
 		
 		addContainerProperty("Name", String.class, null);
 		addContainerProperty("Address", String.class, null);
-		addContainerProperty("Phone", String.class, null);
 
 		refresh();
 		
@@ -40,7 +39,7 @@ class CustomersTable extends Table {
 		removeAllItems();
 		for(Customer customer : customerService.loadAllCustomers()) {
 			CustomerData data = customer.customerData;
-			addItem(new Object[]{data.name.toString(), data.address.toString(), data.phoneNumber.toString()}, customer);
+			addItem(new Object[]{data.name.toString(), data.address.toString()}, customer);
 		}
 	}
 	

@@ -2,6 +2,10 @@ package apt.erp.customerservice.application;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import apt.erp.customerservice.domain.Customer;
 import apt.erp.customerservice.domain.CustomerData;
@@ -10,12 +14,15 @@ import apt.erp.customerservice.domain.CustomerRepository;
 
 public class DemoCustomerRepository implements CustomerRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(DemoCustomerRepository.class);
+    
 	private final List<Customer> customers;
 	
 	private final DemoCustomerFactory testCustomerFactory = new DemoCustomerFactory(); 
 	
 	public DemoCustomerRepository(int numberOfCustomers) {
 		customers = generateRandomCustomers(numberOfCustomers);
+		logger.debug("Customers created: " + customers.stream().map(Customer::toDetailedString).collect(Collectors.joining("\n")));
 	}
 	
 	public List<Customer> loadAllCustomers() {
