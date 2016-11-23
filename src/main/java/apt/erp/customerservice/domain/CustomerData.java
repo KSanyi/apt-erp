@@ -38,6 +38,11 @@ public class CustomerData {
 		this.contacts = contacts;
 		this.languages = languages;
 	}
+	
+	public CustomerData updated(Name name, Address address, Optional<Address> invoiceAddress, 
+            String comment, List<Contact> contacts, List<Domain> domains, List<Language> languages) {
+	    return new CustomerData(customerId, name, address, invoiceAddress, comment, contacts, domains, languages);
+	}
 
 	public Boolean invoiceAddressIsTheSame() {
         return !invoiceAddress.isPresent();

@@ -1,18 +1,24 @@
 package apt.erp.customerservice.application;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
 import apt.erp.common.demo.RandomWordPicker;
 import apt.erp.customerservice.domain.Address;
+import apt.erp.customerservice.domain.Contact;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerId;
 import apt.erp.customerservice.domain.Domain;
+import apt.erp.customerservice.domain.EmailAddress;
 import apt.erp.customerservice.domain.Name;
+import apt.erp.customerservice.domain.PhoneNumber;
 import apt.erp.infrastructure.ResourceFileLoader;
+import apt.erp.projectservice.domain.Language;
 
 public class DemoCustomerFactory {
 
@@ -37,26 +43,71 @@ public class DemoCustomerFactory {
 		
 		Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
 		Address address = generateRandomAddress();
-		Address invoiceAddress = null;
 		boolean invoiceAddressIsTheSame = random.nextInt(10) > 0;
-		if(!invoiceAddressIsTheSame) {
-			invoiceAddress = generateRandomAddress();
-		}
+		Optional<Address> invoiceAddress = invoiceAddressIsTheSame ? Optional.empty() : Optional.of(generateRandomAddress());
 		String comment = random.nextInt(10) == 0 ? "Fontos ugyfel" : "";
 		
-		Domain[] customerDomains = generateCustomerDomains();
+		List<Contact> customerContacts = generateCustomerContacts();
+		List<Domain> customerDomains = generateCustomerDomains();
+		List<Language> customerLanguages = generateCustomerLanguages();
 		
-		return new CustomerData(generateCustomerId(), name, address, invoiceAddressIsTheSame, invoiceAddress, comment, customerDomains);
+		return new CustomerData(generateCustomerId(), name, address, invoiceAddress, comment, customerContacts, customerDomains, customerLanguages);
 	}
 	
-	private Domain[] generateCustomerDomains() {
-	    Set<Domain> customerDomains = new HashSet<>();
-	    customerDomains.add(domains.get(random.nextInt(domains.size())));
-	    if(random.nextInt(10) == 0) {
-	        customerDomains.add(domains.get(random.nextInt(domains.size())));
-	    }
-	    return customerDomains.toArray(new Domain[0]);
+	private List<Contact> generateCustomerContacts() {
+	    List<Contact> customerContacts = new ArrayList<>();
+        customerContacts.add(generateCustomerContact());
+        if(random.nextInt(10) == 0) {
+            customerContacts.add(generateCustomerContact());
+        }
+        return customerContacts;
+    }
+	
+	private Contact generateCustomerContact() {
+	    Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
+	    EmailAddress emailAddress = generateEmailAddress(name);
+	    PhoneNumber phoneNumber = generatePhoneNumber();
+	    return new Contact(name, phoneNumber, emailAddress);
 	}
+
+    private EmailAddress generateEmailAddress(Name name) {
+        String[] carriers = new String[]{"gmail.com", "fremail.hu", "hotmail.com"};
+        switch(random.nextInt(3)) {
+            case 0: return new EmailAddress(name.cleanName().replaceAll("\\s+","")+ "@" + carriers[random.nextInt(3)]);
+            case 1: return new EmailAddress(name.cleanName().replaceAll("\\s+","") + random.nextInt(100) + "@" + carriers[random.nextInt(3)]);
+            default: return new EmailAddress("");
+        }
+    }
+    
+    private PhoneNumber generatePhoneNumber() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("+36");
+        String[] carriers = new String[]{"20", "30", "70"};
+        stringBuilder.append(carriers[random.nextInt(3)]);
+        for(int i=0;i<7;i++){
+            stringBuilder.append(createRandomDigit());  
+        }
+        return new PhoneNumber(stringBuilder.toString());
+    }
+
+    private List<Domain> generateCustomerDomains() {
+        Set<Domain> customerDomains = new HashSet<>();
+        customerDomains.add(domains.get(random.nextInt(domains.size())));
+        if(random.nextInt(10) == 0) {
+            customerDomains.add(domains.get(random.nextInt(domains.size())));
+        }
+        return new ArrayList<>(customerDomains);
+    }
+    
+	private List<Language> generateCustomerLanguages() {
+        Set<Language> customerLanguages = new HashSet<>();
+        List<Language> languages = Language.languages;
+        customerLanguages.add(languages.get(random.nextInt(languages.size())));
+        if(random.nextInt(10) == 0) {
+            customerLanguages.add(languages.get(random.nextInt(languages.size())));
+        }
+        return new ArrayList<>(customerLanguages);
+    }
 	
 	private CustomerId generateCustomerId() {
 		StringBuilder stringBuilder = new StringBuilder();

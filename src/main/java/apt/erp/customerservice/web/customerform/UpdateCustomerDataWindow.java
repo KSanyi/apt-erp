@@ -1,6 +1,7 @@
 package apt.erp.customerservice.web.customerform;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +63,7 @@ public class UpdateCustomerDataWindow extends Window {
 	protected void saveData() {
 		if(isDataModified()){
 			if(isDataValid()) {
-				CustomerData updatedCcustomerData = createCustomerData();
-				customerService.updateCustomerData(updatedCcustomerData);
+				customerService.updateCustomerData(createCustomerData());
 				Notification.show("Customer has been updated");
 				notifyCustomerChangeListeners();
 				this.close();
@@ -84,15 +84,16 @@ public class UpdateCustomerDataWindow extends Window {
 	
 	protected CustomerData createCustomerData() {
 	    Optional<Address> invoiceAddress = invoiceAddressIsTheSameCheck.getValue() ?
-	            Optional.of(invoiceAddressForm.getChangedAddress()) : Optional.empty();
-		return CustomerData.createNew(new Name(nameField.getValue()),
-				addressForm.getChangedAddress(), invoiceAddress, "");
+	            Optional.empty() : Optional.of(invoiceAddressForm.getChangedAddress());
+		return customerData.updated(new Name(nameField.getValue()),
+				addressForm.getChangedAddress(), invoiceAddress, "", 
+				Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
 	}
 	
 	private void bindData(CustomerData customerData) {
 		nameField.setPropertyDataSource(new ObjectProperty<String>(customerData.name.value));
 		invoiceAddressIsTheSameCheck.setPropertyDataSource(new ObjectProperty<Boolean>(customerData.invoiceAddressIsTheSame()));
-		invoiceAddressIsTheSameCheck.setBuffered(true);
+		invoiceAddressIsTheSameCheck.setBuffered(true); // to be able to check whether it was modified
 	}
 	
 	private void createValidators() {

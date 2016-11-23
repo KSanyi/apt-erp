@@ -67,11 +67,11 @@ public class AddressForm extends Panel {
 	}
 
 	boolean isDataModified() {
-		return Arrays.asList(zipField, townField, streetField, houseNumberField).stream().anyMatch(f -> f.isModified());
+		return Arrays.asList(zipField, townField, streetField, houseNumberField).stream().anyMatch(TextField::isModified);
 	}
 	
 	boolean isValid() {
-		return Arrays.asList(zipField, townField, streetField, houseNumberField).stream().allMatch(f -> f.isValid());
+		return Arrays.asList(zipField, townField, streetField, houseNumberField).stream().allMatch(TextField::isValid);
 	}
 	
 	Address getChangedAddress() {
