@@ -4,6 +4,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
@@ -16,14 +17,15 @@ class CustomersTable extends Table {
 	private final CustomerService customerService;
 	
 	public CustomersTable(CustomerService customerService, ZipTownMap zipTownMap) {
-		this.customerService = customerService;
+	    this.customerService = customerService;
 		
 		addContainerProperty("Name", String.class, null);
 		addContainerProperty("Address", String.class, null);
 
 		refresh();
-		
-		setPageLength(20);
+
+		addStyleName(ValoTheme.TABLE_SMALL);
+		setPageLength(10);
 		setSelectable(true);
 
 		addItemClickListener(event -> {

@@ -13,7 +13,7 @@ import apt.erp.infrastructure.server.ApplicationService;
 import apt.erp.infrastructure.server.ErpServlet;
 import apt.erp.userservice.User;
 
-@Theme("kits-crm")
+@Theme("kits-apt")
 public class ErpUI extends UI {
 
 	private static final long serialVersionUID = 1L;

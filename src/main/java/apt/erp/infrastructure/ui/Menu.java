@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class Menu extends MenuBar {
@@ -12,9 +13,11 @@ public class Menu extends MenuBar {
 	
 	public Menu() {
 		
+	    setStyleName(ValoTheme.MENUBAR_SMALL);
 		setSizeFull();
 		
 		MenuItem customersMenuItem = addItem("Customers", null);
+		
 		customersMenuItem.addItem("Customers List", new LoggerCommand(c -> ErpUI.getCurrent().openCustomersListWindow()));
 		
 	}
