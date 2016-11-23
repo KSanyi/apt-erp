@@ -2,6 +2,7 @@ package apt.erp.customerservice.web.customerform;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.FontAwesome;
@@ -16,7 +17,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 
 import apt.erp.common.vaadin.FormFieldFactory;
-import apt.erp.customerservice.domain.Customer;
+import apt.erp.customerservice.domain.Address;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
 import apt.erp.customerservice.domain.Name;
@@ -25,7 +26,7 @@ import apt.erp.customerservice.domain.Name;
 public class UpdateCustomerDataWindow extends Window {
 
 	protected final CustomerService customerService;
-	protected final Customer customer;
+	protected final CustomerData customerData;
 	
 	private final TextField nameField = FormFieldFactory.createFormTextField("Name", 205, true);
 	private final AddressForm addressForm;
@@ -34,18 +35,18 @@ public class UpdateCustomerDataWindow extends Window {
 	protected final Button updateButton = new Button("Update", FontAwesome.SAVE);
 	protected final Button deleteButton = new Button("Delete", FontAwesome.REMOVE);
 	
-	protected final List<CustomerChangeListener> customerChangeListeners = new ArrayList<>();
+	protected final List<CustomerDataChangeListener> customerDataChangeListeners = new ArrayList<>();
 	
-	public UpdateCustomerDataWindow(CustomerService customerService, Customer customer, ZipTownMap zipTownMap) {
+	public UpdateCustomerDataWindow(CustomerService customerService, CustomerData customerData, ZipTownMap zipTownMap) {
 		this.customerService = customerService;
-		this.customer = customer;
-		setCaption("Customer Id: " + customer.customerId.value);
+		this.customerData = customerData;
+		setCaption("Customer Id: " + customerData.customerId.value);
 		
-		addressForm = new AddressForm("Address", customer.customerData.address, zipTownMap);
-		invoiceAddressForm = new AddressForm("Invoice address", customer.customerData.invoiceAddress, zipTownMap);
+		addressForm = new AddressForm("Address", customerData.address, zipTownMap);
+		invoiceAddressForm = new AddressForm("Invoice address", customerData.invoiceAddress.orElse(null), zipTownMap);
 		invoiceAddressIsTheSameCheck.addValueChangeListener(e -> invoiceAddressForm.setVisible(!(Boolean)e.getProperty().getValue()));
 		
-		bindData(customer);
+		bindData(customerData);
 		createValidators();
 		
 		createLayout();
@@ -62,7 +63,7 @@ public class UpdateCustomerDataWindow extends Window {
 		if(isDataModified()){
 			if(isDataValid()) {
 				CustomerData updatedCcustomerData = createCustomerData();
-				customerService.updateCustomerData(customer, updatedCcustomerData);
+				customerService.updateCustomerData(updatedCcustomerData);
 				Notification.show("Customer has been updated");
 				notifyCustomerChangeListeners();
 				this.close();
@@ -75,20 +76,22 @@ public class UpdateCustomerDataWindow extends Window {
 	}
 	
 	private void deleteCustomer() {
-		customerService.deleteCustomer(customer.customerId);
+		customerService.deleteCustomer(customerData.customerId);
 		Notification.show("Customer has been deleted");
 		notifyCustomerChangeListeners();
 		this.close();
 	}
 	
 	protected CustomerData createCustomerData() {
-		return new CustomerData(new Name(nameField.getValue()),
-				addressForm.getChangedAddress(), invoiceAddressIsTheSameCheck.getValue(), invoiceAddressForm.getChangedAddress(), "");
+	    Optional<Address> invoiceAddress = invoiceAddressIsTheSameCheck.getValue() ?
+	            Optional.of(invoiceAddressForm.getChangedAddress()) : Optional.empty();
+		return CustomerData.createNew(new Name(nameField.getValue()),
+				addressForm.getChangedAddress(), invoiceAddress, "");
 	}
 	
-	private void bindData(Customer customer) {
-		nameField.setPropertyDataSource(new ObjectProperty<String>(customer.customerData.name.value));
-		invoiceAddressIsTheSameCheck.setPropertyDataSource(new ObjectProperty<Boolean>(customer.customerData.invoiceAddressIsTheSame));
+	private void bindData(CustomerData customerData) {
+		nameField.setPropertyDataSource(new ObjectProperty<String>(customerData.name.value));
+		invoiceAddressIsTheSameCheck.setPropertyDataSource(new ObjectProperty<Boolean>(customerData.invoiceAddressIsTheSame()));
 		invoiceAddressIsTheSameCheck.setBuffered(true);
 	}
 	
@@ -115,12 +118,12 @@ public class UpdateCustomerDataWindow extends Window {
 		return nameField.isValid() && addressForm.isValid() && (invoiceAddressIsTheSameCheck.getValue() || invoiceAddressForm.isValid());
 	}
 	
-	public void addCustomerChangeListener(CustomerChangeListener customerChangeListener){
-		customerChangeListeners.add(customerChangeListener);
+	public void addCustomerChangeListener(CustomerDataChangeListener customerDataChangeListener){
+	    customerDataChangeListeners.add(customerDataChangeListener);
 	}
 	
 	protected void notifyCustomerChangeListeners(){
-		customerChangeListeners.stream().forEach(listener -> listener.notifyCustomerChanged(customer));
+		customerDataChangeListeners.stream().forEach(listener -> listener.notifyCustomerDataChanged(customerData));
 	}
 
 }

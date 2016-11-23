@@ -7,52 +7,51 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import apt.erp.customerservice.domain.Customer;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerId;
-import apt.erp.customerservice.domain.CustomerRepository;
+import apt.erp.customerservice.domain.CustomerDataRepository;
 
-public class DemoCustomerRepository implements CustomerRepository {
+public class DemoCustomerRepository implements CustomerDataRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoCustomerRepository.class);
     
-	private final List<Customer> customers;
+	private final List<CustomerData> customerDatas;
 	
-	private final DemoCustomerFactory testCustomerFactory = new DemoCustomerFactory(); 
+	private final DemoCustomerFactory demoCustomerDataFactory = new DemoCustomerFactory(); 
 	
 	public DemoCustomerRepository(int numberOfCustomers) {
-		customers = generateRandomCustomers(numberOfCustomers);
-		logger.debug("Customers created: " + customers.stream().map(Customer::toDetailedString).collect(Collectors.joining("\n")));
+	    customerDatas = generateRandomCustomers(numberOfCustomers);
+		logger.debug("Customers created: " + customerDatas.stream().map(CustomerData::toDetailedString).collect(Collectors.joining("\n")));
 	}
 	
-	public List<Customer> loadAllCustomers() {
-		return customers;
+	public List<CustomerData> loadAllCustomerDatas() {
+		return customerDatas;
 	}
 
-	public void saveCustomer(Customer customer) {
-		customers.add(customer);
+	public void saveCustomerData(CustomerId customerId, CustomerData customerData) {
+	    customerDatas.add(customerData);
 	}
 
-	public void updateCustomer(CustomerId customerId, CustomerData customerData) {
-		deleteCustomer(customerId);
-		saveCustomer(new Customer(customerId, customerData));
+	public void updateCustomerData(CustomerData customerData) {
+		deleteCustomerData(customerData.customerId);
+		saveCustomerData(customerData.customerId, customerData);
 	}
 
-	public void deleteCustomer(CustomerId customerId) {
-		customers.stream().filter(c -> c.customerId.equals(customerId)).findAny().ifPresent(c -> customers.remove(c));
+	public void deleteCustomerData(CustomerId customerId) {
+	    customerDatas.stream().filter(c -> c.customerId.equals(customerId)).findAny().ifPresent(c -> customerDatas.remove(c));
 	}
 	
-	private List<Customer> generateRandomCustomers(int n) {
-		List<Customer> customers = new LinkedList<Customer>();
+	private List<CustomerData> generateRandomCustomers(int n) {
+		List<CustomerData> customerDatas = new LinkedList<CustomerData>();
 		for(int i=0;i<n;i++) {
-			customers.add(testCustomerFactory.createRandomCustomer());
+		    customerDatas.add(demoCustomerDataFactory.createRandomCustomerData());
 		}
-		return customers;
+		return customerDatas;
 	}
 
 	@Override
 	public boolean doesCustomerIdExist(CustomerId customerId) {
-		return customers.stream().filter(c -> c.customerId.equals(customerId)).findAny().isPresent();
+		return customerDatas.stream().filter(c -> c.customerId.equals(customerId)).findAny().isPresent();
 	}
 	
 }

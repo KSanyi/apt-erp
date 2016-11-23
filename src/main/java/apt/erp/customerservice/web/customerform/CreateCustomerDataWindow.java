@@ -2,7 +2,6 @@ package apt.erp.customerservice.web.customerform;
 
 import com.vaadin.ui.Notification;
 
-import apt.erp.customerservice.domain.Customer;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
 
@@ -10,7 +9,7 @@ import apt.erp.customerservice.domain.CustomerService;
 public class CreateCustomerDataWindow extends UpdateCustomerDataWindow {
 
 	public CreateCustomerDataWindow(CustomerService customerService, ZipTownMap zipTownMap) {
-		super(customerService, Customer.createEmptyCustomer(), zipTownMap);
+		super(customerService, CustomerData.createEmpty(), zipTownMap);
 		deleteButton.setVisible(false);
 		updateButton.setCaption("Save");
 	}

@@ -8,7 +8,6 @@ import java.util.Set;
 
 import apt.erp.common.demo.RandomWordPicker;
 import apt.erp.customerservice.domain.Address;
-import apt.erp.customerservice.domain.Customer;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerId;
 import apt.erp.customerservice.domain.Domain;
@@ -34,7 +33,7 @@ public class DemoCustomerFactory {
 	
 	private Random random = new Random();
 	
-	public Customer createRandomCustomer() {
+	public CustomerData createRandomCustomerData() {
 		
 		Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
 		Address address = generateRandomAddress();
@@ -47,8 +46,7 @@ public class DemoCustomerFactory {
 		
 		Domain[] customerDomains = generateCustomerDomains();
 		
-		CustomerData customerData = new CustomerData(name, address, invoiceAddressIsTheSame, invoiceAddress, comment, customerDomains);
-		return new Customer(generateCustomerId(), customerData);
+		return new CustomerData(generateCustomerId(), name, address, invoiceAddressIsTheSame, invoiceAddress, comment, customerDomains);
 	}
 	
 	private Domain[] generateCustomerDomains() {

@@ -6,17 +6,16 @@ import apt.erp.common.IdGenerator;
 
 public class CustomerService {
 
-	private final CustomerRepository customerRepository;
+	private final CustomerDataRepository customerRepository;
 
-	public CustomerService(CustomerRepository customerRepository) {
+	public CustomerService(CustomerDataRepository customerRepository) {
 		this.customerRepository = customerRepository;
 	}
 	
 	public CustomerId createCustomer(CustomerData customerData){
 		validateCustomerData(customerData);
 		CustomerId customerId = generateCustomerId();
-		Customer customer = new Customer(customerId, customerData);
-		customerRepository.saveCustomer(customer);
+		customerRepository.saveCustomerData(customerId, customerData);
 		return customerId;
 	}
 	
@@ -35,15 +34,15 @@ public class CustomerService {
 	}
 	
 	public void deleteCustomer(CustomerId customerId) {
-		customerRepository.deleteCustomer(customerId);
+		customerRepository.deleteCustomerData(customerId);
 	}
 	
-	public void updateCustomerData(Customer customer, CustomerData updatedCustomerData) {
-		customerRepository.updateCustomer(customer.customerId, updatedCustomerData);
+	public void updateCustomerData(CustomerData updatedCustomerData) {
+		customerRepository.updateCustomerData(updatedCustomerData);
 	}
 	
-	public List<Customer> loadAllCustomers() {
-		return customerRepository.loadAllCustomers();
+	public List<CustomerData> loadAllCustomers() {
+		return customerRepository.loadAllCustomerDatas();
 	}
 	
 }

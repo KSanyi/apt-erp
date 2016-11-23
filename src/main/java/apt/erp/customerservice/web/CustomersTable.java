@@ -5,7 +5,6 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 
-import apt.erp.customerservice.domain.Customer;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
 import apt.erp.customerservice.web.customerform.UpdateCustomerDataWindow;
@@ -28,19 +27,27 @@ class CustomersTable extends Table {
 		setSelectable(true);
 
 		addItemClickListener(event -> {
-			Customer customer = (Customer)event.getItemId();
-			UpdateCustomerDataWindow updateCustomerDataWindow = new UpdateCustomerDataWindow(customerService, customer, zipTownMap);
+			CustomerData customerData = (CustomerData)event.getItemId();
+			UpdateCustomerDataWindow updateCustomerDataWindow = new UpdateCustomerDataWindow(customerService, customerData, zipTownMap);
 			updateCustomerDataWindow.addCustomerChangeListener(c -> refresh());
 			UI.getCurrent().addWindow(updateCustomerDataWindow);
 		});
 	}
 	
 	public void refresh() {
-		removeAllItems();
-		for(Customer customer : customerService.loadAllCustomers()) {
-			CustomerData data = customer.customerData;
-			addItem(new Object[]{data.name.toString(), data.address.toString()}, customer);
+		
+	    //Object x = getCurrentPageFirstItemId();
+	    //Object sortPropertyId = getSortContainerPropertyId();
+	    
+	    removeAllItems();
+		
+		for(CustomerData customerData : customerService.loadAllCustomers()) {
+			addItem(new Object[]{customerData.name.toString(), customerData.address.toString()}, customerData);
 		}
+		
+		//setSortContainerPropertyId(sortPropertyId);
+		//sort();
+		//setCurrentPageFirstItemId(x);
 	}
 	
 	public void filter(String filterString) {
@@ -58,8 +65,8 @@ class CustomersTable extends Table {
 		}
 		
 		public boolean passesFilter(Object itemId, Item item) {
-			Customer customer = (Customer)itemId;
-			return customer.matches(filterString);
+		    CustomerData customerData = (CustomerData)itemId;
+		    return customerData.matches(filterString);
 		}
 
 		public boolean appliesToProperty(Object propertyId) {

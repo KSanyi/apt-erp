@@ -9,11 +9,24 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 
-	    final int port = Integer.parseInt(System.getenv("PORT"));
-	    
-	    ApplicationService applicationService = new ApplicationService(new DemoCustomerRepository(10000), new ZipTownMap());
+	    int port = getPort();
+	    ApplicationService applicationService = new ApplicationService(new DemoCustomerRepository(100), new ZipTownMap());
 
         new ErpServer(port, applicationService).startServer();
+	}
+	
+	private static int getPort() {
+	    String port = System.getenv("PORT");
+	    if(port == null) {
+	        throw new IllegalArgumentException("System environment variable PORT is missing");
+	    }
+	    
+	    try{
+	        return Integer.parseInt(port);
+	    } catch(NumberFormatException ex) {
+	        throw new IllegalArgumentException("Illegal system environment variable PORT: " + port);	        
+	    }
+	    
 	}
 
 }

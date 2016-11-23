@@ -6,10 +6,8 @@ import apt.erp.common.SimpleValueObject;
 
 public class CustomerId extends SimpleValueObject {
 
-	static CustomerId createEmpty() {
-		return new CustomerId("New customer");
-	}
-	
+    public static CustomerId newId = new CustomerId("New customer");
+    
 	public CustomerId(String value) {
 		super(value);
 	}
