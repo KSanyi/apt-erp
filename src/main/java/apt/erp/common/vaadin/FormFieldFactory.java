@@ -2,10 +2,10 @@ package apt.erp.common.vaadin;
 
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 
 public interface FormFieldFactory {
 
@@ -39,28 +39,11 @@ public interface FormFieldFactory {
 		return textArea;
 	}
 	
-	static Button createFormButton(String caption){
-		Button button = new Button(caption);
-		button.setStyleName(Reindeer.BUTTON_SMALL);
-		return button;
-	}
-	
-	static Button createFormButton(String caption, ClickListener listener){
-		Button button = new Button(caption, listener);
-		button.setStyleName(Reindeer.BUTTON_SMALL);
-		return button;
-	}
-	
-	static Button createFormButton(String caption, Resource icon){
-		Button button = new Button(caption, icon);
-		button.setStyleName(Reindeer.BUTTON_SMALL);
-		return button;
-	}
-	
-	static Button createFormButton(String caption, Resource icon, ClickListener listener){
+	static Button createFormButton(String caption, Resource icon, String style, ClickListener listener){
 		Button button = new Button(caption, icon);
 		button.addClickListener(listener);
-		button.setStyleName(Reindeer.BUTTON_SMALL);
+		button.addStyleName(style);
+		button.addStyleName(ValoTheme.BUTTON_SMALL);
 		return button;
 	}
 	

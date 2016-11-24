@@ -1,3 +1,8 @@
+$v-background-color: hsl(210, 0%, 96%);
+$v-app-loading-text: "Loading APT-ERP Resources...";
+$v-font-size: 15px;
+$v-font-family: 'Lora', sans-serif, 'Source Sans Pro';
+
 @import "../valo/valo.scss";
 
 @mixin kits-apt {
@@ -21,4 +26,5 @@
         color: white;
         font-weight: bold;
     }
+    
 }

@@ -5,6 +5,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
@@ -24,7 +25,7 @@ public class CustomersWindow extends Window {
 		TextField filter = new TextField("Filter");
 		filter.addTextChangeListener(textChangeEvent -> customersTable.filter(textChangeEvent.getText()));
 		
-		Button addButton = FormFieldFactory.createFormButton("Add customer", FontAwesome.PLUS,
+		Button addButton = FormFieldFactory.createFormButton("Add customer", FontAwesome.PLUS, ValoTheme.BUTTON_PRIMARY,
 				e -> {
 					CreateCustomerDataWindow createCustomerDataWindow = new CreateCustomerDataWindow(customerService, zipTownMap);
 					createCustomerDataWindow.addCustomerChangeListener(c -> customersTable.refresh());

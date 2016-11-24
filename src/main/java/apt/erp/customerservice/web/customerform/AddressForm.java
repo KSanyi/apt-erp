@@ -7,10 +7,9 @@ import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 
 import apt.erp.common.vaadin.FormFieldFactory;
+import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.customerservice.domain.Address;
 
 @SuppressWarnings("serial")
@@ -18,14 +17,13 @@ public class AddressForm extends Panel {
 
 	private final ZipTownMap zipTownMap;
 	
-	private final TextField zipField = FormFieldFactory.createFormTextField("Zip", 50, true);
-	private final TextField townField = FormFieldFactory.createFormTextField("Town", 150, true);
-	private final TextField streetField = FormFieldFactory.createFormTextField("Street", 150, true);
-	private final TextField houseNumberField = FormFieldFactory.createFormTextField("Number", 50, true);
+	private final TextField zipField = FormFieldFactory.createFormTextField("Zip", 60, true);
+	private final TextField townField = FormFieldFactory.createFormTextField("Town", 200, true);
+	private final TextField streetField = FormFieldFactory.createFormTextField("Street", 200, true);
+	private final TextField houseNumberField = FormFieldFactory.createFormTextField("Number", 60, true);
 	
 	public AddressForm(String caption, Address address, ZipTownMap zipTownMap) {
 		setCaption(caption);
-		setStyleName(Reindeer.PANEL_LIGHT);
 		this.zipTownMap = zipTownMap;
 		
 		bindData(address);
@@ -37,15 +35,9 @@ public class AddressForm extends Panel {
 	}
 	
 	private void createLayout() {
-		HorizontalLayout firstRow = new HorizontalLayout(zipField, townField);
-		firstRow.setSpacing(true);
-		
-		HorizontalLayout secondRow = new HorizontalLayout(streetField, houseNumberField);
-		secondRow.setSpacing(true);
-		
-		VerticalLayout layout = new VerticalLayout(firstRow, secondRow);
-		layout.setSpacing(true);
-		setContent(layout);
+		HorizontalLayout firstRow = LayoutFactory.createHorizontalLayout(zipField, townField);
+		HorizontalLayout secondRow = LayoutFactory.createHorizontalLayout(streetField, houseNumberField);
+		setContent(LayoutFactory.createCenteredVerticalLayout(firstRow, secondRow));
 	}
 	
 	private void bindData(Address address) {

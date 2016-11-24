@@ -40,7 +40,7 @@ public interface LayoutFactory {
 	}
 	
 	static HorizontalLayout createHorizontalLayout(Component ... components){
-		HorizontalLayout layout = createHorizontalLayout(components);
+		HorizontalLayout layout = new HorizontalLayout(components);
 		layout.setSpacing(true);
 		return layout;
 	}

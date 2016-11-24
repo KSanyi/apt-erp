@@ -15,7 +15,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.customerservice.domain.Address;
@@ -29,12 +29,13 @@ public class UpdateCustomerDataWindow extends Window {
 	protected final CustomerService customerService;
 	protected final CustomerData customerData;
 	
-	private final TextField nameField = FormFieldFactory.createFormTextField("Name", 205, true);
+	private final TextField nameField = FormFieldFactory.createFormTextField("Name", 300, true);
 	private final AddressForm addressForm;
 	private final CheckBox invoiceAddressIsTheSameCheck = new CheckBox("Invoice address is the same");
 	private final AddressForm invoiceAddressForm;
-	protected final Button updateButton = new Button("Update", FontAwesome.SAVE);
-	protected final Button deleteButton = new Button("Delete", FontAwesome.REMOVE);
+	
+	protected final Button updateButton = FormFieldFactory.createFormButton("Update", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, event -> saveData());
+	protected final Button deleteButton = FormFieldFactory.createFormButton("Delete", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, event -> deleteCustomer());
 	
 	protected final List<CustomerDataChangeListener> customerDataChangeListeners = new ArrayList<>();
 	
@@ -51,11 +52,6 @@ public class UpdateCustomerDataWindow extends Window {
 		createValidators();
 		
 		createLayout();
-		
-		updateButton.addClickListener(event -> saveData());
-		updateButton.setStyleName(Reindeer.BUTTON_SMALL);
-		deleteButton.addClickListener(event -> deleteCustomer());
-		deleteButton.setStyleName(Reindeer.BUTTON_SMALL);
 		
 		setModal(true);
 	}
