@@ -1,44 +1,19 @@
 package apt.erp.customerservice.domain;
 
-import apt.erp.common.SimpleValueObject;
+import java.util.Arrays;
+import java.util.List;
 
-public class Domain {
+public enum Domain {
 
-    public String code;
+    Finance,
+    Healthcare,
+    Construction,
+    Agreculture,
+    IT,
+    Sport,
+    Transport,
+    Science,
+    Other;
     
-    public String name;
-
-    public Domain(String code, String name) {
-        this.code = code;
-        this.name = name;
-    }
-    
-    @Override
-    public String toString() {
-        return name;
-    }
-    
-    public boolean matches(String filter) {
-        return name.contains(filter);
-    }
-    
-    @Override
-    public boolean equals(Object other){
-        if(this == other)
-            return true;
-        
-        if(other == null)
-            return false;
-        
-        if(this.getClass() != other.getClass())
-            return false;
-
-        return this.code.equals(((SimpleValueObject)other).value);
-    }
-    
-    @Override
-    public int hashCode() {
-        return code.hashCode();
-    }
-    
+    public static List<Domain> all = Arrays.asList(values());    
 }

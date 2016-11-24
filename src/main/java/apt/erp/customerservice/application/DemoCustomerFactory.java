@@ -1,12 +1,9 @@
 package apt.erp.customerservice.application;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 
 import apt.erp.common.demo.RandomWordPicker;
 import apt.erp.customerservice.domain.Address;
@@ -17,6 +14,7 @@ import apt.erp.customerservice.domain.Domain;
 import apt.erp.customerservice.domain.EmailAddress;
 import apt.erp.customerservice.domain.Name;
 import apt.erp.customerservice.domain.PhoneNumber;
+import apt.erp.customerservice.domain.TaxId;
 import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
 
@@ -27,31 +25,21 @@ public class DemoCustomerFactory {
 	private final RandomWordPicker townPicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Towns.txt"));
 	private final RandomWordPicker streetPicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Streets.txt"));
 	
-	private final List<Domain> domains = Arrays.asList(
-	        new Domain("FI", "Finance"),
-	        new Domain("HC", "Healthcare"),
-	        new Domain("IN", "Industry"),
-	        new Domain("AG", "Agreeculture"),
-	        new Domain("IT", "IT"),
-	        new Domain("SP", "Sport"),
-	        new Domain("TR", "Transport"),
-	        new Domain("HI", "History"));
-	
 	private Random random = new Random();
 	
 	public CustomerData createRandomCustomerData() {
 		
 		Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
-		Address address = generateRandomAddress();
+		Address address = generateAddress();
 		boolean invoiceAddressIsTheSame = random.nextInt(10) > 0;
-		Optional<Address> invoiceAddress = invoiceAddressIsTheSame ? Optional.empty() : Optional.of(generateRandomAddress());
+		Optional<Address> invoiceAddress = invoiceAddressIsTheSame ? Optional.empty() : Optional.of(generateAddress());
 		String comment = random.nextInt(10) == 0 ? "Fontos ugyfel" : "";
 		
 		List<Contact> customerContacts = generateCustomerContacts();
-		List<Domain> customerDomains = generateCustomerDomains();
-		List<Language> customerLanguages = generateCustomerLanguages();
+		Domain customerDomain = generateCustomerDomain();
+		Language customerLanguage = generateCustomerLanguage();
 		
-		return new CustomerData(generateCustomerId(), name, address, invoiceAddress, comment, customerContacts, customerDomains, customerLanguages);
+		return new CustomerData(generateCustomerId(), generateTaxId(), name, address, invoiceAddress, comment, customerDomain, customerLanguage, customerContacts);
 	}
 	
 	private List<Contact> generateCustomerContacts() {
@@ -90,23 +78,12 @@ public class DemoCustomerFactory {
         return new PhoneNumber(stringBuilder.toString());
     }
 
-    private List<Domain> generateCustomerDomains() {
-        Set<Domain> customerDomains = new HashSet<>();
-        customerDomains.add(domains.get(random.nextInt(domains.size())));
-        if(random.nextInt(10) == 0) {
-            customerDomains.add(domains.get(random.nextInt(domains.size())));
-        }
-        return new ArrayList<>(customerDomains);
+    private Domain generateCustomerDomain() {
+        return Domain.all.get(random.nextInt(Domain.all.size()));
     }
     
-	private List<Language> generateCustomerLanguages() {
-        Set<Language> customerLanguages = new HashSet<>();
-        List<Language> languages = Language.languages;
-        customerLanguages.add(languages.get(random.nextInt(languages.size())));
-        if(random.nextInt(10) == 0) {
-            customerLanguages.add(languages.get(random.nextInt(languages.size())));
-        }
-        return new ArrayList<>(customerLanguages);
+	private Language generateCustomerLanguage() {
+        return Language.all.get(random.nextInt(Language.all.size()));
     }
 	
 	private CustomerId generateCustomerId() {
@@ -122,7 +99,20 @@ public class DemoCustomerFactory {
 		return new CustomerId(stringBuilder.toString());
 	}
 	
-	private Address generateRandomAddress() {
+	private TaxId generateTaxId() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder
+        .append(createRandomChar())
+        .append(createRandomChar())
+        .append(createRandomChar())
+        .append(createRandomDigit())
+        .append(createRandomDigit())
+        .append(createRandomDigit());
+        
+        return new TaxId(stringBuilder.toString());
+    }
+	
+	private Address generateAddress() {
 		String[] zipAndTown = townPicker.pickRandomWord().split("\t");
 		String zip = zipAndTown[0];
 		String town = zipAndTown[1];

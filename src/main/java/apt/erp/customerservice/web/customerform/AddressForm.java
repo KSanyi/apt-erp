@@ -23,7 +23,7 @@ public class AddressForm extends Panel {
 	private final TextField houseNumberField = FormFieldFactory.createFormTextField("Number", 60, true);
 	
 	public AddressForm(String caption, Address address, ZipTownMap zipTownMap) {
-		setCaption(caption);
+	    setCaption(caption);
 		this.zipTownMap = zipTownMap;
 		
 		bindData(address);

@@ -15,7 +15,7 @@ public class TableFilter<T> implements Filter {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean passesFilter(Object itemId, Item item) throws UnsupportedOperationException {
+	public boolean passesFilter(Object itemId, Item item) {
 		return filterPredicate.apply((T)itemId);
 	}
 

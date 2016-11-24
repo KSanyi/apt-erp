@@ -10,6 +10,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
@@ -21,7 +22,10 @@ import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.customerservice.domain.Address;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
+import apt.erp.customerservice.domain.Domain;
 import apt.erp.customerservice.domain.Name;
+import apt.erp.customerservice.domain.TaxId;
+import apt.erp.projectservice.domain.Language;
 
 @SuppressWarnings("serial")
 public class UpdateCustomerDataWindow extends Window {
@@ -30,9 +34,12 @@ public class UpdateCustomerDataWindow extends Window {
 	protected final CustomerData customerData;
 	
 	private final TextField nameField = FormFieldFactory.createFormTextField("Name", 300, true);
+	private final TextField taxIdField = FormFieldFactory.createFormTextField("Tax Id", 200, false);
 	private final AddressForm addressForm;
 	private final CheckBox invoiceAddressIsTheSameCheck = new CheckBox("Invoice address is the same");
 	private final AddressForm invoiceAddressForm;
+	private final ComboBox domainCombo = FormFieldFactory.createComboBox("Domain", Domain.all);
+	private final ComboBox languageCombo = FormFieldFactory.createComboBox("Language", Language.all);
 	
 	protected final Button updateButton = FormFieldFactory.createFormButton("Update", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, event -> saveData());
 	protected final Button deleteButton = FormFieldFactory.createFormButton("Delete", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, event -> deleteCustomer());
@@ -81,13 +88,16 @@ public class UpdateCustomerDataWindow extends Window {
 	protected CustomerData createCustomerData() {
 	    Optional<Address> invoiceAddress = invoiceAddressIsTheSameCheck.getValue() ?
 	            Optional.empty() : Optional.of(invoiceAddressForm.getChangedAddress());
-		return customerData.updated(new Name(nameField.getValue()),
+		return customerData.updated(new TaxId(taxIdField.getValue()), new Name(nameField.getValue()),
 				addressForm.getChangedAddress(), invoiceAddress, "", 
-				Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+				(Domain)domainCombo.getValue(), (Language)languageCombo.getValue(), Collections.emptyList());
 	}
 	
 	private void bindData(CustomerData customerData) {
 		nameField.setPropertyDataSource(new ObjectProperty<String>(customerData.name.value));
+		taxIdField.setPropertyDataSource(new ObjectProperty<String>(customerData.taxId.value));
+		domainCombo.setPropertyDataSource(new ObjectProperty<Domain>(customerData.mainDomain));
+		languageCombo.setPropertyDataSource(new ObjectProperty<Language>(customerData.mainLanguage));
 		invoiceAddressIsTheSameCheck.setPropertyDataSource(new ObjectProperty<Boolean>(customerData.invoiceAddressIsTheSame()));
 		invoiceAddressIsTheSameCheck.setBuffered(true); // to be able to check whether it was modified
 	}
@@ -97,10 +107,11 @@ public class UpdateCustomerDataWindow extends Window {
 	}
 	
 	private void createLayout() {
+	    
 		HorizontalLayout buttonsLayout = new HorizontalLayout(updateButton, deleteButton);
 		buttonsLayout.setSpacing(true);
 		
-		VerticalLayout layout = new VerticalLayout(nameField, addressForm, invoiceAddressIsTheSameCheck, invoiceAddressForm, buttonsLayout);
+		VerticalLayout layout = new VerticalLayout(nameField, taxIdField, domainCombo, languageCombo, addressForm, invoiceAddressIsTheSameCheck, invoiceAddressForm, buttonsLayout);
 		layout.setComponentAlignment(buttonsLayout, Alignment.MIDDLE_CENTER);
 		layout.setMargin(true);
 		layout.setSpacing(true);
@@ -108,7 +119,7 @@ public class UpdateCustomerDataWindow extends Window {
 	}
 	
 	protected boolean isDataModified() {
-		return nameField.isModified() || addressForm.isDataModified() || invoiceAddressIsTheSameCheck.isModified() || invoiceAddressForm.isDataModified();
+		return nameField.isModified() || domainCombo.isModified() || languageCombo.isModified() || addressForm.isDataModified() || invoiceAddressIsTheSameCheck.isModified() || invoiceAddressForm.isDataModified();
 	}
 	
 	protected boolean isDataValid() {

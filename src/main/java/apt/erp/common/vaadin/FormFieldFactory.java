@@ -1,8 +1,11 @@
 package apt.erp.common.vaadin;
 
+import java.util.Collection;
+
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
@@ -45,6 +48,14 @@ public interface FormFieldFactory {
 		button.addStyleName(style);
 		button.addStyleName(ValoTheme.BUTTON_SMALL);
 		return button;
+	}
+	
+	static ComboBox createComboBox(String caption, Collection<?> items) {
+	    ComboBox combo = new ComboBox("Domain", items);
+	    combo.setNullSelectionAllowed(false);
+	    combo.setWidth("140px");
+	    combo.setBuffered(true);
+	    return combo;
 	}
 	
 }
