@@ -1,16 +1,19 @@
 package apt.erp.customerservice.web.customerform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
@@ -22,6 +25,7 @@ import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.customerservice.domain.Address;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
+import apt.erp.customerservice.domain.CustomerServiceException;
 import apt.erp.customerservice.domain.Domain;
 import apt.erp.customerservice.domain.Name;
 import apt.erp.customerservice.domain.TaxId;
@@ -40,6 +44,8 @@ public class UpdateCustomerDataWindow extends Window {
 	private final AddressForm invoiceAddressForm;
 	private final ComboBox domainCombo = FormFieldFactory.createComboBox("Domain", Domain.all);
 	private final ComboBox languageCombo = FormFieldFactory.createComboBox("Language", Language.all);
+	
+	private final List<Field<?>> dataFields = Arrays.asList(nameField, taxIdField, invoiceAddressIsTheSameCheck, domainCombo, languageCombo);
 	
 	protected final Button updateButton = FormFieldFactory.createFormButton("Update", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, event -> saveData());
 	protected final Button deleteButton = FormFieldFactory.createFormButton("Delete", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, event -> deleteCustomer());
@@ -64,12 +70,16 @@ public class UpdateCustomerDataWindow extends Window {
 	}
 	
 	protected void saveData() {
-		if(isDataModified()){
+		if(isDataModified()) {
 			if(isDataValid()) {
-				customerService.updateCustomerData(createCustomerData());
-				Notification.show("Customer has been updated");
-				notifyCustomerChangeListeners();
-				this.close();
+				try {
+					customerService.updateCustomerData(createCustomerData());
+					Notification.show("Customer has been updated");
+					notifyCustomerChangeListeners();
+					this.close();
+				} catch (CustomerServiceException ex) {
+					Notification.show("Validation error: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
+				}
 			} else {
 				Notification.show("Fix data errors", Notification.Type.WARNING_MESSAGE);
 			}
@@ -103,11 +113,10 @@ public class UpdateCustomerDataWindow extends Window {
 	}
 	
 	private void createValidators() {
-		nameField.addValidator(new HungarianNameValidator("Invalid name"));
+		taxIdField.addValidator(new RegexpValidator("\\d{8}-\\d-\\d{2}", "Invalid tax id"));
 	}
 	
 	private void createLayout() {
-	    
 		HorizontalLayout buttonsLayout = new HorizontalLayout(updateButton, deleteButton);
 		buttonsLayout.setSpacing(true);
 		
@@ -119,18 +128,18 @@ public class UpdateCustomerDataWindow extends Window {
 	}
 	
 	protected boolean isDataModified() {
-		return nameField.isModified() || domainCombo.isModified() || languageCombo.isModified() || addressForm.isDataModified() || invoiceAddressIsTheSameCheck.isModified() || invoiceAddressForm.isDataModified();
+		return dataFields.stream().anyMatch(Field::isModified) || addressForm.isDataModified() || invoiceAddressForm.isDataModified();
 	}
 	
 	protected boolean isDataValid() {
-		return nameField.isValid() && addressForm.isValid() && (invoiceAddressIsTheSameCheck.getValue() || invoiceAddressForm.isValid());
+		return dataFields.stream().allMatch(Field::isValid) && addressForm.isValid() && (invoiceAddressIsTheSameCheck.getValue() || invoiceAddressForm.isValid());
 	}
 	
-	public void addCustomerChangeListener(CustomerDataChangeListener customerDataChangeListener){
+	public void addCustomerChangeListener(CustomerDataChangeListener customerDataChangeListener) {
 	    customerDataChangeListeners.add(customerDataChangeListener);
 	}
 	
-	protected void notifyCustomerChangeListeners(){
+	protected void notifyCustomerChangeListeners() {
 		customerDataChangeListeners.stream().forEach(listener -> listener.notifyCustomerDataChanged(customerData));
 	}
 

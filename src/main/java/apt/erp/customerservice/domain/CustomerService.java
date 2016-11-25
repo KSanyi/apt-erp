@@ -12,7 +12,7 @@ public class CustomerService {
 		this.customerRepository = customerRepository;
 	}
 	
-	public CustomerId createCustomer(CustomerData customerData){
+	public CustomerId createCustomer(CustomerData customerData) {
 		validateCustomerData(customerData);
 		CustomerId customerId = generateCustomerId();
 		customerRepository.saveCustomerData(customerId, customerData);
@@ -31,6 +31,10 @@ public class CustomerService {
 	
 	private void validateCustomerData(CustomerData customerData) {
 		
+		boolean nonUniqueTaxId = customerRepository.loadAllCustomerDatas().stream().anyMatch(c -> !c.equals(customerData) && c.taxId.equals(customerData.taxId));
+		if(nonUniqueTaxId) {
+			throw new CustomerServiceException("Tax Id already exists");
+		}
 	}
 	
 	public void deleteCustomer(CustomerId customerId) {
@@ -38,6 +42,7 @@ public class CustomerService {
 	}
 	
 	public void updateCustomerData(CustomerData updatedCustomerData) {
+		validateCustomerData(updatedCustomerData	);
 		customerRepository.updateCustomerData(updatedCustomerData);
 	}
 	

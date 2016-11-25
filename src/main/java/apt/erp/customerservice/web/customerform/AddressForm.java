@@ -1,9 +1,11 @@
 package apt.erp.customerservice.web.customerform;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.validator.RegexpValidator;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
@@ -21,6 +23,8 @@ public class AddressForm extends Panel {
 	private final TextField townField = FormFieldFactory.createFormTextField("Town", 200, true);
 	private final TextField streetField = FormFieldFactory.createFormTextField("Street", 200, true);
 	private final TextField houseNumberField = FormFieldFactory.createFormTextField("Number", 60, true);
+	
+	private final List<Field<?>> dataFields = Arrays.asList(zipField, townField, streetField, houseNumberField);
 	
 	public AddressForm(String caption, Address address, ZipTownMap zipTownMap) {
 	    setCaption(caption);
@@ -59,11 +63,11 @@ public class AddressForm extends Panel {
 	}
 
 	boolean isDataModified() {
-		return Arrays.asList(zipField, townField, streetField, houseNumberField).stream().anyMatch(TextField::isModified);
+		return dataFields.stream().anyMatch(Field::isModified);
 	}
 	
 	boolean isValid() {
-		return Arrays.asList(zipField, townField, streetField, houseNumberField).stream().allMatch(TextField::isValid);
+		return dataFields.stream().allMatch(Field::isValid);
 	}
 	
 	Address getChangedAddress() {

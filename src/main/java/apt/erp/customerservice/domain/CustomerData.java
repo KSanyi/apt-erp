@@ -3,6 +3,7 @@ package apt.erp.customerservice.domain;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import apt.erp.projectservice.domain.Language;
 
@@ -51,16 +52,38 @@ public class CustomerData {
     }
 	
 	public boolean matches(String filter) {
-		return customerId.matches(filter) ||
-		       name.matches(filter) ||
-			   address != null && address.matches(filter) ||
-			   invoiceAddress.map(address -> address.matches(filter)).orElse(false) ||
-			   comment != null && comment.contains(filter);
+		String[] filterParts = filter.split(" ");
+		return Stream.of(filterParts).allMatch(filterPart -> 
+			   customerId.matches(filterPart) ||
+			   taxId.matches(filterPart) ||
+		       name.matches(filterPart) ||
+			   address != null && address.matches(filterPart) ||
+			   invoiceAddress.map(address -> address.matches(filterPart)).orElse(false) ||
+			   comment != null && comment.contains(filterPart));
 	}
 	
 	public List<Contact> contacts() {
         return contacts;
     }
+	
+	@Override
+	public boolean equals(Object other){
+		if(this == other)
+			return true;
+		
+		if(other == null)
+			return false;
+		
+		if(this.getClass() != other.getClass())
+			return false;
+
+		return this.customerId.equals(((CustomerData)other).customerId);
+	}
+	
+	@Override
+	public int hashCode() {
+		return customerId.hashCode();
+	}
 	
 	@Override
 	public String toString(){

@@ -22,10 +22,11 @@ class CustomersTable extends Table {
 		addContainerProperty("Name", String.class, null);
 		addContainerProperty("Address", String.class, null);
 
+		setSortContainerPropertyId("Name");
 		refresh();
 
 		addStyleName(ValoTheme.TABLE_SMALL);
-		setPageLength(15);
+		setPageLength(12);
 		setSelectable(true);
 
 		addItemClickListener(event -> {
@@ -38,18 +39,17 @@ class CustomersTable extends Table {
 	
 	public void refresh() {
 		
-	    //Object x = getCurrentPageFirstItemId();
-	    //Object sortPropertyId = getSortContainerPropertyId();
-	    
-	    removeAllItems();
+		Object selectedItem = getValue();
+		int currentPageFirstItemIndex = getCurrentPageFirstItemIndex();
 		
+	    removeAllItems();
 		for(CustomerData customerData : customerService.loadAllCustomers()) {
 			addItem(new Object[]{customerData.name.toString(), customerData.address.toString()}, customerData);
 		}
+		sort();
 		
-		//setSortContainerPropertyId(sortPropertyId);
-		//sort();
-		//setCurrentPageFirstItemId(x);
+		setValue(selectedItem, true);
+		setCurrentPageFirstItemIndex(currentPageFirstItemIndex);
 	}
 	
 	public void filter(String filterString) {

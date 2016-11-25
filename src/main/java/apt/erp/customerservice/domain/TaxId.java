@@ -12,7 +12,7 @@ public class TaxId extends SimpleValueObject {
     
     @Override
     public boolean equals(Object other) {
-        return other instanceof Name ? ((TaxId)other).value.equals(value) : false;
+        return other instanceof TaxId ? ((TaxId)other).value.equals(value) : false;
     }
 
 }
