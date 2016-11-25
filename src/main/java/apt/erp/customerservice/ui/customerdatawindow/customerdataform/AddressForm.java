@@ -1,4 +1,4 @@
-package apt.erp.customerservice.web.customerform;
+package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,15 +7,16 @@ import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 
 import apt.erp.common.vaadin.FormFieldFactory;
+import apt.erp.common.vaadin.HungarianNameValidator;
 import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.customerservice.domain.Address;
 
 @SuppressWarnings("serial")
-public class AddressForm extends Panel {
+public class AddressForm extends VerticalLayout {
 
 	private final ZipTownMap zipTownMap;
 	
@@ -27,7 +28,6 @@ public class AddressForm extends Panel {
 	private final List<Field<?>> dataFields = Arrays.asList(zipField, townField, streetField, houseNumberField);
 	
 	public AddressForm(String caption, Address address, ZipTownMap zipTownMap) {
-	    setCaption(caption);
 		this.zipTownMap = zipTownMap;
 		
 		bindData(address);
@@ -39,9 +39,11 @@ public class AddressForm extends Panel {
 	}
 	
 	private void createLayout() {
+		setSpacing(true);
+		setMargin(true);
 		HorizontalLayout firstRow = LayoutFactory.createHorizontalLayout(zipField, townField);
 		HorizontalLayout secondRow = LayoutFactory.createHorizontalLayout(streetField, houseNumberField);
-		setContent(LayoutFactory.createCenteredVerticalLayout(firstRow, secondRow));
+		addComponents(firstRow, secondRow);
 	}
 	
 	private void bindData(Address address) {
@@ -70,7 +72,7 @@ public class AddressForm extends Panel {
 		return dataFields.stream().allMatch(Field::isValid);
 	}
 	
-	Address getChangedAddress() {
+	Address getAddress() {
 		return new Address(zipField.getValue(), townField.getValue(), streetField.getValue(), houseNumberField.getValue());
 	}
 	

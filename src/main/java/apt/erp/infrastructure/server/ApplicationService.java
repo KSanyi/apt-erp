@@ -2,7 +2,7 @@ package apt.erp.infrastructure.server;
 
 import apt.erp.customerservice.application.CustomerApplicationService;
 import apt.erp.customerservice.domain.CustomerDataRepository;
-import apt.erp.customerservice.web.customerform.ZipTownMap;
+import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap;
 
 public class ApplicationService {
 

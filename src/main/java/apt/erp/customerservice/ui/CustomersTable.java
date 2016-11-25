@@ -1,4 +1,4 @@
-package apt.erp.customerservice.web;
+package apt.erp.customerservice.ui;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -8,8 +8,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
-import apt.erp.customerservice.web.customerform.UpdateCustomerDataWindow;
-import apt.erp.customerservice.web.customerform.ZipTownMap;
+import apt.erp.customerservice.ui.customerdatawindow.UpdateCustomerDataWindow;
+import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap;
 
 @SuppressWarnings("serial")
 class CustomersTable extends Table {

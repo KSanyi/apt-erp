@@ -4,7 +4,7 @@ import apt.erp.common.SimpleValueObject;
 
 public class TaxId extends SimpleValueObject {
 
-    public static final TaxId Unknown = new TaxId("Unknown");
+    public static final TaxId Unknown = new TaxId("");
     
     public TaxId(String value) {
         super(value);

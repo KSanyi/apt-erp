@@ -25,6 +25,7 @@ public interface FormFieldFactory {
 		if(required) {
 			textField.setRequiredError(caption + " is required");
 		}
+		textField.addStyleName(ValoTheme.TEXTFIELD_SMALL);
 		return textField;
 	}
 	
@@ -43,18 +44,24 @@ public interface FormFieldFactory {
 	}
 	
 	static Button createFormButton(String caption, Resource icon, String style, ClickListener listener){
-		Button button = new Button(caption, icon);
+		Button button = createFormButton(caption, icon, style);
 		button.addClickListener(listener);
+		return button;
+	}
+	
+	static Button createFormButton(String caption, Resource icon, String style){
+		Button button = new Button(caption, icon);
 		button.addStyleName(style);
 		button.addStyleName(ValoTheme.BUTTON_SMALL);
 		return button;
 	}
 	
 	static ComboBox createComboBox(String caption, Collection<?> items) {
-	    ComboBox combo = new ComboBox("Domain", items);
+	    ComboBox combo = new ComboBox(caption, items);
 	    combo.setNullSelectionAllowed(false);
 	    combo.setWidth("140px");
 	    combo.setBuffered(true);
+	    combo.addStyleName(ValoTheme.COMBOBOX_SMALL);
 	    return combo;
 	}
 	

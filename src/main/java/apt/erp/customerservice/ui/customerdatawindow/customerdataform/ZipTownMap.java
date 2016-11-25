@@ -1,4 +1,4 @@
-package apt.erp.customerservice.web.customerform;
+package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

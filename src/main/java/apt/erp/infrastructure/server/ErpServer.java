@@ -28,7 +28,7 @@ public class ErpServer extends Server {
 		ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		servletContextHandler.setClassLoader(Thread.currentThread().getContextClassLoader());
 		servletContextHandler.addServlet(createServletHolder(applicationService), "/*");
-		servletContextHandler.getSessionHandler().getSessionManager().setMaxInactiveInterval(300); // no timeout 
+		servletContextHandler.getSessionHandler().getSessionManager().setMaxInactiveInterval(60 * 60); // no timeout 
 		return servletContextHandler;
 	}
 	

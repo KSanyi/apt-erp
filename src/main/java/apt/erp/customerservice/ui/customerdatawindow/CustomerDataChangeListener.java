@@ -1,4 +1,4 @@
-package apt.erp.customerservice.web.customerform;
+package apt.erp.customerservice.ui.customerdatawindow;
 
 import apt.erp.customerservice.domain.CustomerData;
 
