@@ -1,6 +1,7 @@
 package apt.erp.infrastructure;
 
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
@@ -12,8 +13,13 @@ import java.util.Map;
 public class ResourceFileLoader {
 
 	public static Path loadPath(String fileName) {
+
+		URL resource = ClassLoader.getSystemResource(fileName);
+		if(resource == null) {
+			throw new RuntimeException("Resource " + fileName + " can not be found");
+		}
 		try {
-			URI uri = ClassLoader.getSystemResource(fileName).toURI();
+			URI uri = resource.toURI();
 			
 			boolean isInJar = uri.toString().contains("!");
 			if(isInJar) {

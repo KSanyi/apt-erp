@@ -1,5 +1,5 @@
-Kossuth Lajos 5
-Petőfi Sándor 5
+Kossuth Lajos#5
+Petőfi Sándor#5
 Erzsébet
 Párizsi
 Vadvirág

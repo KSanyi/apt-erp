@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import apt.erp.common.demo.RandomWordPicker;
 import apt.erp.customerservice.domain.Address;
@@ -20,6 +21,7 @@ import apt.erp.projectservice.domain.Language;
 
 public class DemoCustomerFactory {
 
+	private final RandomWordPicker companyNamePicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Companies.txt"));
 	private final RandomWordPicker lastNamePicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/LastNames.txt"));
 	private final RandomWordPicker firstNamePicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/FirstNames.txt"));
 	private final RandomWordPicker townPicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Towns.txt"));
@@ -29,7 +31,7 @@ public class DemoCustomerFactory {
 	
 	public CustomerData createRandomCustomerData() {
 		
-		Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
+		Name name = new Name(companyNamePicker.pickRandomWord());
 		Address address = generateAddress();
 		boolean invoiceAddressIsTheSame = random.nextInt(10) > 0;
 		Optional<Address> invoiceAddress = invoiceAddressIsTheSame ? Optional.empty() : Optional.of(generateAddress());
@@ -101,11 +103,11 @@ public class DemoCustomerFactory {
 	
 	private TaxId generateTaxId() {
         StringBuilder stringBuilder = new StringBuilder();
+        IntStream.range(0, 8).forEach(i -> stringBuilder.append(createRandomDigit()));
         stringBuilder
-        .append(createRandomChar())
-        .append(createRandomChar())
-        .append(createRandomChar())
+        .append("-")
         .append(createRandomDigit())
+        .append("-")
         .append(createRandomDigit())
         .append(createRandomDigit());
         

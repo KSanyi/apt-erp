@@ -6,7 +6,7 @@ import com.vaadin.data.validator.RegexpValidator;
 class HungarianNameValidator extends RegexpValidator {
 
 	public HungarianNameValidator(String errorMessage) {
-		super("[a-zA-ZáÁéÉőŐúÚűŰóÓöÖüÜíÍ\\- ]{2,}", errorMessage);
+		super("[a-zA-ZáÁéÉőŐúÚűŰóÓöÖüÜíÍ\\-\\.\\+ ]{2,}", errorMessage);
 	}
 
 }

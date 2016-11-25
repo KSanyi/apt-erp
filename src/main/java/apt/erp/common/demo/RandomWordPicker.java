@@ -24,7 +24,7 @@ public class RandomWordPicker {
 		
 		Map<String, Integer> entries = new HashMap<>();		
 		for(String line : lines) {
-			String [] parts = line.split(" ");
+			String [] parts = line.split("#");
 			String word = parts[0];
 			try {
 				Integer frequency = Integer.parseInt(parts[1]);
