@@ -29,14 +29,16 @@ public class CustomerDataForm extends VerticalLayout {
 	private final TextField taxIdField = FormFieldFactory.createFormTextField("Tax Id", 200, false);
 	private final ComboBox domainCombo = FormFieldFactory.createComboBox("Domain", Domain.all);
 	private final ComboBox languageCombo = FormFieldFactory.createComboBox("Language", Language.all);
-	private final AddressTabSheet adressTabsheet;
+	private final AddressTabSheet adressTabSheet;
+	private final ContactsTabSheet contactsTabSheet;
 	private final TextArea commentField = new TextArea("Comments");
 	
 	private final List<Field<?>> dataFields = Arrays.asList(nameField, taxIdField, domainCombo, languageCombo, commentField);
 	
 	public CustomerDataForm(CustomerData customerData, ZipTownMap zipTownMap) {
 		this.customerData = customerData;
-		adressTabsheet = new AddressTabSheet(customerData.address, customerData.invoiceAddress, zipTownMap);
+		adressTabSheet = new AddressTabSheet(customerData.address, customerData.invoiceAddress, zipTownMap);
+		contactsTabSheet = new ContactsTabSheet(customerData.contacts());
 		createLayout();
 		
 		bindData(customerData);
@@ -62,20 +64,20 @@ public class CustomerDataForm extends VerticalLayout {
 		
 		LayoutFactory.createHorizontalLayout(domainCombo, languageCombo);
 		
-		addComponents(nameField, taxIdField, LayoutFactory.createHorizontalLayout(domainCombo, languageCombo), adressTabsheet, commentField);
+		addComponents(nameField, taxIdField, LayoutFactory.createHorizontalLayout(domainCombo, languageCombo), adressTabSheet, contactsTabSheet, commentField);
 	}
 	
 	public boolean isDataModified() {
-		return dataFields.stream().anyMatch(Field::isModified) || adressTabsheet.isDataModified();
+		return dataFields.stream().anyMatch(Field::isModified) || adressTabSheet.isDataModified() || contactsTabSheet.isDataModified();
 	}
 	
 	public boolean isDataValid() {
-		return dataFields.stream().allMatch(Field::isValid) && adressTabsheet.isValid();
+		return dataFields.stream().allMatch(Field::isValid) && adressTabSheet.isValid() && contactsTabSheet.isValid();
 	}
 
 	public CustomerData getCustomerData() {
 		return customerData.updated(new TaxId(taxIdField.getValue()), new Name(nameField.getValue()),
-				adressTabsheet.getAddress(), adressTabsheet.getInvoiceAddress(), commentField.getValue(), (Domain) domainCombo.getValue(),
+				adressTabSheet.getAddress(), adressTabSheet.getInvoiceAddress(), commentField.getValue(), (Domain) domainCombo.getValue(),
 				(Language) languageCombo.getValue(), Collections.emptyList());
 
 	}

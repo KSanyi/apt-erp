@@ -38,14 +38,6 @@ public class AddressForm extends VerticalLayout {
 		createLayout();
 	}
 	
-	private void createLayout() {
-		setSpacing(true);
-		setMargin(true);
-		HorizontalLayout firstRow = LayoutFactory.createHorizontalLayout(zipField, townField);
-		HorizontalLayout secondRow = LayoutFactory.createHorizontalLayout(streetField, houseNumberField);
-		addComponents(firstRow, secondRow);
-	}
-	
 	private void bindData(Address address) {
 		if(address != null) {
 			zipField.setPropertyDataSource(new ObjectProperty<String>(address.zip));
@@ -74,6 +66,14 @@ public class AddressForm extends VerticalLayout {
 	
 	Address getAddress() {
 		return new Address(zipField.getValue(), townField.getValue(), streetField.getValue(), houseNumberField.getValue());
+	}
+	
+	private void createLayout() {
+		setSpacing(true);
+		setMargin(true);
+		HorizontalLayout firstRow = LayoutFactory.createHorizontalLayout(zipField, townField);
+		HorizontalLayout secondRow = LayoutFactory.createHorizontalLayout(streetField, houseNumberField);
+		addComponents(firstRow, secondRow);
 	}
 	
 }

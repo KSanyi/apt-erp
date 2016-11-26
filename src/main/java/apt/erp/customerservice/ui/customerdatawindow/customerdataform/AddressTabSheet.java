@@ -19,7 +19,7 @@ public class AddressTabSheet extends VerticalLayout {
 	private final AddressForm invoiceAddressForm;
 	private final CheckBox invoiceAddressIsTheSameCheck = new CheckBox("Invoice address is the same");;
 	
-	private final TabSheet addressTabsheet = new TabSheet();
+	private final TabSheet tabSheet = new TabSheet();
 	
 	public AddressTabSheet(Address address, Optional<Address> invoiceAddress, ZipTownMap zipTownMap) {
 
@@ -27,10 +27,9 @@ public class AddressTabSheet extends VerticalLayout {
 		addressForm = new AddressForm("Address", address, zipTownMap);
 		invoiceAddressForm = new AddressForm("Invoice address", invoiceAddress.orElse(null), zipTownMap);
 		
-		addressTabsheet.addTab(addressForm, "Address", FontAwesome.ENVELOPE);
-		addressTabsheet.addStyleName(ValoTheme.TABSHEET_FRAMED);
+		tabSheet.addTab(addressForm, "Address", FontAwesome.ENVELOPE);
 		if(!invoiceAddressIsTheSame) {
-			addressTabsheet.addTab(invoiceAddressForm, "Invoice Address", FontAwesome.MONEY);
+			tabSheet.addTab(invoiceAddressForm, "Invoice Address", FontAwesome.MONEY);
 		}
 		
 		createLayout();
@@ -39,17 +38,19 @@ public class AddressTabSheet extends VerticalLayout {
 		invoiceAddressIsTheSameCheck.addValueChangeListener(e -> {
 			boolean same = (boolean)e.getProperty().getValue();
 			if(same) {
-				addressTabsheet.removeTab(addressTabsheet.getTab(1));
+				tabSheet.removeTab(tabSheet.getTab(1));
 			} else {
-				addressTabsheet.addTab(invoiceAddressForm, "Invoice Address", FontAwesome.MONEY);
-				addressTabsheet.setSelectedTab(1);
+				tabSheet.addTab(invoiceAddressForm, "Invoice Address", FontAwesome.MONEY);
+				tabSheet.setSelectedTab(1);
 			}
 		});
 	}
 	
 	private void createLayout() {
 		setSpacing(true);
-		addComponents(addressTabsheet, invoiceAddressIsTheSameCheck);
+		tabSheet.addStyleName(ValoTheme.TABSHEET_FRAMED);
+		tabSheet.addStyleName(ValoTheme.TABSHEET_COMPACT_TABBAR);
+		addComponents(tabSheet, invoiceAddressIsTheSameCheck);
 	}
 	
 	public Address getAddress() {

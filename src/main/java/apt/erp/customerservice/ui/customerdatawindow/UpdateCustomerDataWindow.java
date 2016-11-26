@@ -26,8 +26,8 @@ public class UpdateCustomerDataWindow extends Window {
 	
 	private final CustomerDataForm customerDataForm;
 	
-	private final Button updateButton = FormFieldFactory.createFormButton("Update", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, event -> updateCustomerData());
-	private final Button deleteButton = FormFieldFactory.createFormButton("Delete", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, event -> deleteCustomerData());
+	private final Button updateButton = FormFieldFactory.createFormButton("Update", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> updateCustomerData());
+	private final Button deleteButton = FormFieldFactory.createFormButton("Delete", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, click -> deleteCustomerData());
 	
 	private final List<CustomerDataChangeListener> customerDataChangeListeners = new ArrayList<>();
 	

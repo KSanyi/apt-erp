@@ -23,7 +23,7 @@ public class CreateCustomerDataWindow extends Window {
 	
 	private final CustomerDataForm customerDataForm;
 	
-	private final Button saveButton = FormFieldFactory.createFormButton("Create", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, event -> createCustomerData());
+	private final Button saveButton = FormFieldFactory.createFormButton("Create", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> createCustomerData());
 	
 	private final List<CustomerDataChangeListener> customerDataChangeListeners = new ArrayList<>();
 	
