@@ -25,19 +25,15 @@ class ContactsTabSheet extends VerticalLayout implements CloseHandler {
 	
 	private final TabSheet tabSheet = new TabSheet();
 	
-	private final Button addTabButton = FormFieldFactory.createFormButton("Add contact", FontAwesome.PLUS, ValoTheme.BUTTON_TINY, click -> addTab());
+	private final Button addTabButton = FormFieldFactory.createFormButton("Add contact", FontAwesome.PLUS, ValoTheme.BUTTON_LINK, click -> createNewContact());
 	
 	ContactsTabSheet(List<Contact> contacts) {
 		this.contacts = contacts;
 		
 		tabSheet.setCloseHandler(this);
 		for(int i=0;i<contacts.size();i++) {
-			ContactForm contactForm = new ContactForm(contacts.get(i));
-			contactForms.add(contactForm);
-			Tab tab = tabSheet.addTab(contactForm, "Contact " + (i+1));
-			tab.setClosable(true);
+		    addTab(contacts.get(i));
 		}
-		
 		
 		createLayout();
 	}
@@ -55,14 +51,23 @@ class ContactsTabSheet extends VerticalLayout implements CloseHandler {
 	}
 	
 	private void createLayout() {
-		setSpacing(true);
 		tabSheet.addStyleName(ValoTheme.TABSHEET_FRAMED);
 		tabSheet.addStyleName(ValoTheme.TABSHEET_COMPACT_TABBAR);
-		addComponents(tabSheet, addTabButton);
+		addComponents(addTabButton, tabSheet);
 	}
 
-	private void addTab() {
-		
+	private void createNewContact() {
+	    Contact newContact = Contact.createEmpty();
+        Tab newTab = addTab(newContact);
+        tabSheet.setSelectedTab(newTab);
+	}
+	
+	private Tab addTab(Contact contact) {
+	    ContactForm contactForm = new ContactForm(contact);
+	    contactForms.add(contactForm);
+	    Tab tab = tabSheet.addTab(contactForm, "Contact " + contactForms.size());
+        tab.setClosable(true);
+        return tab;
 	}
 	
 	@Override

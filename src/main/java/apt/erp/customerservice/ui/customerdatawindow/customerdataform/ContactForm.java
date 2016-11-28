@@ -52,6 +52,8 @@ class ContactForm extends VerticalLayout {
 		setSpacing(true);
 		setMargin(true);
 		addComponents(nameField, phoneField, emailField);
+		nameField.setSizeFull();
+		setSizeFull();
 	}
 	
 }

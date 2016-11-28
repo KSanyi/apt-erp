@@ -19,6 +19,7 @@ public class CustomersWindow extends Window {
 	public CustomersWindow(CustomerService customerService, ZipTownMap zipTownMap) {
 		super("Customers");
 		center();
+		setWidth("400px");
 		
 		CustomersTable customersTable = new CustomersTable(customerService, zipTownMap);
 

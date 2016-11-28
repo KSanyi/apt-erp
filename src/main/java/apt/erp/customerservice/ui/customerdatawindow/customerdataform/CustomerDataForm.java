@@ -1,16 +1,15 @@
 package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
@@ -21,7 +20,7 @@ import apt.erp.customerservice.domain.TaxId;
 import apt.erp.projectservice.domain.Language;
 
 @SuppressWarnings("serial")
-public class CustomerDataForm extends VerticalLayout {
+public class CustomerDataForm extends GridLayout {
 
 	private final CustomerData customerData;
 	
@@ -51,6 +50,7 @@ public class CustomerDataForm extends VerticalLayout {
 		domainCombo.setPropertyDataSource(new ObjectProperty<Domain>(customerData.mainDomain));
 		languageCombo.setPropertyDataSource(new ObjectProperty<Language>(customerData.mainLanguage));
 		commentField.setPropertyDataSource(new ObjectProperty<String>(customerData.comment));
+		commentField.setBuffered(true);
 	}
 	
 	private void createValidators() {
@@ -58,17 +58,22 @@ public class CustomerDataForm extends VerticalLayout {
 	}
 	
 	private void createLayout() {
-		setSpacing(true);
+	    setSpacing(true);
 		
+		setColumns(2);
+		setRows(2);
+		
+		addComponent(LayoutFactory.createVerticalLayoutWithNoMargin(nameField, taxIdField, LayoutFactory.createHorizontalLayout(domainCombo, languageCombo)));
+		addComponent(contactsTabSheet);
+		addComponent(adressTabSheet);
+		addComponent(commentField);
+		nameField.setSizeFull();
 		commentField.setSizeFull();
-		
-		LayoutFactory.createHorizontalLayout(domainCombo, languageCombo);
-		
-		addComponents(nameField, taxIdField, LayoutFactory.createHorizontalLayout(domainCombo, languageCombo), adressTabSheet, contactsTabSheet, commentField);
+		setSizeFull();
 	}
 	
 	public boolean isDataModified() {
-		return dataFields.stream().anyMatch(Field::isModified) || adressTabSheet.isDataModified() || contactsTabSheet.isDataModified();
+		return dataFields.stream().anyMatch(Field::isModified) || adressTabSheet.isDataModified() || contactsTabSheet.isDataModified() || commentField.isModified();
 	}
 	
 	public boolean isDataValid() {
@@ -78,7 +83,7 @@ public class CustomerDataForm extends VerticalLayout {
 	public CustomerData getCustomerData() {
 		return customerData.updated(new TaxId(taxIdField.getValue()), new Name(nameField.getValue()),
 				adressTabSheet.getAddress(), adressTabSheet.getInvoiceAddress(), commentField.getValue(), (Domain) domainCombo.getValue(),
-				(Language) languageCombo.getValue(), Collections.emptyList());
+				(Language) languageCombo.getValue(), contactsTabSheet.getContacts());
 
 	}
 }

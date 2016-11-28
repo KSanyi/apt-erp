@@ -51,6 +51,7 @@ public class AddressTabSheet extends VerticalLayout {
 		tabSheet.addStyleName(ValoTheme.TABSHEET_FRAMED);
 		tabSheet.addStyleName(ValoTheme.TABSHEET_COMPACT_TABBAR);
 		addComponents(tabSheet, invoiceAddressIsTheSameCheck);
+		setSizeFull();
 	}
 	
 	public Address getAddress() {

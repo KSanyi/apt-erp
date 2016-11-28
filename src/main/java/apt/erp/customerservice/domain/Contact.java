@@ -16,5 +16,9 @@ public class Contact {
     public String toString() {
         return "Name: " + name + " phone: " + phoneNumber + " email: " + emailAddress;
     }
+
+    public static Contact createEmpty() {
+        return new Contact(Name.createEmptyName(), PhoneNumber.createEmptyPhoneNumber(), EmailAddress.createEmptyEmailAddress());
+    }
     
 }

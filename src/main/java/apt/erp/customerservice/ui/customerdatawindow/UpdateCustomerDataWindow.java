@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -70,7 +72,10 @@ public class UpdateCustomerDataWindow extends Window {
 	
 	private void createLayout() {
 		HorizontalLayout buttonsLayout = LayoutFactory.createHorizontalLayout(updateButton, deleteButton);
-		setContent(LayoutFactory.createCenteredVerticalLayout(customerDataForm, buttonsLayout));
+		VerticalLayout layout = LayoutFactory.createCenteredVerticalLayout(customerDataForm, buttonsLayout);
+		layout.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+		setContent(layout);
+		setWidth("700px");
 	}
 	
 	public void addCustomerChangeListener(CustomerDataChangeListener customerDataChangeListener) {

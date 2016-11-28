@@ -71,9 +71,13 @@ public class AddressForm extends VerticalLayout {
 	private void createLayout() {
 		setSpacing(true);
 		setMargin(true);
-		HorizontalLayout firstRow = LayoutFactory.createHorizontalLayout(zipField, townField);
-		HorizontalLayout secondRow = LayoutFactory.createHorizontalLayout(streetField, houseNumberField);
-		addComponents(firstRow, secondRow);
+		HorizontalLayout row1 = LayoutFactory.createHorizontalLayout(zipField, townField);
+		HorizontalLayout row2 = LayoutFactory.createHorizontalLayout(streetField, houseNumberField);
+		addComponents(row1, row2);
+		row2.setSizeFull();
+		townField.setSizeFull();
+		streetField.setSizeFull();
+		setSizeFull();
 	}
 	
 }

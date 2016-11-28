@@ -20,9 +20,8 @@ public interface LayoutFactory {
 	}
 	
 	static VerticalLayout createCenteredVerticalLayoutWithNoSpacingNoMargin(Component ... components){
-		VerticalLayout layout = new VerticalLayout();
+		VerticalLayout layout = new VerticalLayout(components);
 		layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		layout.addComponents(components);
 		return layout;
 	}
 	
@@ -32,10 +31,15 @@ public interface LayoutFactory {
 		return layout;
 	}
 	
+	static VerticalLayout createVerticalLayoutWithNoMargin(Component ... components){
+        VerticalLayout layout = new VerticalLayout(components);
+        layout.setSpacing(true);
+        return layout;
+    }
+	
 	static VerticalLayout createVerticalLayoutWithNoSpacing(Component ... components){
-		VerticalLayout layout = new VerticalLayout();
+		VerticalLayout layout = new VerticalLayout(components);
 		layout.setMargin(true);
-		layout.addComponents(components);
 		return layout;
 	}
 	
