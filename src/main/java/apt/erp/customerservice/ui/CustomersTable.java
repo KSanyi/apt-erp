@@ -26,7 +26,7 @@ class CustomersTable extends Table {
 		refresh();
 
 		addStyleName(ValoTheme.TABLE_SMALL);
-		setPageLength(12);
+		setSizeFull();
 		setSelectable(true);
 
 		addItemClickListener(event -> {

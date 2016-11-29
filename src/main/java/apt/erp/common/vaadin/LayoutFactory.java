@@ -20,8 +20,9 @@ public interface LayoutFactory {
 	}
 	
 	static VerticalLayout createCenteredVerticalLayoutWithNoSpacingNoMargin(Component ... components){
-		VerticalLayout layout = new VerticalLayout(components);
+		VerticalLayout layout = new VerticalLayout();
 		layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		layout.addComponents(components);
 		return layout;
 	}
 	

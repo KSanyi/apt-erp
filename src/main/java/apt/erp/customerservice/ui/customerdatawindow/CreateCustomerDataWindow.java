@@ -33,7 +33,8 @@ public class CreateCustomerDataWindow extends Window {
 		
 		customerDataForm = new CustomerDataForm(CustomerData.createEmpty(), zipTownMap);
 		setContent(LayoutFactory.createCenteredVerticalLayout(customerDataForm, saveButton));
-		
+		setWidth("700px");
+		setHeight("600px");
 		center();
 	}
 	

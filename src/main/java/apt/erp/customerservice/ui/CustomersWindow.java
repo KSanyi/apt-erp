@@ -1,9 +1,11 @@
 package apt.erp.customerservice.ui;
 
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -19,7 +21,7 @@ public class CustomersWindow extends Window {
 	public CustomersWindow(CustomerService customerService, ZipTownMap zipTownMap) {
 		super("Customers");
 		center();
-		setWidth("400px");
+		setWidth("500px");
 		
 		CustomersTable customersTable = new CustomersTable(customerService, zipTownMap);
 
@@ -34,7 +36,11 @@ public class CustomersWindow extends Window {
 			UI.getCurrent().addWindow(createCustomerDataWindow);
 		});
 		
-		setContent(LayoutFactory.createCenteredVerticalLayout(filter, customersTable, addButton));
+		VerticalLayout layout = LayoutFactory.createCenteredVerticalLayout(filter, customersTable, addButton);
+		layout.setComponentAlignment(filter, Alignment.TOP_CENTER);
+		layout.setComponentAlignment(addButton, Alignment.BOTTOM_CENTER);
+		//layout.setSizeFull();
+		setContent(layout);
 	}
 	
 }
