@@ -54,4 +54,9 @@ public class DemoCustomerRepository implements CustomerDataRepository {
 		return customerDatas.stream().filter(c -> c.customerId.equals(customerId)).findAny().isPresent();
 	}
 	
+	@Override
+	public String toString() {
+		return "DemoCustomerRepository with " + customerDatas.size() + " customers";
+	}
+	
 }
