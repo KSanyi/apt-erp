@@ -1,14 +1,14 @@
-package apt.erp.customerservice.domain;
+package apt.erp.translatorservice.domain;
 
 import static apt.erp.common.basic.StringUtil.containsIgnoreCase;
 
 import apt.erp.common.domain.SimpleValueObject;
 
-public class CustomerId extends SimpleValueObject {
+public class TranslatorId extends SimpleValueObject {
 
-    public static CustomerId newId = new CustomerId("New customer");
+    public static TranslatorId newId = new TranslatorId("New translator");
     
-	public CustomerId(String value) {
+	public TranslatorId(String value) {
 		super(value);
 	}
 	

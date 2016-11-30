@@ -43,5 +43,9 @@ public class ErpUI extends UI {
 	public void openCustomersListWindow() {
 		addWindow(applicationService.customerService.getCustomersWindow());
 	}
+
+    public void openTranslatorsListWindow() {
+        addWindow(applicationService.translatorService.getTranslatorsWindow());
+    }
 	
 }

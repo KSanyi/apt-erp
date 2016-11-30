@@ -16,9 +16,10 @@ public class Menu extends MenuBar {
 	    setStyleName(ValoTheme.MENUBAR_SMALL);
 		setSizeFull();
 		
-		MenuItem customersMenuItem = addItem("Customers", null);
+		MenuItem customersMenuItem = addItem("Core data", null);
 		
-		customersMenuItem.addItem("Customers List", new LoggerCommand(c -> ErpUI.getCurrent().openCustomersListWindow()));
+		customersMenuItem.addItem("Customers", new LoggerCommand(c -> ErpUI.getCurrent().openCustomersListWindow()));
+		customersMenuItem.addItem("Translators", new LoggerCommand(c -> ErpUI.getCurrent().openTranslatorsListWindow()));
 		
 	}
 	

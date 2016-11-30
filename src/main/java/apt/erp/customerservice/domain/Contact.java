@@ -1,5 +1,9 @@
 package apt.erp.customerservice.domain;
 
+import apt.erp.common.domain.EmailAddress;
+import apt.erp.common.domain.Name;
+import apt.erp.common.domain.PhoneNumber;
+
 public class Contact {
 
     public final Name name;

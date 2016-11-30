@@ -5,7 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import apt.erp.common.IdGenerator;
+import apt.erp.common.domain.ValidationError;
+import apt.erp.common.domain.IdGenerator;
 
 public class CustomerService {
 
@@ -34,14 +35,14 @@ public class CustomerService {
 				return customerId;
 			}
 		}
-		throw new CustomerServiceException("Could not generate unique customer id");
+		throw new ValidationError("Could not generate unique customer id");
 	}
 	
 	private void validateCustomerData(CustomerData customerData) {
 		
 		boolean nonUniqueTaxId = customerRepository.loadAllCustomerDatas().stream().anyMatch(c -> !c.equals(customerData) && c.taxId.equals(customerData.taxId));
 		if(nonUniqueTaxId) {
-			throw new CustomerServiceException("Tax Id already exists");
+			throw new ValidationError("Tax Id already exists");
 		}
 	}
 	

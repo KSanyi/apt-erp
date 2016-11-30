@@ -8,11 +8,11 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import apt.erp.common.domain.EmailAddress;
+import apt.erp.common.domain.Name;
+import apt.erp.common.domain.PhoneNumber;
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.customerservice.domain.Contact;
-import apt.erp.customerservice.domain.EmailAddress;
-import apt.erp.customerservice.domain.Name;
-import apt.erp.customerservice.domain.PhoneNumber;
 
 @SuppressWarnings("serial")
 class ContactForm extends VerticalLayout {

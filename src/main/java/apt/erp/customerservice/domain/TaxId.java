@@ -1,6 +1,6 @@
 package apt.erp.customerservice.domain;
 
-import apt.erp.common.SimpleValueObject;
+import apt.erp.common.domain.SimpleValueObject;
 
 public class TaxId extends SimpleValueObject {
 

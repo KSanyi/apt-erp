@@ -7,14 +7,14 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import apt.erp.common.demo.RandomWordPicker;
+import apt.erp.common.domain.EmailAddress;
+import apt.erp.common.domain.IdGenerator;
+import apt.erp.common.domain.Name;
+import apt.erp.common.domain.PhoneNumber;
 import apt.erp.customerservice.domain.Address;
 import apt.erp.customerservice.domain.Contact;
 import apt.erp.customerservice.domain.CustomerData;
-import apt.erp.customerservice.domain.CustomerId;
 import apt.erp.customerservice.domain.Domain;
-import apt.erp.customerservice.domain.EmailAddress;
-import apt.erp.customerservice.domain.Name;
-import apt.erp.customerservice.domain.PhoneNumber;
 import apt.erp.customerservice.domain.TaxId;
 import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
@@ -41,7 +41,7 @@ public class DemoCustomerFactory {
 		Domain customerDomain = generateCustomerDomain();
 		Language customerLanguage = generateCustomerLanguage();
 		
-		return new CustomerData(generateCustomerId(), generateTaxId(), name, address, invoiceAddress, comment, customerDomain, customerLanguage, customerContacts);
+		return new CustomerData(IdGenerator.generateCustomerId(), generateTaxId(), name, address, invoiceAddress, comment, customerDomain, customerLanguage, customerContacts);
 	}
 	
 	private List<Contact> generateCustomerContacts() {
@@ -88,19 +88,6 @@ public class DemoCustomerFactory {
         return Language.all.get(random.nextInt(Language.all.size()));
     }
 	
-	private CustomerId generateCustomerId() {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder
-		.append(createRandomChar())
-		.append(createRandomChar())
-		.append(createRandomChar())
-		.append(createRandomDigit())
-		.append(createRandomDigit())
-		.append(createRandomDigit());
-		
-		return new CustomerId(stringBuilder.toString());
-	}
-	
 	private TaxId generateTaxId() {
         StringBuilder stringBuilder = new StringBuilder();
         IntStream.range(0, 8).forEach(i -> stringBuilder.append(createRandomDigit()));
@@ -122,10 +109,6 @@ public class DemoCustomerFactory {
 		String street = streetPicker.pickRandomWord() + " " + streetTypes[random.nextInt(3)];
 		String number = String.valueOf(random.nextInt(100));
 		return new Address(zip, town, street, number);	
-	}
-	
-	private char createRandomChar() {
-		return (char)('A' + random.nextInt(26));
 	}
 	
 	private int createRandomDigit() {

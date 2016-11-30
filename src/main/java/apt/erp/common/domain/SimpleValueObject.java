@@ -1,4 +1,4 @@
-package apt.erp.common;
+package apt.erp.common.domain;
 
 public abstract class SimpleValueObject {
 

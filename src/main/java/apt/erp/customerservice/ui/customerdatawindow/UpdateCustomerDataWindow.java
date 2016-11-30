@@ -11,11 +11,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+import apt.erp.common.domain.ValidationError;
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
-import apt.erp.customerservice.domain.CustomerServiceException;
 import apt.erp.customerservice.ui.customerdatawindow.customerdataform.CustomerDataForm;
 import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap;
 
@@ -51,7 +51,7 @@ public class UpdateCustomerDataWindow extends Window {
 					Notification.show("Customer has been updated");
 					notifyCustomerChangeListeners();
 					this.close();
-				} catch (CustomerServiceException ex) {
+				} catch (ValidationError ex) {
 					Notification.show("Validation error: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
 				}
 			} else {

@@ -1,8 +1,9 @@
-package apt.erp.common;
+package apt.erp.common.domain;
 
 import java.util.Random;
 
 import apt.erp.customerservice.domain.CustomerId;
+import apt.erp.translatorservice.domain.TranslatorId;
 
 public class IdGenerator {
 
@@ -16,14 +17,6 @@ public class IdGenerator {
 		return new CustomerId(stringBuilder.toString());
 	}
 	
-	public static String generateProductCategoryId() {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("PC").append(createRandomChar())
-				.append(createRandomDigit()).append(createRandomDigit()).append(createRandomDigit());
-
-		return stringBuilder.toString();
-	}
-
 	private static char createRandomChar() {
 		return (char) ('A' + random.nextInt(26));
 	}
@@ -31,5 +24,13 @@ public class IdGenerator {
 	private static int createRandomDigit() {
 		return random.nextInt(10);
 	}
+
+    public static TranslatorId generateTranslatorId() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("T").append(createRandomChar()).append(createRandomChar())
+                .append(createRandomDigit()).append(createRandomDigit()).append(createRandomDigit());
+
+        return new TranslatorId(stringBuilder.toString());
+    }
 
 }

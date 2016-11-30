@@ -1,12 +1,10 @@
-package apt.erp.customerservice.domain;
+package apt.erp.common.domain;
 
 import static apt.erp.common.basic.StringUtil.containsIgnoreCase;
 
-import apt.erp.common.SimpleValueObject;
-
 public class EmailAddress extends SimpleValueObject {
 
-	static EmailAddress createEmptyEmailAddress() {
+    public static EmailAddress createEmptyEmailAddress() {
 		return new EmailAddress("");
 	}
 	

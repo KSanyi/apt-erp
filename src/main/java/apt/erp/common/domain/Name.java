@@ -1,10 +1,8 @@
-package apt.erp.customerservice.domain;
-
-import apt.erp.common.SimpleValueObject;
+package apt.erp.common.domain;
 
 public class Name extends SimpleValueObject {
 
-	static Name createEmptyName() {
+	public static Name createEmptyName() {
 		return new Name("");
 	}
 	

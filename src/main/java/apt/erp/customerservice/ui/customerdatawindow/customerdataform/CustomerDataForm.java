@@ -11,11 +11,11 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
+import apt.erp.common.domain.Name;
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.Domain;
-import apt.erp.customerservice.domain.Name;
 import apt.erp.customerservice.domain.TaxId;
 import apt.erp.projectservice.domain.Language;
 
@@ -70,6 +70,7 @@ public class CustomerDataForm extends GridLayout {
 		nameField.setSizeFull();
 		commentField.setSizeFull();
 		setSizeFull();
+		nameField.focus();
 	}
 	
 	public boolean isDataModified() {

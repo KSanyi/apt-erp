@@ -17,8 +17,7 @@ public enum Language  {
     Finnish,
     Russian,
     Hungarian,
-    Japanese,
-    Other;
+    Japanese;
     
     public static List<Language> all = Arrays.asList(values());
     

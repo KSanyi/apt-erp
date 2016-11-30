@@ -4,13 +4,18 @@ import apt.erp.customerservice.application.DemoCustomerRepository;
 import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap;
 import apt.erp.infrastructure.server.ApplicationService;
 import apt.erp.infrastructure.server.ErpServer;
+import apt.erp.translatorservice.application.DemoTranslatorRepository;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 
 	    int port = getPort();
-	    ApplicationService applicationService = new ApplicationService(new DemoCustomerRepository(100), new ZipTownMap());
+	    
+	    ApplicationService applicationService = new ApplicationService(
+	            new DemoCustomerRepository(100), 
+	            new DemoTranslatorRepository(20),
+	            new ZipTownMap());
 
         new ErpServer(port, applicationService).startServer();
 	}

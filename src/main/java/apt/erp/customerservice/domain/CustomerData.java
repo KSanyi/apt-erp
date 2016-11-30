@@ -1,17 +1,19 @@
 package apt.erp.customerservice.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import apt.erp.common.domain.Name;
 import apt.erp.projectservice.domain.Language;
 
 public class CustomerData {
 
 	public static CustomerData createEmpty() {
 		return createNew(TaxId.Unknown, Name.createEmptyName(), Address.createEmptyAddress(), Optional.empty(), "",
-		        Domain.Other, Language.Other, Collections.emptyList());
+		        Domain.Other, Language.English, Collections.emptyList());
 	}
 	
 	public static CustomerData createNew(TaxId taxId, Name name, Address address, Optional<Address> invoiceAddress, String comment,
@@ -63,7 +65,7 @@ public class CustomerData {
 	}
 	
 	public List<Contact> contacts() {
-        return contacts;
+        return new ArrayList<>(contacts);
     }
 	
 	@Override

@@ -1,10 +1,8 @@
-package apt.erp.customerservice.domain;
-
-import apt.erp.common.SimpleValueObject;
+package apt.erp.common.domain;
 
 public class PhoneNumber extends SimpleValueObject {
 
-	static PhoneNumber createEmptyPhoneNumber() {
+    public static PhoneNumber createEmptyPhoneNumber() {
 		return new PhoneNumber("");
 	}
 	

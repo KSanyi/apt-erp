@@ -29,7 +29,9 @@ public class DemoCustomerRepository implements CustomerDataRepository {
 	}
 
 	public void saveCustomerData(CustomerId customerId, CustomerData customerData) {
-	    customerDatas.add(customerData);
+	    CustomerData newCustomerData = new CustomerData(customerId, customerData.taxId, customerData.name, customerData.address, customerData.invoiceAddress, 
+	            customerData.comment, customerData.mainDomain, customerData.mainLanguage, customerData.contacts());
+	    customerDatas.add(newCustomerData);
 	}
 
 	public void updateCustomerData(CustomerData customerData) {
