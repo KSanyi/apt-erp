@@ -19,13 +19,13 @@ import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap
 public class CustomersWindow extends Window {
 
 	public CustomersWindow(CustomerService customerService, ZipTownMap zipTownMap) {
-		super("Customers");
+		super("Ügyfelek");
 		center();
 		setWidth("500px");
 		
 		CustomersTable customersTable = new CustomersTable(customerService, zipTownMap);
 
-		TextField filter = new TextField("Filter");
+		TextField filter = new TextField("Szűrő");
 		filter.setStyleName(ValoTheme.TEXTFIELD_SMALL);
 		filter.addTextChangeListener(textChangeEvent -> customersTable.filter(textChangeEvent.getText()));
 		

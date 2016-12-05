@@ -23,7 +23,7 @@ public class Header extends HorizontalLayout implements Button.ClickListener {
 
 	private static Logger logger = LoggerFactory.getLogger(Header.class);
 
-	private final Button logoutButton = new Button("Log out", this);
+	private final Button logoutButton = new Button("Kijelentkezés", this);
 
 	private final ErpUI application = (ErpUI)UI.getCurrent();
 	
