@@ -17,8 +17,8 @@ import apt.erp.customerservice.domain.Contact;
 @SuppressWarnings("serial")
 class ContactForm extends VerticalLayout {
 
-	private final TextField nameField = FormFieldFactory.createFormTextField("Name", 200, true);
-	private final TextField phoneField = FormFieldFactory.createFormTextField("Phone", 200, false);
+	private final TextField nameField = FormFieldFactory.createFormTextField("Név", 200, true);
+	private final TextField phoneField = FormFieldFactory.createFormTextField("Telefon", 200, false);
 	private final TextField emailField = FormFieldFactory.createFormTextField("Email", 200, false);
 
 	private final List<Field<?>> dataFields = Arrays.asList(nameField, phoneField, emailField);

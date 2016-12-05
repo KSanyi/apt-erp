@@ -20,10 +20,10 @@ public class AddressForm extends VerticalLayout {
 
 	private final ZipTownMap zipTownMap;
 	
-	private final TextField zipField = FormFieldFactory.createFormTextField("Zip", 60, true);
-	private final TextField townField = FormFieldFactory.createFormTextField("Town", 200, true);
-	private final TextField streetField = FormFieldFactory.createFormTextField("Street", 200, true);
-	private final TextField houseNumberField = FormFieldFactory.createFormTextField("Number", 60, true);
+	private final TextField zipField = FormFieldFactory.createFormTextField("Irányítószám", 60, true);
+	private final TextField townField = FormFieldFactory.createFormTextField("Település", 200, true);
+	private final TextField streetField = FormFieldFactory.createFormTextField("Utca", 200, true);
+	private final TextField houseNumberField = FormFieldFactory.createFormTextField("Szám", 60, true);
 	
 	private final List<Field<?>> dataFields = Arrays.asList(zipField, townField, streetField, houseNumberField);
 	
@@ -48,12 +48,12 @@ public class AddressForm extends VerticalLayout {
 	}
 	
 	private void initZipField() {
-		zipField.addValidator(new RegexpValidator("\\d{4}", "Invalid zip code"));
+		zipField.addValidator(new RegexpValidator("\\d{4}", "Hibás irányítószám"));
 		zipField.addValueChangeListener(e -> townField.setValue(zipTownMap.getTown(e.getProperty().getValue().toString())));
 	}
 	
 	private void initTownField() {
-		townField.addValidator(new HungarianNameValidator("Invalid town name"));
+		townField.addValidator(new HungarianNameValidator("Hibás településnév"));
 	}
 
 	boolean isDataModified() {

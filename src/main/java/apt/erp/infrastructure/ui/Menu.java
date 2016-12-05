@@ -16,10 +16,10 @@ public class Menu extends MenuBar {
 	    setStyleName(ValoTheme.MENUBAR_SMALL);
 		setSizeFull();
 		
-		MenuItem customersMenuItem = addItem("Core data", null);
+		MenuItem customersMenuItem = addItem("Törzsadatok", null);
 		
-		customersMenuItem.addItem("Customers", new LoggerCommand(c -> ErpUI.getCurrent().openCustomersListWindow()));
-		customersMenuItem.addItem("Translators", new LoggerCommand(c -> ErpUI.getCurrent().openTranslatorsListWindow()));
+		customersMenuItem.addItem("Ügyfelek", new LoggerCommand(c -> ErpUI.getCurrent().openCustomersListWindow()));
+		customersMenuItem.addItem("Fordítók", new LoggerCommand(c -> ErpUI.getCurrent().openTranslatorsListWindow()));
 		
 	}
 	

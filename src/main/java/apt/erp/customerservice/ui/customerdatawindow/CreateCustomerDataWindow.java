@@ -23,13 +23,13 @@ public class CreateCustomerDataWindow extends Window {
 	
 	private final CustomerDataForm customerDataForm;
 	
-	private final Button saveButton = FormFieldFactory.createFormButton("Create", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> createCustomerData());
+	private final Button saveButton = FormFieldFactory.createFormButton("Mentés", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> createCustomerData());
 	
 	private final List<CustomerDataChangeListener> customerDataChangeListeners = new ArrayList<>();
 	
 	public CreateCustomerDataWindow(CustomerService customerService, ZipTownMap zipTownMap) {
 		this.customerService = customerService;
-		setCaption("New Customer");
+		setCaption("Új ügyfél");
 		
 		customerDataForm = new CustomerDataForm(CustomerData.createEmpty(), zipTownMap);
 		setContent(LayoutFactory.createCenteredVerticalLayout(customerDataForm, saveButton));
@@ -46,7 +46,7 @@ public class CreateCustomerDataWindow extends Window {
 			notifyCustomerChangeListeners(customerData);
 			this.close();
 		} else {
-			Notification.show("Fix data errors", Notification.Type.WARNING_MESSAGE);
+			Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
 		}
 	}
 	

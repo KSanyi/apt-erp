@@ -21,6 +21,8 @@ class CustomersTable extends Table {
 		
 		addContainerProperty("Name", String.class, null);
 		addContainerProperty("Address", String.class, null);
+		
+		setColumnHeaders("Név", "Cím");
 
 		setSortContainerPropertyId("Name");
 		refresh();

@@ -17,7 +17,7 @@ public class AddressTabSheet extends VerticalLayout {
 	
 	private final AddressForm addressForm;
 	private final AddressForm invoiceAddressForm;
-	private final CheckBox invoiceAddressIsTheSameCheck = new CheckBox("Invoice address is the same");;
+	private final CheckBox invoiceAddressIsTheSameCheck = new CheckBox("Számlázási cím megegyezik");
 	
 	private final TabSheet tabSheet = new TabSheet();
 	
@@ -27,9 +27,9 @@ public class AddressTabSheet extends VerticalLayout {
 		addressForm = new AddressForm("Address", address, zipTownMap);
 		invoiceAddressForm = new AddressForm("Invoice address", invoiceAddress.orElse(null), zipTownMap);
 		
-		tabSheet.addTab(addressForm, "Address", FontAwesome.ENVELOPE);
+		tabSheet.addTab(addressForm, "Cím", FontAwesome.ENVELOPE);
 		if(!invoiceAddressIsTheSame) {
-			tabSheet.addTab(invoiceAddressForm, "Invoice Address", FontAwesome.MONEY);
+			tabSheet.addTab(invoiceAddressForm, "Számlázási cím", FontAwesome.MONEY);
 		}
 		
 		createLayout();
@@ -40,7 +40,7 @@ public class AddressTabSheet extends VerticalLayout {
 			if(same) {
 				tabSheet.removeTab(tabSheet.getTab(1));
 			} else {
-				tabSheet.addTab(invoiceAddressForm, "Invoice Address", FontAwesome.MONEY);
+				tabSheet.addTab(invoiceAddressForm, "Számlázási cím", FontAwesome.MONEY);
 				tabSheet.setSelectedTab(1);
 			}
 		});

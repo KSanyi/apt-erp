@@ -24,13 +24,13 @@ public class CustomerDataForm extends GridLayout {
 
 	private final CustomerData customerData;
 	
-	private final TextField nameField = FormFieldFactory.createFormTextField("Name", 300, true);
-	private final TextField taxIdField = FormFieldFactory.createFormTextField("Tax Id", 200, false);
-	private final ComboBox domainCombo = FormFieldFactory.createComboBox("Domain", Domain.all);
-	private final ComboBox languageCombo = FormFieldFactory.createComboBox("Language", Language.all);
+	private final TextField nameField = FormFieldFactory.createFormTextField("Név", 300, true);
+	private final TextField taxIdField = FormFieldFactory.createFormTextField("Adószám", 200, false);
+	private final ComboBox domainCombo = FormFieldFactory.createComboBox("Terület", Domain.all);
+	private final ComboBox languageCombo = FormFieldFactory.createComboBox("Nyelv", Language.all);
 	private final AddressTabSheet adressTabSheet;
 	private final ContactsTabSheet contactsTabSheet;
-	private final TextArea commentField = new TextArea("Comments");
+	private final TextArea commentField = new TextArea("Megjegyzés");
 	
 	private final List<Field<?>> dataFields = Arrays.asList(nameField, taxIdField, domainCombo, languageCombo, commentField);
 	
@@ -54,7 +54,7 @@ public class CustomerDataForm extends GridLayout {
 	}
 	
 	private void createValidators() {
-		taxIdField.addValidator(new RegexpValidator("\\d{8}-\\d-\\d{2}", "Invalid tax id"));
+		taxIdField.addValidator(new RegexpValidator("\\d{8}-\\d-\\d{2}", "Hibás adószám"));
 	}
 	
 	private void createLayout() {

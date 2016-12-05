@@ -25,7 +25,7 @@ class ContactsTabSheet extends VerticalLayout implements CloseHandler {
 	
 	private final TabSheet tabSheet = new TabSheet();
 	
-	private final Button addTabButton = FormFieldFactory.createFormButton("Add contact", FontAwesome.PLUS, ValoTheme.BUTTON_LINK, click -> createNewContact());
+	private final Button addTabButton = FormFieldFactory.createFormButton("Új kontakt személy", FontAwesome.PLUS, ValoTheme.BUTTON_LINK, click -> createNewContact());
 	
 	ContactsTabSheet(List<Contact> contacts) {
 		this.contacts = contacts;
@@ -65,7 +65,7 @@ class ContactsTabSheet extends VerticalLayout implements CloseHandler {
 	private Tab addTab(Contact contact) {
 	    ContactForm contactForm = new ContactForm(contact);
 	    contactForms.add(contactForm);
-	    Tab tab = tabSheet.addTab(contactForm, "Contact " + contactForms.size());
+	    Tab tab = tabSheet.addTab(contactForm, "Kontakt " + contactForms.size());
         tab.setClosable(true);
         return tab;
 	}

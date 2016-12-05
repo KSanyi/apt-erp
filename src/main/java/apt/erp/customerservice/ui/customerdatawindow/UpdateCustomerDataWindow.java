@@ -27,15 +27,15 @@ public class UpdateCustomerDataWindow extends Window {
 	
 	private final CustomerDataForm customerDataForm;
 	
-	private final Button updateButton = FormFieldFactory.createFormButton("Update", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> updateCustomerData());
-	private final Button deleteButton = FormFieldFactory.createFormButton("Delete", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, click -> deleteCustomerData());
+	private final Button updateButton = FormFieldFactory.createFormButton("Mentés", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> updateCustomerData());
+	private final Button deleteButton = FormFieldFactory.createFormButton("Törlés", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, click -> deleteCustomerData());
 	
 	private final List<CustomerDataChangeListener> customerDataChangeListeners = new ArrayList<>();
 	
 	public UpdateCustomerDataWindow(CustomerService customerService, CustomerData customerData, ZipTownMap zipTownMap) {
 		this.customerService = customerService;
 		this.customerData = customerData;
-		setCaption("Customer Id: " + customerData.customerId.value);
+		setCaption("Ügyfél azonosító: " + customerData.customerId.value);
 		
 		customerDataForm = new CustomerDataForm(customerData, zipTownMap);
 		createLayout();
@@ -52,10 +52,10 @@ public class UpdateCustomerDataWindow extends Window {
 					notifyCustomerChangeListeners();
 					this.close();
 				} catch (ValidationError ex) {
-					Notification.show("Validation error: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
+					Notification.show("Validációs hiba: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
 				}
 			} else {
-				Notification.show("Fix data errors", Notification.Type.WARNING_MESSAGE);
+				Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
 			}
 		} else {
 			this.close();
@@ -64,7 +64,7 @@ public class UpdateCustomerDataWindow extends Window {
 	
 	private void deleteCustomerData() {
 		customerService.deleteCustomer(customerData.customerId);
-		Notification.show("Customer has been deleted");
+		Notification.show("Az ügyfél törölve");
 		notifyCustomerChangeListeners();
 		this.close();
 	}
