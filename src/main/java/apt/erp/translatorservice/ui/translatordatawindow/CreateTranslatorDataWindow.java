@@ -45,7 +45,7 @@ public class CreateTranslatorDataWindow extends Window {
 			notifyTranslatorDataChangeListeners(translator);
 			this.close();
 		} else {
-			Notification.show("Fix data errors", Notification.Type.WARNING_MESSAGE);
+			Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
 		}
 	}
 	

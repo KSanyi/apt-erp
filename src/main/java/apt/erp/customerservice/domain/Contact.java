@@ -22,7 +22,7 @@ public class Contact {
     }
 
     public static Contact createEmpty() {
-        return new Contact(Name.createEmptyName(), PhoneNumber.createEmptyPhoneNumber(), EmailAddress.createEmptyEmailAddress());
+        return new Contact(Name.createEmpty(), PhoneNumber.createEmpty(), EmailAddress.createEmpty());
     }
     
 }

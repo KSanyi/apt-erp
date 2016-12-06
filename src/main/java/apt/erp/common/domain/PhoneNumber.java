@@ -2,7 +2,7 @@ package apt.erp.common.domain;
 
 public class PhoneNumber extends SimpleValueObject {
 
-    public static PhoneNumber createEmptyPhoneNumber() {
+    public static PhoneNumber createEmpty() {
 		return new PhoneNumber("");
 	}
 	

@@ -18,17 +18,17 @@ import apt.erp.translatorservice.ui.translatordatawindow.CreateTranslatorDataWin
 public class TranslatorsWindow extends Window {
 
 	public TranslatorsWindow(TranslatorService translatorService) {
-		super("Translators");
+		super("Fordítók");
 		center();
 		setWidth("500px");
 		
 		TranslatorsTable translatorsTable = new TranslatorsTable(translatorService);
 
-		TextField filter = new TextField("Filter");
+		TextField filter = new TextField("Szűrő");
 		filter.setStyleName(ValoTheme.TEXTFIELD_SMALL);
 		filter.addTextChangeListener(textChangeEvent -> translatorsTable.filter(textChangeEvent.getText()));
 		
-		Button addButton = FormFieldFactory.createFormButton("Add translator", FontAwesome.PLUS, ValoTheme.BUTTON_PRIMARY);
+		Button addButton = FormFieldFactory.createFormButton("Új fordító", FontAwesome.PLUS, ValoTheme.BUTTON_PRIMARY);
 		
 		addButton.addClickListener(e -> {
 		    CreateTranslatorDataWindow createTranslatorDataWindow = new CreateTranslatorDataWindow(translatorService);

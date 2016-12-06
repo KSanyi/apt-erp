@@ -51,10 +51,10 @@ public class UpdateTranslatorDataWindow extends Window {
 					notifyTranslatorDataChangeListeners();
 					this.close();
 				} catch (ValidationError ex) {
-					Notification.show("Validation error: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
+					Notification.show("Validációs hiba: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
 				}
 			} else {
-				Notification.show("Fix data errors", Notification.Type.WARNING_MESSAGE);
+				Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
 			}
 		} else {
 			this.close();
@@ -72,7 +72,6 @@ public class UpdateTranslatorDataWindow extends Window {
 		HorizontalLayout buttonsLayout = LayoutFactory.createHorizontalLayout(updateButton, deleteButton);
 		VerticalLayout layout = LayoutFactory.createCenteredVerticalLayout(translatorDataForm, buttonsLayout);
 		setContent(layout);
-		setWidth("700px");
 	}
 	
 	public void addTranslatorDataChangeListener(TranslatorDataChangeListener translatorDataChangeListener) {

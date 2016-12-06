@@ -1,73 +1,46 @@
 package apt.erp.translatorservice.ui.translatordatawindow.translatordataform;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.themes.ValoTheme;
 
-import com.vaadin.data.util.ObjectProperty;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-
-import apt.erp.common.domain.EmailAddress;
-import apt.erp.common.domain.Name;
-import apt.erp.common.domain.PhoneNumber;
-import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.translatorservice.domain.Translator;
 
 @SuppressWarnings("serial")
-public class TranslatorDataForm extends VerticalLayout {
+public class TranslatorDataForm extends TabSheet {
 
-	private final Translator translator;
-	
-	private final TextField nameField = FormFieldFactory.createFormTextField("Name", 300, true);
-	private final TextField phoneField = FormFieldFactory.createFormTextField("Phone", 200, false);
-    private final TextField emailField = FormFieldFactory.createFormTextField("Email", 200, false);
-	private final TextArea commentField = new TextArea("Comments");
-	
-	private final List<Field<?>> dataFields = Arrays.asList(nameField, phoneField, emailField, commentField);
-	
-	public TranslatorDataForm(Translator translator) {
-		this.translator = translator;
-		createLayout();
-		
-		bindData(translator);
-		createValidators();
-	}
-	
-	private void bindData(Translator translator) {
-		nameField.setPropertyDataSource(new ObjectProperty<String>(translator.name.value));
-		phoneField.setPropertyDataSource(new ObjectProperty<String>(translator.phoneNumber.value));
-		emailField.setPropertyDataSource(new ObjectProperty<String>(translator.emailAddress.value));
-		commentField.setPropertyDataSource(new ObjectProperty<String>(translator.comment));
-		commentField.setBuffered(true);
-	}
-	
-	private void createValidators() {
-	}
-	
-	private void createLayout() {
-	    setSpacing(true);
-		
-	    addComponents(nameField, phoneField, emailField, commentField);
-	    
-		nameField.setSizeFull();
-		commentField.setSizeFull();
-		setSizeFull();
-		nameField.focus();
-	}
-	
-	public boolean isDataModified() {
-		return dataFields.stream().anyMatch(Field::isModified);
-	}
-	
-	public boolean isDataValid() {
-		return dataFields.stream().allMatch(Field::isValid);
-	}
+    private final ContactDataForm contactDataForm;
+    
+    private final Translator translator;
+    
+    public TranslatorDataForm(Translator translator) {
+        
+        this.translator = translator;
+        
+        contactDataForm = new ContactDataForm(translator.contactData);
+        
+        addTab(contactDataForm, "Kontakt adatok");
+        addTab(new Label("Fejlesztés alatt"), "Számlázási adatok");
+        addTab(new Label("Fejlesztés alatt"), "Nyelvi képzettség");
+        addTab(new Label("Fejlesztés alatt"), "Dokumentumok");
+        addTab(new Label("Fejlesztés alatt"), "Árazás");
+        addTab(new Label("Fejlesztés alatt"), "...");
+        
+        addStyleName(ValoTheme.TABSHEET_FRAMED);
+        setSizeFull();
+    }
+    
+    public Translator getTranslator() {
+        return translator.updated(contactDataForm.getContactData(), translator.languages(),
+                translator.services(), translator.domains(), translator.comment);
+    }
 
-	public Translator getTranslator() {
-	    return translator.updated(new Name(nameField.getValue()), new PhoneNumber(phoneField.getValue()), new EmailAddress(emailField.getValue()),
-	            Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), commentField.getValue());
-	}
+    public boolean isDataValid() {
+        return contactDataForm.isDataValid();
+    }
+
+    public boolean isDataModified() {
+        return contactDataForm.isDataModified();
+    }
+    
 }

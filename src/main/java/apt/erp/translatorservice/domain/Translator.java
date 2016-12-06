@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import apt.erp.common.domain.EmailAddress;
-import apt.erp.common.domain.Name;
-import apt.erp.common.domain.PhoneNumber;
 import apt.erp.customerservice.domain.Domain;
 import apt.erp.projectservice.domain.Language;
 import apt.erp.projectservice.domain.Service;
@@ -15,32 +12,28 @@ import apt.erp.projectservice.domain.Service;
 public class Translator {
 
     public static Translator createEmpty() {
-        return new Translator(TranslatorId.newId, Name.createEmptyName(), PhoneNumber.createEmptyPhoneNumber(), EmailAddress.createEmptyEmailAddress(),
+        return new Translator(TranslatorId.newId, ContactData.createEmpty(),
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), "");
     }
     
     public final TranslatorId id;
-    public final Name name;
-    public final PhoneNumber phoneNumber;
-    public final EmailAddress emailAddress;
+    public final ContactData contactData;
     private final List<Language> languages;
     private final List<Service> services;
     private final List<Domain> domains;
     public final String comment;
     
-    public Translator(TranslatorId id, Name name, PhoneNumber phoneNumber, EmailAddress emailAddress, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
+    public Translator(TranslatorId id, ContactData contactData, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
         this.id = id;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
+        this.contactData = contactData;
         this.languages = languages;
         this.services = services;
         this.domains = domains;
         this.comment = comment;
     }
     
-    public Translator updated(Name name, PhoneNumber phoneNumber, EmailAddress emailAddress, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
-        return new Translator(id, name, phoneNumber, emailAddress, languages, services, domains, comment);
+    public Translator updated(ContactData contactData, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
+        return new Translator(id, contactData, languages, services, domains, comment);
     }
     
     public List<Language> languages() {
@@ -59,21 +52,19 @@ public class Translator {
         String[] filterParts = filter.split(" ");
         return Stream.of(filterParts).allMatch(filterPart -> 
                id.matches(filterPart) ||
-               name.matches(filterPart) ||
+               contactData.matches(filterPart) ||
                comment != null && comment.contains(filterPart));
     }
 
     @Override
     public String toString() {
-        return "Name: " + name + " (" + languages + ")";
+        return "Name: " + contactData.name + " (" + languages + ")";
     }
 
     public String toDetailedString(){
         return new StringBuilder()
         .append("Id: ").append(id).append(" ")
-        .append("Name: ").append(name).append(", ")
-        .append("Phone: ").append(phoneNumber).append(", ")
-        .append("Email: ").append(emailAddress).append(", ")
+        .append("ContactData: ").append(contactData).append(", ")
         .append("languages: ").append(languages).append(", ")
         .append("services: ").append(services).append(", ")
         .append("domains: ").append(domains).append(", ")

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import apt.erp.common.demo.RandomWordPicker;
 import apt.erp.common.domain.EmailAddress;
@@ -16,6 +17,8 @@ import apt.erp.customerservice.domain.Domain;
 import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
 import apt.erp.projectservice.domain.Service;
+import apt.erp.projectservice.domain.ServiceType;
+import apt.erp.translatorservice.domain.ContactData;
 import apt.erp.translatorservice.domain.Translator;
 
 public class DemoTranslatorFactory {
@@ -27,24 +30,31 @@ public class DemoTranslatorFactory {
 	
 	public Translator createRandomTranslator() {
 		
-	    Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
-	    EmailAddress emailAddress = generateEmailAddress(name);
-        PhoneNumber phoneNumber = generatePhoneNumber();
 		String comment = random.nextInt(10) == 0 ? "Fontos ugyfel" : "";
 		
 		List<Language> languages = generateLanguages();
 		List<Domain> domains = generateDomains();
 		List<Service> services = generateServices(languages);
 		
-		return new Translator(IdGenerator.generateTranslatorId(), name, phoneNumber, emailAddress, languages, services, domains, comment);
+		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), languages, services, domains, comment);
 	}
 	
+	private ContactData generateContactData() {
+	    Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
+        PhoneNumber phoneNumber1 = generatePhoneNumber();
+        EmailAddress emailAddress1 = generateEmailAddress(name);
+        PhoneNumber phoneNumber2 = random.nextInt(10) == 0 ? generatePhoneNumber() : PhoneNumber.createEmpty();
+        EmailAddress emailAddress2 = random.nextInt(10) == 0 ? generateEmailAddress(name) : EmailAddress.createEmpty();
+        
+        List<ServiceType> serviceTypes = generateServiceTypes();
+        
+        return new ContactData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, serviceTypes);
+	}
     private EmailAddress generateEmailAddress(Name name) {
         String[] carriers = new String[]{"gmail.com", "fremail.hu", "hotmail.com"};
-        switch(random.nextInt(3)) {
+        switch(random.nextInt(2)) {
             case 0: return new EmailAddress(name.cleanName().replaceAll("\\s+","")+ "@" + carriers[random.nextInt(3)]);
-            case 1: return new EmailAddress(name.cleanName().replaceAll("\\s+","") + random.nextInt(100) + "@" + carriers[random.nextInt(3)]);
-            default: return new EmailAddress("");
+            default: return new EmailAddress(name.cleanName().replaceAll("\\s+","") + random.nextInt(100) + "@" + carriers[random.nextInt(3)]);
         }
     }
     
@@ -76,6 +86,16 @@ public class DemoTranslatorFactory {
             languages.add(Language.all.get(random.nextInt(Language.all.size())));
         }
         return new ArrayList<>(languages);
+    }
+    
+    private List<ServiceType> generateServiceTypes() {
+        Set<ServiceType> serviceTypes = new HashSet<>();
+        int numberOfServiceTypes = random.nextInt(3);
+        serviceTypes.add(ServiceType.Translation);
+        for(int i=0;i<numberOfServiceTypes;i++) {
+            serviceTypes.add(ServiceType.all.get(random.nextInt(ServiceType.all.size())));
+        }
+        return serviceTypes.stream().sorted().collect(Collectors.toList());
     }
     
     private List<Service> generateServices(List<Language> languages) {

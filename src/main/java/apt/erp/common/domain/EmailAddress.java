@@ -4,7 +4,7 @@ import static apt.erp.common.basic.StringUtil.containsIgnoreCase;
 
 public class EmailAddress extends SimpleValueObject {
 
-    public static EmailAddress createEmptyEmailAddress() {
+    public static EmailAddress createEmpty() {
 		return new EmailAddress("");
 	}
 	

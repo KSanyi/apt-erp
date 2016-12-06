@@ -2,7 +2,7 @@ package apt.erp.common.domain;
 
 public class Name extends SimpleValueObject {
 
-	public static Name createEmptyName() {
+	public static Name createEmpty() {
 		return new Name("");
 	}
 	
