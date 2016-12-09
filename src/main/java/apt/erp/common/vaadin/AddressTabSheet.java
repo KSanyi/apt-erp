@@ -1,4 +1,4 @@
-package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
+package apt.erp.common.vaadin;
 
 import java.util.Optional;
 
@@ -8,7 +8,7 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import apt.erp.customerservice.domain.Address;
+import apt.erp.common.domain.Address;
 
 @SuppressWarnings("serial")
 public class AddressTabSheet extends VerticalLayout {

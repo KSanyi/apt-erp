@@ -12,28 +12,30 @@ import apt.erp.projectservice.domain.Service;
 public class Translator {
 
     public static Translator createEmpty() {
-        return new Translator(TranslatorId.newId, ContactData.createEmpty(),
+        return new Translator(TranslatorId.newId, ContactData.createEmpty(), InvoicingData.createEmpty(),
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), "");
     }
     
     public final TranslatorId id;
     public final ContactData contactData;
+    public final InvoicingData invoicingData;
     private final List<Language> languages;
     private final List<Service> services;
     private final List<Domain> domains;
     public final String comment;
     
-    public Translator(TranslatorId id, ContactData contactData, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
+    public Translator(TranslatorId id, ContactData contactData, InvoicingData invoicingData, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
         this.id = id;
         this.contactData = contactData;
+        this.invoicingData = invoicingData;
         this.languages = languages;
         this.services = services;
         this.domains = domains;
         this.comment = comment;
     }
     
-    public Translator updated(ContactData contactData, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
-        return new Translator(id, contactData, languages, services, domains, comment);
+    public Translator updated(ContactData contactData, InvoicingData invoicingData, List<Language> languages, List<Service> services, List<Domain> domains, String comment) {
+        return new Translator(id, contactData, invoicingData, languages, services, domains, comment);
     }
     
     public List<Language> languages() {

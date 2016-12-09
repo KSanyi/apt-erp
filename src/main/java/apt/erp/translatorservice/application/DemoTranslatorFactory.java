@@ -1,30 +1,44 @@
 package apt.erp.translatorservice.application;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import apt.erp.common.demo.RandomWordPicker;
+import apt.erp.common.domain.Address;
 import apt.erp.common.domain.EmailAddress;
 import apt.erp.common.domain.IdGenerator;
 import apt.erp.common.domain.Name;
 import apt.erp.common.domain.PhoneNumber;
+import apt.erp.common.domain.TaxId;
 import apt.erp.customerservice.domain.Domain;
 import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
 import apt.erp.projectservice.domain.Service;
 import apt.erp.projectservice.domain.ServiceType;
 import apt.erp.translatorservice.domain.ContactData;
+import apt.erp.translatorservice.domain.InvoicingCompany;
+import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
+import apt.erp.translatorservice.domain.InvoicingData;
+import apt.erp.translatorservice.domain.PaymentInfo;
+import apt.erp.translatorservice.domain.PaymentInfo.PaymentMode;
+import apt.erp.translatorservice.domain.PaymentInfo.SettlementMode;
 import apt.erp.translatorservice.domain.Translator;
 
 public class DemoTranslatorFactory {
 
 	private final RandomWordPicker lastNamePicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/LastNames.txt"));
 	private final RandomWordPicker firstNamePicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/FirstNames.txt"));
+	private final RandomWordPicker companyNamePicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Companies.txt"));
+	private final RandomWordPicker townPicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Towns.txt"));
+	private final RandomWordPicker streetPicker = new RandomWordPicker(ResourceFileLoader.loadPath("demodata/Streets.txt"));
 	
 	private Random random = new Random();
 	
@@ -36,7 +50,7 @@ public class DemoTranslatorFactory {
 		List<Domain> domains = generateDomains();
 		List<Service> services = generateServices(languages);
 		
-		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), languages, services, domains, comment);
+		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), generateInvoicingData(), languages, services, domains, comment);
 	}
 	
 	private ContactData generateContactData() {
@@ -50,6 +64,7 @@ public class DemoTranslatorFactory {
         
         return new ContactData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, serviceTypes);
 	}
+	
     private EmailAddress generateEmailAddress(Name name) {
         String[] carriers = new String[]{"gmail.com", "fremail.hu", "hotmail.com"};
         switch(random.nextInt(2)) {
@@ -98,6 +113,63 @@ public class DemoTranslatorFactory {
         return serviceTypes.stream().sorted().collect(Collectors.toList());
     }
     
+    private InvoicingData generateInvoicingData() {
+		return new InvoicingData(generateContractDate(), generatePaymentInfo(), generateInvoicingCompany());
+	}
+    
+	private Optional<LocalDate> generateContractDate() {
+    	if(random.nextInt(5) == 0) {
+    		return Optional.empty();
+    	} else {
+    		return Optional.of(LocalDate.now().minusDays(random.nextInt(500)));
+    	}
+    }
+	
+	private PaymentInfo generatePaymentInfo() {
+		SettlementMode settlementMode = SettlementMode.values()[random.nextInt(SettlementMode.values().length)];
+		PaymentMode paymentMode = PaymentMode.values()[random.nextInt(PaymentMode.values().length)];
+		int paymentDeadlineDays = random.nextInt(5) + 10;
+		return new PaymentInfo(settlementMode, paymentDeadlineDays, paymentMode);
+	}
+    
+	private Optional<InvoicingCompany> generateInvoicingCompany() {
+		if(random.nextInt(5) == 0) {
+    		return Optional.empty();
+    	} else {
+    		String name = companyNamePicker.pickRandomWord();
+    		TaxId  taxId = generateTaxId();
+    		InvoicingType invoicingType = InvoicingType.values()[random.nextInt(InvoicingType.values().length)];
+    		Address address = generateAddress();
+    		boolean invoiceAddressIsTheSame = random.nextInt(10) > 0;
+    		Optional<Address> invoiceAddress = invoiceAddressIsTheSame ? Optional.empty() : Optional.of(generateAddress());
+    		boolean vatFree = random.nextInt(10) == 0;
+    		return Optional.of(new InvoicingCompany(name, taxId, invoicingType, address, invoiceAddress, vatFree));
+    	}
+	}
+
+	private TaxId generateTaxId() {
+        StringBuilder stringBuilder = new StringBuilder();
+        IntStream.range(0, 8).forEach(i -> stringBuilder.append(createRandomDigit()));
+        stringBuilder
+        .append("-")
+        .append(createRandomDigit())
+        .append("-")
+        .append(createRandomDigit())
+        .append(createRandomDigit());
+        
+        return new TaxId(stringBuilder.toString());
+    }
+	
+	private Address generateAddress() {
+		String[] zipAndTown = townPicker.pickRandomWord().split("\t");
+		String zip = zipAndTown[0];
+		String town = zipAndTown[1];
+		String[] streetTypes = new String[]{"utca", "út", "tér"};
+		String street = streetPicker.pickRandomWord() + " " + streetTypes[random.nextInt(3)];
+		String number = String.valueOf(random.nextInt(100));
+		return new Address(zip, town, street, number);	
+	}
+	
     private List<Service> generateServices(List<Language> languages) {
         
         return Collections.emptyList();

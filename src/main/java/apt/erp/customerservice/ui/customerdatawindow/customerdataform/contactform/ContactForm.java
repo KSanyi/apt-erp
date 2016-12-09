@@ -1,4 +1,4 @@
-package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
+package apt.erp.customerservice.ui.customerdatawindow.customerdataform.contactform;
 
 import java.util.Arrays;
 import java.util.List;

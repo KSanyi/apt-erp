@@ -12,11 +12,14 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 import apt.erp.common.domain.Name;
+import apt.erp.common.domain.TaxId;
+import apt.erp.common.vaadin.AddressTabSheet;
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.Domain;
-import apt.erp.customerservice.domain.TaxId;
+import apt.erp.customerservice.ui.customerdatawindow.customerdataform.contactform.ContactsTabSheet;
 import apt.erp.projectservice.domain.Language;
 
 @SuppressWarnings("serial")

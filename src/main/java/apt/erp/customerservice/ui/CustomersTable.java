@@ -6,10 +6,10 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
 import apt.erp.customerservice.ui.customerdatawindow.UpdateCustomerDataWindow;
-import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap;
 
 @SuppressWarnings("serial")
 class CustomersTable extends Table {

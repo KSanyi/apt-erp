@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import apt.erp.common.domain.Address;
 import apt.erp.common.domain.Name;
+import apt.erp.common.domain.TaxId;
 import apt.erp.projectservice.domain.Language;
 
 public class CustomerData {

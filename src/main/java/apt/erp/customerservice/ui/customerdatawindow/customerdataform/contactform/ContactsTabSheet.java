@@ -1,4 +1,4 @@
-package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
+package apt.erp.customerservice.ui.customerdatawindow.customerdataform.contactform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.customerservice.domain.Contact;
 
 @SuppressWarnings("serial")
-class ContactsTabSheet extends VerticalLayout implements CloseHandler {
+public class ContactsTabSheet extends VerticalLayout implements CloseHandler {
 
 	private final List<Contact> contacts;
 	
@@ -27,7 +27,7 @@ class ContactsTabSheet extends VerticalLayout implements CloseHandler {
 	
 	private final Button addTabButton = FormFieldFactory.createFormButton("Új kontakt személy", FontAwesome.PLUS, ValoTheme.BUTTON_LINK, click -> createNewContact());
 	
-	ContactsTabSheet(List<Contact> contacts) {
+	public ContactsTabSheet(List<Contact> contacts) {
 		this.contacts = contacts;
 		
 		tabSheet.setCloseHandler(this);

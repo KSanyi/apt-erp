@@ -1,4 +1,4 @@
-package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
+package apt.erp.common.vaadin;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

@@ -1,4 +1,4 @@
-package apt.erp.customerservice.domain;
+package apt.erp.common.domain;
 
 public class Address {
 

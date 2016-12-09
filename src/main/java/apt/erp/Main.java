@@ -1,7 +1,7 @@
 package apt.erp;
 
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.customerservice.application.DemoCustomerRepository;
-import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap;
 import apt.erp.infrastructure.server.ApplicationService;
 import apt.erp.infrastructure.server.ErpServer;
 import apt.erp.translatorservice.application.DemoTranslatorRepository;

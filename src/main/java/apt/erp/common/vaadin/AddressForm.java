@@ -1,4 +1,4 @@
-package apt.erp.customerservice.ui.customerdatawindow.customerdataform;
+package apt.erp.common.vaadin;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,13 +10,10 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import apt.erp.common.vaadin.FormFieldFactory;
-import apt.erp.common.vaadin.HungarianNameValidator;
-import apt.erp.common.vaadin.LayoutFactory;
-import apt.erp.customerservice.domain.Address;
+import apt.erp.common.domain.Address;
 
 @SuppressWarnings("serial")
-public class AddressForm extends VerticalLayout {
+class AddressForm extends VerticalLayout {
 
 	private final ZipTownMap zipTownMap;
 	

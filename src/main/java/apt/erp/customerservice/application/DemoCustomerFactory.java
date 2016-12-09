@@ -7,15 +7,15 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import apt.erp.common.demo.RandomWordPicker;
+import apt.erp.common.domain.Address;
 import apt.erp.common.domain.EmailAddress;
 import apt.erp.common.domain.IdGenerator;
 import apt.erp.common.domain.Name;
 import apt.erp.common.domain.PhoneNumber;
-import apt.erp.customerservice.domain.Address;
+import apt.erp.common.domain.TaxId;
 import apt.erp.customerservice.domain.Contact;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.Domain;
-import apt.erp.customerservice.domain.TaxId;
 import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
 

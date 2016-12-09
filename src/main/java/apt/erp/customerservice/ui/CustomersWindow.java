@@ -11,9 +11,9 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.customerservice.domain.CustomerService;
 import apt.erp.customerservice.ui.customerdatawindow.CreateCustomerDataWindow;
-import apt.erp.customerservice.ui.customerdatawindow.customerdataform.ZipTownMap;
 
 @SuppressWarnings("serial")
 public class CustomersWindow extends Window {
