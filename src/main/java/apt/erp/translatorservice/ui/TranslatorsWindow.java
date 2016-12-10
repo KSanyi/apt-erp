@@ -11,18 +11,19 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.translatorservice.domain.TranslatorService;
 import apt.erp.translatorservice.ui.translatordatawindow.CreateTranslatorDataWindow;
 
 @SuppressWarnings("serial")
 public class TranslatorsWindow extends Window {
 
-	public TranslatorsWindow(TranslatorService translatorService) {
+	public TranslatorsWindow(TranslatorService translatorService, ZipTownMap zipTownMap) {
 		super("Fordítók");
 		center();
 		setWidth("500px");
 		
-		TranslatorsTable translatorsTable = new TranslatorsTable(translatorService);
+		TranslatorsTable translatorsTable = new TranslatorsTable(translatorService, zipTownMap);
 
 		TextField filter = new TextField("Szűrő");
 		filter.setStyleName(ValoTheme.TEXTFIELD_SMALL);
@@ -31,7 +32,7 @@ public class TranslatorsWindow extends Window {
 		Button addButton = FormFieldFactory.createFormButton("Új fordító", FontAwesome.PLUS, ValoTheme.BUTTON_PRIMARY);
 		
 		addButton.addClickListener(e -> {
-		    CreateTranslatorDataWindow createTranslatorDataWindow = new CreateTranslatorDataWindow(translatorService);
+		    CreateTranslatorDataWindow createTranslatorDataWindow = new CreateTranslatorDataWindow(translatorService, zipTownMap);
 		    createTranslatorDataWindow.addTranslatorDataChangeListener(t -> translatorsTable.refresh());
 			UI.getCurrent().addWindow(createTranslatorDataWindow);
 		});

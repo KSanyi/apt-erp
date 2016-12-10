@@ -14,6 +14,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import apt.erp.common.domain.ValidationError;
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.translatorservice.domain.Translator;
 import apt.erp.translatorservice.domain.TranslatorService;
 import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.TranslatorDataForm;
@@ -26,20 +27,21 @@ public class UpdateTranslatorDataWindow extends Window {
 	
 	private final TranslatorDataForm translatorDataForm;
 	
-	private final Button updateButton = FormFieldFactory.createFormButton("Update", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> updateTranslatorData());
-	private final Button deleteButton = FormFieldFactory.createFormButton("Delete", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, click -> deleteTranslator());
+	private final Button updateButton = FormFieldFactory.createFormButton("Frissítés", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> updateTranslatorData());
+	private final Button deleteButton = FormFieldFactory.createFormButton("Törlés", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, click -> deleteTranslator());
 	
 	private final List<TranslatorDataChangeListener> translatorDataChangeListeners = new ArrayList<>();
 	
-	public UpdateTranslatorDataWindow(TranslatorService translatorService, Translator translator) {
+	public UpdateTranslatorDataWindow(TranslatorService translatorService, Translator translator, ZipTownMap zipTownMap) {
 		this.translatorService = translatorService;
 		this.translator = translator;
 		setCaption("Translator Id: " + translator.id.value);
 		
-		translatorDataForm = new TranslatorDataForm(translator);
+		translatorDataForm = new TranslatorDataForm(translator, zipTownMap);
 		createLayout();
 		
-		center();
+		setPositionY(50);
+        setPositionX(400);
 	}
 	
 	private void updateTranslatorData() {

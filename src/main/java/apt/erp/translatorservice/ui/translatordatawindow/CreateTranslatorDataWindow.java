@@ -11,6 +11,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.translatorservice.domain.Translator;
 import apt.erp.translatorservice.domain.TranslatorService;
 import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.TranslatorDataForm;
@@ -26,15 +27,17 @@ public class CreateTranslatorDataWindow extends Window {
 	
 	private final List<TranslatorDataChangeListener> translatorDataChangeListeners = new ArrayList<>();
 	
-	public CreateTranslatorDataWindow(TranslatorService translatorService) {
+	public CreateTranslatorDataWindow(TranslatorService translatorService, ZipTownMap zipTownMap) {
 		this.translatorService = translatorService;
 		setCaption("New Translator");
 		
-		translatorDataForm = new TranslatorDataForm(Translator.createEmpty());
+		translatorDataForm = new TranslatorDataForm(Translator.createEmpty(), zipTownMap);
 		setContent(LayoutFactory.createCenteredVerticalLayout(translatorDataForm, saveButton));
 		setWidth("400px");
 		setHeight("600px");
-		center();
+		
+		setPositionY(50);
+		setPositionX(400);
 	}
 	
 	private void createTranslatorData() {

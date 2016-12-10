@@ -4,14 +4,14 @@ import java.util.Optional;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.domain.Address;
 
 @SuppressWarnings("serial")
-public class AddressTabSheet extends VerticalLayout {
+public class AddressTabSheet extends Panel {
 
 	private final boolean invoiceAddressIsTheSame;
 	
@@ -47,10 +47,9 @@ public class AddressTabSheet extends VerticalLayout {
 	}
 	
 	private void createLayout() {
-		setSpacing(true);
 		tabSheet.addStyleName(ValoTheme.TABSHEET_FRAMED);
 		tabSheet.addStyleName(ValoTheme.TABSHEET_COMPACT_TABBAR);
-		addComponents(tabSheet, invoiceAddressIsTheSameCheck);
+		setContent(LayoutFactory.createVerticalLayout(tabSheet, invoiceAddressIsTheSameCheck));
 		setSizeFull();
 	}
 	

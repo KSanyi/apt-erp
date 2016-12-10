@@ -14,7 +14,7 @@ import apt.erp.projectservice.domain.Language;
 public class CustomerData {
 
 	public static CustomerData createEmpty() {
-		return createNew(TaxId.Unknown, Name.createEmpty(), Address.createEmptyAddress(), Optional.empty(), "",
+		return createNew(TaxId.Unknown, Name.createEmpty(), Address.empty, Optional.empty(), "",
 		        Domain.Other, Language.English, Collections.emptyList());
 	}
 	

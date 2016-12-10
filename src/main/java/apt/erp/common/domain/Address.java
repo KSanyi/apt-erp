@@ -2,9 +2,7 @@ package apt.erp.common.domain;
 
 public class Address {
 
-	public static Address createEmptyAddress() {
-		return new Address("", "", "", "", "");
-	}
+	public static final Address empty = new Address("", "", "", "", "");
 	
 	public final String zip;
 	public final String town;

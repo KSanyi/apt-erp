@@ -14,7 +14,7 @@ public class ApplicationService {
 	public ApplicationService(
 			CustomerDataRepository customerRepository, TranslatorRepository translatorRepository, ZipTownMap zipTownMap) {
 		customerService = new CustomerApplicationService(customerRepository, zipTownMap);
-		translatorService = new TranslatorApplicationService(translatorRepository);
+		translatorService = new TranslatorApplicationService(translatorRepository, zipTownMap);
 	}
 	
 }

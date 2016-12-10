@@ -8,6 +8,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
+import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.projectservice.domain.ServiceType;
 import apt.erp.translatorservice.domain.Translator;
 import apt.erp.translatorservice.domain.TranslatorService;
@@ -18,7 +19,7 @@ class TranslatorsTable extends Table {
 
 	private final TranslatorService translatorService;
 	
-	public TranslatorsTable(TranslatorService translatorService) {
+	public TranslatorsTable(TranslatorService translatorService, ZipTownMap zipTownMap) {
 	    this.translatorService = translatorService;
 		
 		addContainerProperty("Name", String.class, null);
@@ -35,7 +36,7 @@ class TranslatorsTable extends Table {
 
 		addItemClickListener(event -> {
 			Translator translator = (Translator)event.getItemId();
-			UpdateTranslatorDataWindow updateTranslatorWindow = new UpdateTranslatorDataWindow(translatorService, translator);
+			UpdateTranslatorDataWindow updateTranslatorWindow = new UpdateTranslatorDataWindow(translatorService, translator, zipTownMap);
 			updateTranslatorWindow.addTranslatorDataChangeListener(c -> refresh());
 			UI.getCurrent().addWindow(updateTranslatorWindow);
 		});
