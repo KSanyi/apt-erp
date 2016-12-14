@@ -35,16 +35,16 @@ public class TranslatorDataForm extends TabSheet {
     }
     
     public Translator getTranslator() {
-        return translator.updated(contactDataForm.getContactData(), translator.invoicingData, translator.languages(),
+        return translator.updated(contactDataForm.getContactData(), invoicingDataForm.getInvoicingData(), translator.languages(),
                 translator.services(), translator.domains(), translator.comment);
     }
 
     public boolean isDataValid() {
-        return contactDataForm.isDataValid();
+        return contactDataForm.isDataValid() && invoicingDataForm.isDataValid();
     }
 
     public boolean isDataModified() {
-        return contactDataForm.isDataModified();
+        return contactDataForm.isDataModified() || invoicingDataForm.isDataModified();
     }
     
 }

@@ -1,8 +1,14 @@
 package apt.erp.translatorservice.ui.translatordatawindow.translatordataform.invoicingdataform;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -16,10 +22,12 @@ public class InvoicingDataForm extends VerticalLayout {
 
     public final InvoicingData invoicingData;
     
-    private final DateField contarctingDateField = new DateField("Szerződéskötés dátuma");
+    private final DateField contractingDateField = new DateField("Szerződéskötés dátuma");
     private final PaymentInfoForm paymentInfoForm;
     private final CheckBox hasInvoicingCompanyCheck = new CheckBox("Van számlázási cég");
     private final InvoicingCompanyForm invoicingCompanyForm;
+    
+    private final List<Field<?>> dataFields = Arrays.asList(contractingDateField, hasInvoicingCompanyCheck);
     
     public InvoicingDataForm(InvoicingData invoicingData, ZipTownMap zipTownMap) {
         this.invoicingData = invoicingData;
@@ -39,29 +47,34 @@ public class InvoicingDataForm extends VerticalLayout {
     }
     
     private void bindData(InvoicingData invoicingData) {
-        
-        
-        contarctingDateField.setPropertyDataSource(new ObjectProperty<>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null)));
+        contractingDateField.setPropertyDataSource(new ObjectProperty<>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null)));
         
         hasInvoicingCompanyCheck.setPropertyDataSource(new ObjectProperty<>(invoicingData.invoicingCompany.isPresent()));
         hasInvoicingCompanyCheck.setBuffered(true);
         hasInvoicingCompanyCheck.addValueChangeListener(value -> invoicingCompanyForm.setVisible((Boolean)value.getProperty().getValue()));
     }
     
-    public boolean isDataValid() {
-        return paymentInfoForm.isDataValid();
-    }
-
-    public boolean isDataModified() {
-        return paymentInfoForm.isDataModified();
-    }
-    
     private void createLayout() {
-        
         setMargin(true);
         setSpacing(true);
         
-        contarctingDateField.addStyleName(ValoTheme.DATEFIELD_SMALL);
-        addComponents(contarctingDateField, paymentInfoForm, hasInvoicingCompanyCheck, invoicingCompanyForm);
+        contractingDateField.addStyleName(ValoTheme.DATEFIELD_SMALL);
+        addComponents(contractingDateField, paymentInfoForm, hasInvoicingCompanyCheck, invoicingCompanyForm);
     }
+    
+    public boolean isDataValid() {
+        return dataFields.stream().allMatch(Field::isValid) && paymentInfoForm.isDataValid() && (!hasInvoicingCompanyCheck.getValue() || invoicingCompanyForm.isDataValid());
+    }
+
+    public boolean isDataModified() {
+        return dataFields.stream().anyMatch(Field::isModified) || paymentInfoForm.isDataModified() || (hasInvoicingCompanyCheck.getValue() && invoicingCompanyForm.isDataModified());
+    }
+    
+    public InvoicingData getInvoicingData() {
+    	Optional<LocalDate> contractingDate = Optional.ofNullable(contractingDateField.getValue()).map(DateUtil::convertToLocalDate);
+    	Optional<InvoicingCompany> invoicingCompany = hasInvoicingCompanyCheck.getValue() ? Optional.of(invoicingCompanyForm.getInvoicingCompany()) : Optional.empty();
+    	
+    	return new InvoicingData(contractingDate, paymentInfoForm.getPaymentInfo(), invoicingCompany);
+    }
+    
 }
