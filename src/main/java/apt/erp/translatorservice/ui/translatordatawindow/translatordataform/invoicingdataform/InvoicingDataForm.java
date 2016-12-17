@@ -1,5 +1,7 @@
 package apt.erp.translatorservice.ui.translatordatawindow.translatordataform.invoicingdataform;
 
+import java.util.Date;
+
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.DateField;
@@ -39,9 +41,7 @@ public class InvoicingDataForm extends VerticalLayout {
     }
     
     private void bindData(InvoicingData invoicingData) {
-        
-        
-        contarctingDateField.setPropertyDataSource(new ObjectProperty<>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null)));
+        contarctingDateField.setPropertyDataSource(new ObjectProperty<Date>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null), Date.class));
         
         hasInvoicingCompanyCheck.setPropertyDataSource(new ObjectProperty<>(invoicingData.invoicingCompany.isPresent()));
         hasInvoicingCompanyCheck.setBuffered(true);
