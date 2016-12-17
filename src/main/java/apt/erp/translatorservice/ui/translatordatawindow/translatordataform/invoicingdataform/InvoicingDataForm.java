@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Date;
 
 import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.CheckBox;
@@ -47,7 +48,8 @@ public class InvoicingDataForm extends VerticalLayout {
     }
     
     private void bindData(InvoicingData invoicingData) {
-        contractingDateField.setPropertyDataSource(new ObjectProperty<>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null)));
+
+    	contractingDateField.setPropertyDataSource(new ObjectProperty<Date>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null), Date.class));
         
         hasInvoicingCompanyCheck.setPropertyDataSource(new ObjectProperty<>(invoicingData.invoicingCompany.isPresent()));
         hasInvoicingCompanyCheck.setBuffered(true);

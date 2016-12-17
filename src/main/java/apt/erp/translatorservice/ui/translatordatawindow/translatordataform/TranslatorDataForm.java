@@ -7,12 +7,14 @@ import com.vaadin.ui.themes.ValoTheme;
 import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.translatorservice.domain.Translator;
 import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.invoicingdataform.InvoicingDataForm;
+import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.languageskillsform.LanguageSkillsForm;
 
 @SuppressWarnings("serial")
 public class TranslatorDataForm extends TabSheet {
 
     private final ContactDataForm contactDataForm;
     private final InvoicingDataForm invoicingDataForm;
+    private final LanguageSkillsForm languageSkillsForm;
     
     private final Translator translator;
     
@@ -22,10 +24,11 @@ public class TranslatorDataForm extends TabSheet {
         
         contactDataForm = new ContactDataForm(translator.contactData);
         invoicingDataForm = new InvoicingDataForm(translator.invoicingData, zipTownMap);
+        languageSkillsForm = new LanguageSkillsForm();
         
         addTab(contactDataForm, "Kontakt adatok");
         addTab(invoicingDataForm, "Számlázási adatok");
-        addTab(new Label("Fejlesztés alatt"), "Nyelvi képzettség");
+        addTab(languageSkillsForm, "Nyelvi képzettség");
         addTab(new Label("Fejlesztés alatt"), "Dokumentumok");
         addTab(new Label("Fejlesztés alatt"), "Árazás");
         addTab(new Label("Fejlesztés alatt"), "...");
