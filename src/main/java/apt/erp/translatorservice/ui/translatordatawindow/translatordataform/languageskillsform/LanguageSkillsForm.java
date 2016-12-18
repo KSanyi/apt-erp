@@ -12,6 +12,8 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import apt.erp.translatorservice.domain.LanguageSkills;
+
 @SuppressWarnings("serial")
 public class LanguageSkillsForm extends VerticalLayout {
 
@@ -21,18 +23,18 @@ public class LanguageSkillsForm extends VerticalLayout {
     
 	private final List<Field<?>> dataFields = new ArrayList<>();
 	
-	public LanguageSkillsForm() {
+	public LanguageSkillsForm(LanguageSkills languageSkills) {
 
-		bindData();
+		bindData(languageSkills);
 		createValidators();
 
-		addServiceButton.addClickListener(click -> addServiceForm());
+		addServiceButton.addClickListener(click -> addServiceForm(ServiceFormData.createEmpty()));
 		
 		createLayout();
 	}
 	
-	private void addServiceForm() {
-	    ServiceForm serviceForm = new ServiceForm();
+	private void addServiceForm(ServiceFormData serviceFormData) {
+	    LanguageServiceForm serviceForm = new LanguageServiceForm(serviceFormData);
 	    Button removeButton = new Button(FontAwesome.CLOSE);
 	    removeButton.addStyleName(ValoTheme.BUTTON_TINY);
 	    removeButton.addStyleName(ValoTheme.BUTTON_DANGER);
@@ -44,7 +46,8 @@ public class LanguageSkillsForm extends VerticalLayout {
 	    serviceFormsLayout.addComponent(layout);
 	}
 	
-	private void bindData() {
+	private void bindData(LanguageSkills languageSkills) {
+		ServiceFormData.createServiceFormDatas(languageSkills.services()).stream().forEach(this::addServiceForm);
 	}
 	
 	private void createValidators() {

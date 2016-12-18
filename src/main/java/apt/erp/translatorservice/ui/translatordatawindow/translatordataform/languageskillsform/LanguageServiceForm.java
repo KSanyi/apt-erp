@@ -12,7 +12,7 @@ import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.projectservice.domain.Language;
 
 @SuppressWarnings("serial")
-public class ServiceForm extends HorizontalLayout {
+public class LanguageServiceForm extends HorizontalLayout {
 
     private ComboBox languageFrom = FormFieldFactory.createComboBox("", Language.all);
     private ComboBox languageTo = FormFieldFactory.createComboBox("", Language.all);
@@ -20,8 +20,13 @@ public class ServiceForm extends HorizontalLayout {
     private CheckBox interpretCheck = new CheckBox("Tolmácskodás");
     private CheckBox lectorCheck = new CheckBox("Lektorálás");
     
-    ServiceForm() {
-        createLayout();
+    LanguageServiceForm(ServiceFormData serviceFormData) {
+    	languageFrom.setValue(serviceFormData.languageFrom);
+    	languageTo.setValue(serviceFormData.languageTo);
+    	translateCheck.setValue(serviceFormData.translation);
+    	interpretCheck.setValue(serviceFormData.interpretation);
+    	lectorCheck.setValue(serviceFormData.lectoring);
+    	createLayout();
     }
     
     private void createLayout() {
@@ -29,9 +34,7 @@ public class ServiceForm extends HorizontalLayout {
         setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
         setSpacing(true);
         languageFrom.setWidth("110px");
-        languageFrom.setValue(Language.Hungarian);
         languageTo.setWidth("110px");
-        languageTo.setValue(Language.English);
         
         Label arrow = new Label(FontAwesome.ARROW_RIGHT.getHtml(), ContentMode.HTML);
         addComponents(languageFrom, arrow, languageTo, translateCheck, interpretCheck, lectorCheck);

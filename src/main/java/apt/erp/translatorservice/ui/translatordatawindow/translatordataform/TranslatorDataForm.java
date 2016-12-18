@@ -24,7 +24,7 @@ public class TranslatorDataForm extends TabSheet {
         
         contactDataForm = new ContactDataForm(translator.contactData);
         invoicingDataForm = new InvoicingDataForm(translator.invoicingData, zipTownMap);
-        languageSkillsForm = new LanguageSkillsForm();
+        languageSkillsForm = new LanguageSkillsForm(translator.languageSkills);
         
         addTab(contactDataForm, "Kontakt adatok");
         addTab(invoicingDataForm, "Számlázási adatok");
@@ -39,7 +39,7 @@ public class TranslatorDataForm extends TabSheet {
     
     public Translator getTranslator() {
         return translator.updated(contactDataForm.getContactData(), invoicingDataForm.getInvoicingData(), translator.languages(),
-                translator.services(), translator.domains(), translator.comment);
+                translator.languageSkills, translator.comment);
     }
 
     public boolean isDataValid() {

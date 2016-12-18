@@ -1,17 +1,17 @@
 package apt.erp.projectservice.domain;
 
-public class Service {
+public class LanguageService {
 
-    public final ServiceType servicetype;
-    
     public final Language sourceLanguage;
     
     public final Language destLanguage;
 
-    public Service(ServiceType servicetype, Language sourceLanguage, Language destLanguage) {
-        this.servicetype = servicetype;
+    public final ServiceType serviceType;
+    
+    public LanguageService(Language sourceLanguage, Language destLanguage, ServiceType servicetype) {
         this.sourceLanguage = sourceLanguage;
         this.destLanguage = destLanguage;
+        this.serviceType = servicetype;
     }
     
 }

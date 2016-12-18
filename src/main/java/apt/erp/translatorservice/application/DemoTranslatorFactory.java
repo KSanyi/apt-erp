@@ -2,7 +2,6 @@ package apt.erp.translatorservice.application;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -18,15 +17,15 @@ import apt.erp.common.domain.IdGenerator;
 import apt.erp.common.domain.Name;
 import apt.erp.common.domain.PhoneNumber;
 import apt.erp.common.domain.TaxId;
-import apt.erp.customerservice.domain.Domain;
 import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
-import apt.erp.projectservice.domain.Service;
+import apt.erp.projectservice.domain.LanguageService;
 import apt.erp.projectservice.domain.ServiceType;
 import apt.erp.translatorservice.domain.ContactData;
 import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
 import apt.erp.translatorservice.domain.InvoicingData;
+import apt.erp.translatorservice.domain.LanguageSkills;
 import apt.erp.translatorservice.domain.PaymentInfo;
 import apt.erp.translatorservice.domain.PaymentInfo.PaymentMode;
 import apt.erp.translatorservice.domain.PaymentInfo.SettlementMode;
@@ -47,10 +46,8 @@ public class DemoTranslatorFactory {
 		String comment = random.nextInt(10) == 0 ? "Fontos ugyfel" : "";
 		
 		List<Language> languages = generateLanguages();
-		List<Domain> domains = generateDomains();
-		List<Service> services = generateServices(languages);
 		
-		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), generateInvoicingData(), languages, services, domains, comment);
+		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), generateInvoicingData(), languages, generateLanguageSkills(), comment);
 	}
 	
 	private ContactData generateContactData() {
@@ -84,15 +81,6 @@ public class DemoTranslatorFactory {
         return new PhoneNumber(stringBuilder.toString());
     }
 
-    private List<Domain> generateDomains() {
-        Set<Domain> domains = new HashSet<>();
-        int numberOfDomains = random.nextInt(3);
-        for(int i=0;i<numberOfDomains;i++) {
-            domains.add(Domain.all.get(random.nextInt(Domain.all.size())));
-        }
-        return new ArrayList<>(domains);
-    }
-    
     private List<Language> generateLanguages() {
         Set<Language> languages = new HashSet<>();
         languages.add(Language.Hungarian);
@@ -170,10 +158,40 @@ public class DemoTranslatorFactory {
 		return new Address(zip, town, street, number);	
 	}
 	
-    private List<Service> generateServices(List<Language> languages) {
-        
-        return Collections.emptyList();
+	private LanguageSkills generateLanguageSkills() {
+		return new LanguageSkills(generateServices());
+	}
+	
+    private List<LanguageService> generateServices() {
+    	List<LanguageService> services = new ArrayList<>();
+    	int numberOfServices = random.nextInt(3) + 1;
+    	for(int i=0;i<numberOfServices;i++) {
+    		Language language = Language.all.get(random.nextInt(Language.all.size()));
+    		services.add(new LanguageService(language, Language.Hungarian, ServiceType.Translation));
+    		if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, ServiceType.Translation));
+    		if(random.nextInt(5) == 0) {
+    			services.add(new LanguageService(language, Language.Hungarian, ServiceType.Interpreting));
+    			if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, ServiceType.Interpreting));
+    		}
+    		if(random.nextInt(5) == 0) {
+    			services.add(new LanguageService(language, Language.Hungarian, ServiceType.Lectoring));
+    			if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, ServiceType.Lectoring));
+    		}
+    	}
+    	
+        return services;
     }
+    
+    /*
+    private List<Domain> generateDomains() {
+        Set<Domain> domains = new HashSet<>();
+        int numberOfDomains = random.nextInt(3);
+        for(int i=0;i<numberOfDomains;i++) {
+            domains.add(Domain.all.get(random.nextInt(Domain.all.size())));
+        }
+        return new ArrayList<>(domains);
+    }
+    */
     
 	private int createRandomDigit() {
 		return random.nextInt(10);

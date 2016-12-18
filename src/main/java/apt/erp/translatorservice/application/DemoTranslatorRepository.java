@@ -45,7 +45,7 @@ public class DemoTranslatorRepository implements TranslatorRepository {
     @Override
     public void saveTranslator(TranslatorId translatorId, Translator translator) {
         Translator newTranslator = new Translator(translatorId, translator.contactData, translator.invoicingData, translator.languages(),
-                translator.services(), translator.domains(), translator.comment);
+                translator.languageSkills, translator.comment);
         translators.add(newTranslator);
     }
 
