@@ -49,7 +49,7 @@ public class InvoicingDataForm extends VerticalLayout {
     
     private void bindData(InvoicingData invoicingData) {
 
-    	contractingDateField.setPropertyDataSource(new ObjectProperty<Date>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null), Date.class));
+    	contractingDateField.setPropertyDataSource(new ObjectProperty<>(invoicingData.contractingDate.map(DateUtil::convertToDate).orElse(null), Date.class));
         
         hasInvoicingCompanyCheck.setPropertyDataSource(new ObjectProperty<>(invoicingData.invoicingCompany.isPresent()));
         hasInvoicingCompanyCheck.setBuffered(true);

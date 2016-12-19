@@ -6,9 +6,9 @@ public class LanguageService {
     
     public final Language destLanguage;
 
-    public final ServiceType serviceType;
+    public final LanguageServiceType serviceType;
     
-    public LanguageService(Language sourceLanguage, Language destLanguage, ServiceType servicetype) {
+    public LanguageService(Language sourceLanguage, Language destLanguage, LanguageServiceType servicetype) {
         this.sourceLanguage = sourceLanguage;
         this.destLanguage = destLanguage;
         this.serviceType = servicetype;

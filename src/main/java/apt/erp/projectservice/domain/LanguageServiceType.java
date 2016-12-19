@@ -3,18 +3,18 @@ package apt.erp.projectservice.domain;
 import java.util.Arrays;
 import java.util.List;
 
-public enum ServiceType {
+public enum LanguageServiceType {
 
-    Translation("Fordítás"), Interpreting("Tolmácskodás"), Lectoring("Lektorálás"), 
+    Translation("Fordítás"), Interpretation("Tolmácskodás"), Lectoring("Lektorálás"), 
     MotherTangueLectoring("Anyanyelvi lektorálás"), Audit("Átolvasás");
     
     private final String caption;
     
-    ServiceType(String caption) {
+    LanguageServiceType(String caption) {
         this.caption = caption;
     }
     
-    public static List<ServiceType> all = Arrays.asList(values());
+    public static List<LanguageServiceType> all = Arrays.asList(values());
     
     @Override
     public String toString() {

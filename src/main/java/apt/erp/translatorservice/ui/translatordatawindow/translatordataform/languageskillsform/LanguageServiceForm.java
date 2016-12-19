@@ -1,10 +1,15 @@
 package apt.erp.translatorservice.ui.translatordatawindow.translatordataform.languageskillsform;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
@@ -20,17 +25,26 @@ public class LanguageServiceForm extends HorizontalLayout {
     private CheckBox interpretCheck = new CheckBox("Tolmácskodás");
     private CheckBox lectorCheck = new CheckBox("Lektorálás");
     
-    LanguageServiceForm(ServiceFormData serviceFormData) {
-    	languageFrom.setValue(serviceFormData.languageFrom);
-    	languageTo.setValue(serviceFormData.languageTo);
-    	translateCheck.setValue(serviceFormData.translation);
-    	interpretCheck.setValue(serviceFormData.interpretation);
-    	lectorCheck.setValue(serviceFormData.lectoring);
+    private final List<Field<?>> dataFields = Arrays.asList(languageFrom, languageTo, translateCheck, interpretCheck, lectorCheck);
+    
+    LanguageServiceForm(LanguageServiceFormData serviceFormData) {
+    	bindData(serviceFormData);
     	createLayout();
     }
     
+    private void bindData(LanguageServiceFormData serviceFormData) {
+    	languageFrom.setPropertyDataSource(new ObjectProperty<>(serviceFormData.languageFrom));
+    	languageTo.setPropertyDataSource(new ObjectProperty<>(serviceFormData.languageTo));
+    	
+    	translateCheck.setPropertyDataSource(new ObjectProperty<>(serviceFormData.translation));
+    	translateCheck.setBuffered(true);
+    	interpretCheck.setPropertyDataSource(new ObjectProperty<>(serviceFormData.interpretation));
+    	interpretCheck.setBuffered(true);
+    	lectorCheck.setPropertyDataSource(new ObjectProperty<>(serviceFormData.lectoring));
+    	lectorCheck.setBuffered(true);
+    }
+    
     private void createLayout() {
-        
         setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
         setSpacing(true);
         languageFrom.setWidth("110px");
@@ -41,5 +55,17 @@ public class LanguageServiceForm extends HorizontalLayout {
         setComponentAlignment(languageFrom, Alignment.MIDDLE_CENTER);
         setComponentAlignment(languageTo, Alignment.MIDDLE_CENTER);
     }
+    
+    boolean isDataModified() {
+		return dataFields.stream().anyMatch(Field::isModified);
+	}
+	
+	boolean isDataValid() {
+		return dataFields.stream().allMatch(Field::isValid);
+	}
+	
+	LanguageServiceFormData getServiceFormData() {
+		return new LanguageServiceFormData((Language)languageFrom.getValue(), (Language)languageTo.getValue(), translateCheck.getValue(), interpretCheck.getValue(), lectorCheck.getValue());
+	}
     
 }

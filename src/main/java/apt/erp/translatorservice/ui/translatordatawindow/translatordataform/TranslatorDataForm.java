@@ -39,15 +39,15 @@ public class TranslatorDataForm extends TabSheet {
     
     public Translator getTranslator() {
         return translator.updated(contactDataForm.getContactData(), invoicingDataForm.getInvoicingData(), translator.languages(),
-                translator.languageSkills, translator.comment);
+        		languageSkillsForm.getLanguageSkills(), translator.comment);
     }
 
     public boolean isDataValid() {
-        return contactDataForm.isDataValid() && invoicingDataForm.isDataValid();
+        return contactDataForm.isDataValid() && invoicingDataForm.isDataValid() && languageSkillsForm.isDataValid();
     }
 
     public boolean isDataModified() {
-        return contactDataForm.isDataModified() || invoicingDataForm.isDataModified();
+        return contactDataForm.isDataModified() || invoicingDataForm.isDataModified() || languageSkillsForm.isDataModified();
     }
     
 }

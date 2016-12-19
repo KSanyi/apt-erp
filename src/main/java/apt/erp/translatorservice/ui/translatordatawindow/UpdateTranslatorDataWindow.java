@@ -12,6 +12,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.domain.ValidationError;
+import apt.erp.common.vaadin.ConfirmationDialog;
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.common.vaadin.ZipTownMap;
@@ -28,7 +29,7 @@ public class UpdateTranslatorDataWindow extends Window {
 	private final TranslatorDataForm translatorDataForm;
 	
 	private final Button updateButton = FormFieldFactory.createFormButton("Frissítés", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> updateTranslatorData());
-	private final Button deleteButton = FormFieldFactory.createFormButton("Törlés", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, click -> deleteTranslator());
+	private final Button deleteButton = FormFieldFactory.createFormButton("Törlés", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER);
 	
 	private final List<TranslatorDataChangeListener> translatorDataChangeListeners = new ArrayList<>();
 	
@@ -42,6 +43,10 @@ public class UpdateTranslatorDataWindow extends Window {
 		
 		setPositionY(50);
         setPositionX(400);
+        
+        deleteButton.addClickListener(click -> {
+        	ConfirmationDialog.show("Megerősítés", "Biztosan törli a fordítót?", this::deleteTranslator);
+        });
 	}
 	
 	private void updateTranslatorData() {
@@ -49,7 +54,7 @@ public class UpdateTranslatorDataWindow extends Window {
 			if(translatorDataForm.isDataValid()) {
 				try {
 					translatorService.updateTranslator(translatorDataForm.getTranslator());
-					Notification.show("Translator has been updated");
+					Notification.show("Fordító adatok frissítve");
 					notifyTranslatorDataChangeListeners();
 					this.close();
 				} catch (ValidationError ex) {
@@ -65,12 +70,14 @@ public class UpdateTranslatorDataWindow extends Window {
 	
 	private void deleteTranslator() {
 		translatorService.deleteTranslator(translator.id);
-		Notification.show("Translator has been deleted");
+		Notification.show("Fordító törölve");
 		notifyTranslatorDataChangeListeners();
 		this.close();
 	}
 	
 	private void createLayout() {
+		updateButton.setWidth("100px");
+		deleteButton.setWidth("100px");
 		HorizontalLayout buttonsLayout = LayoutFactory.createHorizontalLayout(updateButton, deleteButton);
 		VerticalLayout layout = LayoutFactory.createCenteredVerticalLayout(translatorDataForm, buttonsLayout);
 		setContent(layout);

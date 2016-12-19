@@ -6,7 +6,7 @@ import java.util.List;
 import apt.erp.common.domain.EmailAddress;
 import apt.erp.common.domain.Name;
 import apt.erp.common.domain.PhoneNumber;
-import apt.erp.projectservice.domain.ServiceType;
+import apt.erp.projectservice.domain.LanguageServiceType;
 
 public class ContactData {
 
@@ -18,9 +18,9 @@ public class ContactData {
     public final EmailAddress emailAddress1;
     public final EmailAddress emailAddress2;
     
-    public final List<ServiceType> serviceTypes;
+    public final List<LanguageServiceType> serviceTypes;
     
-    public ContactData(Name name, PhoneNumber phoneNumber1, PhoneNumber phoneNumber2, EmailAddress emailAddress1, EmailAddress emailAddress2, List<ServiceType> serviceTypes) {
+    public ContactData(Name name, PhoneNumber phoneNumber1, PhoneNumber phoneNumber2, EmailAddress emailAddress1, EmailAddress emailAddress2, List<LanguageServiceType> serviceTypes) {
         this.name = name;
         this.phoneNumber1 = phoneNumber1;
         this.phoneNumber2 = phoneNumber2;

@@ -9,7 +9,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.ZipTownMap;
-import apt.erp.projectservice.domain.ServiceType;
+import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.translatorservice.domain.Translator;
 import apt.erp.translatorservice.domain.TranslatorService;
 import apt.erp.translatorservice.ui.translatordatawindow.UpdateTranslatorDataWindow;
@@ -49,7 +49,7 @@ class TranslatorsTable extends Table {
 		
 	    removeAllItems();
 		for(Translator translator : translatorService.loadAllTranslators()) {
-			addItem(new Object[]{translator.contactData.name.toString(), translator.contactData.serviceTypes.stream().map(ServiceType::toString).collect(Collectors.joining(", "))}, translator);
+			addItem(new Object[]{translator.contactData.name.toString(), translator.contactData.serviceTypes.stream().map(LanguageServiceType::toString).collect(Collectors.joining(", "))}, translator);
 		}
 		sort();
 		

@@ -17,7 +17,7 @@ import apt.erp.common.domain.Name;
 import apt.erp.common.domain.PhoneNumber;
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
-import apt.erp.projectservice.domain.ServiceType;
+import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.translatorservice.domain.ContactData;
 
 @SuppressWarnings("serial")
@@ -28,7 +28,7 @@ public class ContactDataForm extends VerticalLayout {
     private final TextField phoneField2 = FormFieldFactory.createFormTextField("Telefon 2", 200, false);
     private final TextField emailField1 = FormFieldFactory.createFormTextField("Email 1", 200, false);
     private final TextField emailField2 = FormFieldFactory.createFormTextField("Email 2", 200, false);
-    private final TwinColSelect serviceTypeSelect = new TwinColSelect("Szolgáltatások", ServiceType.all);
+    private final TwinColSelect serviceTypeSelect = new TwinColSelect("Szolgáltatások", LanguageServiceType.all);
 	
 	private final List<Field<?>> dataFields = Arrays.asList(nameField, phoneField1, phoneField2, emailField1, emailField2, serviceTypeSelect);
 	
@@ -45,7 +45,7 @@ public class ContactDataForm extends VerticalLayout {
 		phoneField2.setPropertyDataSource(new ObjectProperty<String>(contactData.phoneNumber2.value));
 		emailField1.setPropertyDataSource(new ObjectProperty<String>(contactData.emailAddress1.value));
 		emailField2.setPropertyDataSource(new ObjectProperty<String>(contactData.emailAddress2.value));
-		serviceTypeSelect.setPropertyDataSource(new ObjectProperty<Set<ServiceType>>(new HashSet<>(contactData.serviceTypes)));
+		serviceTypeSelect.setPropertyDataSource(new ObjectProperty<Set<LanguageServiceType>>(new HashSet<>(contactData.serviceTypes)));
 		serviceTypeSelect.setBuffered(true);
 		serviceTypeSelect.setMultiSelect(true);
 	}
@@ -82,7 +82,7 @@ public class ContactDataForm extends VerticalLayout {
 	@SuppressWarnings("unchecked")
     public ContactData getContactData() {
 	    
-	    Set<ServiceType> selectedServiceTypes = (Set<ServiceType>)serviceTypeSelect.getValue();
+	    Set<LanguageServiceType> selectedServiceTypes = (Set<LanguageServiceType>)serviceTypeSelect.getValue();
 	    
 	    return new ContactData(new Name(nameField.getValue()), new PhoneNumber(phoneField1.getValue()), new PhoneNumber(phoneField2.getValue()), 
 	            new EmailAddress(emailField1.getValue()), new EmailAddress(emailField2.getValue()), new ArrayList<>(selectedServiceTypes));

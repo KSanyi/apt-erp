@@ -20,7 +20,7 @@ import apt.erp.common.domain.TaxId;
 import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
 import apt.erp.projectservice.domain.LanguageService;
-import apt.erp.projectservice.domain.ServiceType;
+import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.translatorservice.domain.ContactData;
 import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
@@ -57,7 +57,7 @@ public class DemoTranslatorFactory {
         PhoneNumber phoneNumber2 = random.nextInt(10) == 0 ? generatePhoneNumber() : PhoneNumber.createEmpty();
         EmailAddress emailAddress2 = random.nextInt(10) == 0 ? generateEmailAddress(name) : EmailAddress.createEmpty();
         
-        List<ServiceType> serviceTypes = generateServiceTypes();
+        List<LanguageServiceType> serviceTypes = generateServiceTypes();
         
         return new ContactData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, serviceTypes);
 	}
@@ -91,12 +91,12 @@ public class DemoTranslatorFactory {
         return new ArrayList<>(languages);
     }
     
-    private List<ServiceType> generateServiceTypes() {
-        Set<ServiceType> serviceTypes = new HashSet<>();
+    private List<LanguageServiceType> generateServiceTypes() {
+        Set<LanguageServiceType> serviceTypes = new HashSet<>();
         int numberOfServiceTypes = random.nextInt(3);
-        serviceTypes.add(ServiceType.Translation);
+        serviceTypes.add(LanguageServiceType.Translation);
         for(int i=0;i<numberOfServiceTypes;i++) {
-            serviceTypes.add(ServiceType.all.get(random.nextInt(ServiceType.all.size())));
+            serviceTypes.add(LanguageServiceType.all.get(random.nextInt(LanguageServiceType.all.size())));
         }
         return serviceTypes.stream().sorted().collect(Collectors.toList());
     }
@@ -167,15 +167,15 @@ public class DemoTranslatorFactory {
     	int numberOfServices = random.nextInt(3) + 1;
     	for(int i=0;i<numberOfServices;i++) {
     		Language language = Language.all.get(random.nextInt(Language.all.size()));
-    		services.add(new LanguageService(language, Language.Hungarian, ServiceType.Translation));
-    		if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, ServiceType.Translation));
+    		services.add(new LanguageService(language, Language.Hungarian, LanguageServiceType.Translation));
+    		if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, LanguageServiceType.Translation));
     		if(random.nextInt(5) == 0) {
-    			services.add(new LanguageService(language, Language.Hungarian, ServiceType.Interpreting));
-    			if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, ServiceType.Interpreting));
+    			services.add(new LanguageService(language, Language.Hungarian, LanguageServiceType.Interpretation));
+    			if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, LanguageServiceType.Interpretation));
     		}
     		if(random.nextInt(5) == 0) {
-    			services.add(new LanguageService(language, Language.Hungarian, ServiceType.Lectoring));
-    			if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, ServiceType.Lectoring));
+    			services.add(new LanguageService(language, Language.Hungarian, LanguageServiceType.Lectoring));
+    			if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, LanguageServiceType.Lectoring));
     		}
     	}
     	
