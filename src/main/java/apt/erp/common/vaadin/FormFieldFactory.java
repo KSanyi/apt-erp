@@ -62,6 +62,7 @@ public interface FormFieldFactory {
 	    combo.setWidth("140px");
 	    combo.setBuffered(true);
 	    combo.addStyleName(ValoTheme.COMBOBOX_SMALL);
+	    combo.setTextInputAllowed(false);
 	    return combo;
 	}
 	

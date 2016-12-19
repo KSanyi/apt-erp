@@ -12,6 +12,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.projectservice.domain.Language;
@@ -48,7 +49,9 @@ public class LanguageServiceForm extends HorizontalLayout {
         setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
         setSpacing(true);
         languageFrom.setWidth("110px");
+        languageFrom.setStyleName(ValoTheme.COMBOBOX_TINY);
         languageTo.setWidth("110px");
+        languageTo.setStyleName(ValoTheme.COMBOBOX_TINY);
         
         Label arrow = new Label(FontAwesome.ARROW_RIGHT.getHtml(), ContentMode.HTML);
         addComponents(languageFrom, arrow, languageTo, translateCheck, interpretCheck, lectorCheck);

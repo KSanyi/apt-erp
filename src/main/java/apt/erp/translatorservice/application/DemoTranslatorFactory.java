@@ -21,6 +21,8 @@ import apt.erp.infrastructure.ResourceFileLoader;
 import apt.erp.projectservice.domain.Language;
 import apt.erp.projectservice.domain.LanguageService;
 import apt.erp.projectservice.domain.LanguageServiceType;
+import apt.erp.projectservice.domain.SubTopic;
+import apt.erp.projectservice.domain.Topic;
 import apt.erp.translatorservice.domain.ContactData;
 import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
@@ -159,7 +161,7 @@ public class DemoTranslatorFactory {
 	}
 	
 	private LanguageSkills generateLanguageSkills() {
-		return new LanguageSkills(generateServices());
+		return new LanguageSkills(generateServices(), generateSubTopics());
 	}
 	
     private List<LanguageService> generateServices() {
@@ -180,6 +182,17 @@ public class DemoTranslatorFactory {
     	}
     	
         return services;
+    }
+    
+    private List<SubTopic> generateSubTopics() {
+    	List<SubTopic> subTopics = new ArrayList<>();
+    	int numberOfSubTopics = random.nextInt(5) + 1;
+    	for(int i=0;i<numberOfSubTopics;i++) {
+    		Topic topic = Topic.allTopics.get(random.nextInt(Topic.allTopics.size()));
+    		SubTopic subTopic = topic.subTopics().get(random.nextInt(topic.subTopics().size()));
+    		subTopics.add(subTopic);
+    	}
+    	return subTopics;
     }
     
     /*

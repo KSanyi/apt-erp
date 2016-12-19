@@ -23,28 +23,29 @@ public class CreateTranslatorDataWindow extends Window {
 	
 	private final TranslatorDataForm translatorDataForm;
 	
-	private final Button saveButton = FormFieldFactory.createFormButton("Create", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> createTranslatorData());
+	private final Button saveButton = FormFieldFactory.createFormButton("Mentés", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> createTranslatorData());
 	
 	private final List<TranslatorDataChangeListener> translatorDataChangeListeners = new ArrayList<>();
 	
 	public CreateTranslatorDataWindow(TranslatorService translatorService, ZipTownMap zipTownMap) {
 		this.translatorService = translatorService;
-		setCaption("New Translator");
+		setCaption("Új fordító");
 		
 		translatorDataForm = new TranslatorDataForm(Translator.createEmpty(), zipTownMap);
 		setContent(LayoutFactory.createCenteredVerticalLayout(translatorDataForm, saveButton));
-		setWidth("400px");
-		setHeight("600px");
-		
+
 		setPositionY(50);
 		setPositionX(400);
+		
+		setWidth("750px");
+		setHeight("500px");
 	}
 	
 	private void createTranslatorData() {
 		if(translatorDataForm.isDataValid()) {
 			Translator translator = translatorDataForm.getTranslator();
 			translatorService.createTranslator(translator);
-			Notification.show("Translator has been created");
+			Notification.show("Fodító létrehozva");
 			notifyTranslatorDataChangeListeners(translator);
 			this.close();
 		} else {

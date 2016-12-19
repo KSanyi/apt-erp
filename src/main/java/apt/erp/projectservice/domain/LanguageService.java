@@ -14,4 +14,9 @@ public class LanguageService {
         this.serviceType = servicetype;
     }
     
+    @Override
+    public String toString() {
+    	return sourceLanguage + " -> " + destLanguage + ": " + serviceType;
+    }
+    
 }

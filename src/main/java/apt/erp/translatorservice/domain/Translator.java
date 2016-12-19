@@ -56,6 +56,7 @@ public class Translator {
         .append("Id: ").append(id).append(" ")
         .append("ContactData: ").append(contactData).append(", ")
         .append("languages: ").append(languages).append(", ")
+        .append("language skills: ").append(languageSkills).append(", ")
         .append("comment: ").append(comment).toString();
     }
 

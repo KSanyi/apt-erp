@@ -43,6 +43,7 @@ public class UpdateTranslatorDataWindow extends Window {
 		
 		setPositionY(50);
         setPositionX(400);
+        setWidth("750px");
         
         deleteButton.addClickListener(click -> {
         	ConfirmationDialog.show("Megerősítés", "Biztosan törli a fordítót?", this::deleteTranslator);
