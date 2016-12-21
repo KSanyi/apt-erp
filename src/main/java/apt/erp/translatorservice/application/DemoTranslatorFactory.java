@@ -1,6 +1,7 @@
 package apt.erp.translatorservice.application;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.projectservice.domain.SubTopic;
 import apt.erp.projectservice.domain.Topic;
 import apt.erp.translatorservice.domain.ContactData;
+import apt.erp.translatorservice.domain.Document;
 import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
 import apt.erp.translatorservice.domain.InvoicingData;
@@ -49,10 +51,10 @@ public class DemoTranslatorFactory {
 		
 		List<Language> languages = generateLanguages();
 		
-		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), generateInvoicingData(), languages, generateLanguageSkills(), comment);
+		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), generateInvoicingData(), languages, generateLanguageSkills(), generateDocuments(), comment);
 	}
 	
-	private ContactData generateContactData() {
+    private ContactData generateContactData() {
 	    Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
         PhoneNumber phoneNumber1 = generatePhoneNumber();
         EmailAddress emailAddress1 = generateEmailAddress(name);
@@ -86,7 +88,7 @@ public class DemoTranslatorFactory {
     private List<Language> generateLanguages() {
         Set<Language> languages = new HashSet<>();
         languages.add(Language.Hungarian);
-        int numberOfLanguages = random.nextInt(3) + 1;
+        int numberOfLanguages = randomInt(1, 3);
         for(int i=0;i<numberOfLanguages;i++) {
             languages.add(Language.all.get(random.nextInt(Language.all.size())));
         }
@@ -111,14 +113,14 @@ public class DemoTranslatorFactory {
     	if(random.nextInt(5) == 0) {
     		return Optional.empty();
     	} else {
-    		return Optional.of(LocalDate.now().minusDays(random.nextInt(500)));
+    		return Optional.of(generateRecentDate());
     	}
     }
 	
 	private PaymentInfo generatePaymentInfo() {
 		SettlementMode settlementMode = SettlementMode.values()[random.nextInt(SettlementMode.values().length)];
 		PaymentMode paymentMode = PaymentMode.values()[random.nextInt(PaymentMode.values().length)];
-		int paymentDeadlineDays = random.nextInt(5) + 10;
+		int paymentDeadlineDays = randomInt(10, 20);
 		return new PaymentInfo(settlementMode, paymentDeadlineDays, paymentMode);
 	}
     
@@ -156,7 +158,7 @@ public class DemoTranslatorFactory {
 		String town = zipAndTown[1];
 		String[] streetTypes = new String[]{"utca", "út", "tér"};
 		String street = streetPicker.pickRandomWord() + " " + streetTypes[random.nextInt(3)];
-		String number = String.valueOf(random.nextInt(100));
+		String number = String.valueOf(randomInt(1, 200));
 		return new Address(zip, town, street, number);	
 	}
 	
@@ -205,6 +207,28 @@ public class DemoTranslatorFactory {
         return new ArrayList<>(domains);
     }
     */
+    
+    private List<Document> generateDocuments() {
+        List<Document> docs = new ArrayList<>();
+        int numberOfDocs = randomInt(0, 10);
+        for(int i=0;i<numberOfDocs;i++) {
+            Document.Type docType = Document.Type.values()[random.nextInt(Document.Type.values().length)];
+            docs.add(new Document(docType, docType.toString() + ".doc", generateRecentDateTime()));
+        }
+        return docs;
+    }
+    
+    private LocalDate generateRecentDate() {
+        return LocalDate.now().minusDays(random.nextInt(500));
+    }
+    
+    private LocalDateTime generateRecentDateTime() {
+        return LocalDateTime.now().minusHours(random.nextInt(500 * 25));
+    }
+    
+    private int randomInt(int minInclusive, int maxInclusive) {
+        return random.nextInt(maxInclusive - minInclusive + 1) + minInclusive;
+    }
     
 	private int createRandomDigit() {
 		return random.nextInt(10);

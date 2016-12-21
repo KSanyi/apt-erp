@@ -11,31 +11,37 @@ public class Translator {
 
     public static Translator createEmpty() {
         return new Translator(TranslatorId.newId, ContactData.createEmpty(), InvoicingData.createEmpty(),
-                Collections.emptyList(), LanguageSkills.empty, "");
+                Collections.emptyList(), LanguageSkills.empty, Collections.emptyList(), "");
     }
     
     public final TranslatorId id;
     public final ContactData contactData;
     public final InvoicingData invoicingData;
     private final List<Language> languages;
+    private final List<Document> documents;
     public final LanguageSkills languageSkills;
     public final String comment;
     
-    public Translator(TranslatorId id, ContactData contactData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, String comment) {
+    public Translator(TranslatorId id, ContactData contactData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
         this.id = id;
         this.contactData = contactData;
         this.invoicingData = invoicingData;
         this.languages = languages;
         this.languageSkills = languageSkills;
+        this.documents = documents;
         this.comment = comment;
     }
     
-    public Translator updated(ContactData contactData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, String comment) {
-        return new Translator(id, contactData, invoicingData, languages, languageSkills, comment);
+    public Translator updated(ContactData contactData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
+        return new Translator(id, contactData, invoicingData, languages, languageSkills, documents, comment);
     }
     
     public List<Language> languages() {
         return new ArrayList<>(languages);
+    }
+    
+    public List<Document> documents() {
+        return new ArrayList<>(documents);
     }
     
     public boolean matches(String filter) {

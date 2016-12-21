@@ -6,6 +6,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.translatorservice.domain.Translator;
+import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.documentsform.DocumentsForm;
 import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.invoicingdataform.InvoicingDataForm;
 import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.languageskillsform.LanguageSkillsForm;
 
@@ -15,6 +16,7 @@ public class TranslatorDataForm extends TabSheet {
     private final ContactDataForm contactDataForm;
     private final InvoicingDataForm invoicingDataForm;
     private final LanguageSkillsForm languageSkillsForm;
+    private final DocumentsForm documentsForm;
     
     private final Translator translator;
     
@@ -25,11 +27,12 @@ public class TranslatorDataForm extends TabSheet {
         contactDataForm = new ContactDataForm(translator.contactData);
         invoicingDataForm = new InvoicingDataForm(translator.invoicingData, zipTownMap);
         languageSkillsForm = new LanguageSkillsForm(translator.languageSkills);
+        documentsForm = new DocumentsForm(translator.documents());
         
         addTab(contactDataForm, "Kontakt adatok");
         addTab(invoicingDataForm, "Számlázási adatok");
         addTab(languageSkillsForm, "Nyelvi képzettség");
-        addTab(new Label("Fejlesztés alatt"), "Dokumentumok");
+        addTab(documentsForm, "Dokumentumok");
         addTab(new Label("Fejlesztés alatt"), "Árazás");
         addTab(new Label("Fejlesztés alatt"), "...");
         
@@ -39,7 +42,7 @@ public class TranslatorDataForm extends TabSheet {
     
     public Translator getTranslator() {
         return translator.updated(contactDataForm.getContactData(), invoicingDataForm.getInvoicingData(), translator.languages(),
-        		languageSkillsForm.getLanguageSkills(), translator.comment);
+        		languageSkillsForm.getLanguageSkills(), documentsForm.getDocuments(), translator.comment);
     }
 
     public boolean isDataValid() {
