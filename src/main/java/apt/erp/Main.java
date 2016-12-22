@@ -14,7 +14,7 @@ public class Main {
 	    
 	    ApplicationService applicationService = new ApplicationService(
 	            new DemoCustomerRepository(100), 
-	            new DemoTranslatorRepository(20),
+	            new DemoTranslatorRepository(50),
 	            new ZipTownMap());
 
         new ErpServer(port, applicationService).startServer();

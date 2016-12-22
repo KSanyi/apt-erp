@@ -1,6 +1,8 @@
 package apt.erp.translatorservice.domain;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class Document {
 
@@ -16,10 +18,11 @@ public class Document {
         this.uploadDate = uploadDate;
     }
 
-
     public static enum Type {
-        CV("CV"), DataForm("Adatlap"), ConfidentialityDeclaration("Titoktartási nyilatkozat"), LoyaltyDeclaration("Hűségnyilatkozat"), Other("Egyedi nyilatkozat");
+        CV("Önéletrajz"), DataForm("Adatlap"), ConfidentialityDeclaration("Titoktartási nyilatkozat"), LoyaltyDeclaration("Hűségnyilatkozat"), Other("Egyedi nyilatkozat");
         
+    	public static final List<Type> all = Arrays.asList(values());
+    	
         private final String caption;
         
         Type(String caption) {

@@ -56,4 +56,11 @@ public interface LayoutFactory {
 		return layout;
 	}
 	
+	static HorizontalLayout createHorizontalLayoutWithMargin(Component ... components){
+		HorizontalLayout layout = new HorizontalLayout(components);
+		layout.setSpacing(true);
+		layout.setMargin(true);
+		return layout;
+	}
+	
 }
