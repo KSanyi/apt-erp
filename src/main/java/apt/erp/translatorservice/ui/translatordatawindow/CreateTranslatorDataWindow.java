@@ -37,7 +37,7 @@ public class CreateTranslatorDataWindow extends Window {
 		setPositionY(50);
 		setPositionX(400);
 		
-		setWidth("750px");
+		setWidth("1000px");
 		setHeight("500px");
 	}
 	

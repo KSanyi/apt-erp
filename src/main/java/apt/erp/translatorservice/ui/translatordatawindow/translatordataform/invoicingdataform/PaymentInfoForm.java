@@ -19,9 +19,9 @@ import apt.erp.translatorservice.domain.PaymentInfo.SettlementMode;
 @SuppressWarnings("serial")
 public class PaymentInfoForm extends Panel {
 
-    private final ComboBox settlementModeCombo = FormFieldFactory.createComboBox("Elszámolás módja", SettlementMode.all);
+    private final ComboBox settlementModeCombo = FormFieldFactory.createEnumComboBox("Elszámolás módja", SettlementMode.class);
     private final ComboBox paymentDeadlineDaysCombo = FormFieldFactory.createComboBox("Fizetési határidő", Util.generateIntRangeList(1, 90));
-    private final ComboBox paymentModeCombo = FormFieldFactory.createComboBox("Fizetés módja", PaymentMode.all);
+    private final ComboBox paymentModeCombo = FormFieldFactory.createEnumComboBox("Fizetés módja", PaymentMode.class);
 
     private final List<Field<?>> dataFields = Arrays.asList(settlementModeCombo, paymentDeadlineDaysCombo, paymentModeCombo);
     

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -16,7 +15,7 @@ import java.util.stream.Stream;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Layout;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Upload;
@@ -55,7 +54,7 @@ public class DocumentsForm extends VerticalLayout implements Receiver, Succeeded
     }
     
     private static ComboBox createDocTypeCombo() {
-    	ComboBox docTypeCombo = FormFieldFactory.createComboBox("Dokumentum típusa", Document.Type.all);
+    	ComboBox docTypeCombo = FormFieldFactory.createEnumComboBox("Dokumentum típusa", Document.Type.class);
     	docTypeCombo.setValue(Document.Type.CV);
     	return docTypeCombo;
     }
@@ -73,13 +72,13 @@ public class DocumentsForm extends VerticalLayout implements Receiver, Succeeded
         setDefaultComponentAlignment(Alignment.TOP_CENTER);
         docTypeCombo.setWidth("180px");
         
-        List<DocumentsTable> docTableList = new ArrayList<>(docTables.values());
-        Layout docTablesLayout1 = LayoutFactory.createHorizontalLayout(docTableList.subList(0, 3).toArray(new DocumentsTable[0]));
-        Layout docTablesLayout2 = LayoutFactory.createHorizontalLayout(docTableList.subList(3, 5).toArray(new DocumentsTable[0]));
+        GridLayout docTablesLayout = new GridLayout(3, 2);
+        docTablesLayout.setSpacing(true);
+        docTables.values().stream().forEach(docTablesLayout::addComponent);
         
         Panel uploadPanel = new Panel("Új dokumentum", LayoutFactory.createHorizontalLayoutWithMargin(docTypeCombo, upload));
         
-        addComponents(docTablesLayout1, docTablesLayout2, uploadPanel);
+        addComponents(docTablesLayout, uploadPanel);
     }
     
     public List<Document> getDocuments() {

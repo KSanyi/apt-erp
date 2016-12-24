@@ -20,8 +20,8 @@ import apt.erp.projectservice.domain.Language;
 @SuppressWarnings("serial")
 public class LanguageServiceForm extends HorizontalLayout {
 
-    private ComboBox languageFrom = FormFieldFactory.createComboBox("", Language.all);
-    private ComboBox languageTo = FormFieldFactory.createComboBox("", Language.all);
+    private ComboBox languageFrom = FormFieldFactory.createEnumComboBox("", Language.class);
+    private ComboBox languageTo = FormFieldFactory.createEnumComboBox("", Language.class);
     private CheckBox translateCheck = new CheckBox("Fordítás");
     private CheckBox interpretCheck = new CheckBox("Tolmácskodás");
     private CheckBox lectorCheck = new CheckBox("Lektorálás");

@@ -29,8 +29,8 @@ public class CustomerDataForm extends GridLayout {
 	
 	private final TextField nameField = FormFieldFactory.createFormTextField("Név", 300, true);
 	private final TextField taxIdField = FormFieldFactory.createFormTextField("Adószám", 200, false);
-	private final ComboBox domainCombo = FormFieldFactory.createComboBox("Terület", Domain.all);
-	private final ComboBox languageCombo = FormFieldFactory.createComboBox("Nyelv", Language.all);
+	private final ComboBox domainCombo = FormFieldFactory.createEnumComboBox("Terület", Domain.class);
+	private final ComboBox languageCombo = FormFieldFactory.createEnumComboBox("Nyelv", Language.class);
 	private final AddressTabSheet adressTabSheet;
 	private final ContactsTabSheet contactsTabSheet;
 	private final TextArea commentField = new TextArea("Megjegyzés");

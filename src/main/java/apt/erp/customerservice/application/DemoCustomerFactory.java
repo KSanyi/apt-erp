@@ -81,11 +81,11 @@ public class DemoCustomerFactory {
     }
 
     private Domain generateCustomerDomain() {
-        return Domain.all.get(random.nextInt(Domain.all.size()));
+        return randomEnumValue(Domain.class);
     }
     
 	private Language generateCustomerLanguage() {
-        return Language.all.get(random.nextInt(Language.all.size()));
+        return randomEnumValue(Language.class);
     }
 	
 	private TaxId generateTaxId() {
@@ -110,6 +110,10 @@ public class DemoCustomerFactory {
 		String number = String.valueOf(random.nextInt(100));
 		return new Address(zip, town, street, number);	
 	}
+	
+	private <T> T randomEnumValue(Class<T> enumClass) {
+        return enumClass.getEnumConstants()[random.nextInt(enumClass.getEnumConstants().length)];
+    }
 	
 	private int createRandomDigit() {
 		return random.nextInt(10);

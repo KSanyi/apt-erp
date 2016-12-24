@@ -1,5 +1,6 @@
 package apt.erp.common.vaadin;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.vaadin.server.Resource;
@@ -65,5 +66,9 @@ public interface FormFieldFactory {
 	    combo.setTextInputAllowed(false);
 	    return combo;
 	}
+	
+	static ComboBox createEnumComboBox(String caption, Class<?> enumClass) {
+	    return createComboBox(caption, Arrays.asList(enumClass.getEnumConstants()));
+    }
 	
 }

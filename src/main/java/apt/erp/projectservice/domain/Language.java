@@ -1,10 +1,5 @@
 package apt.erp.projectservice.domain;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public enum Language  {
 
     English("Angol"),
@@ -36,8 +31,6 @@ public enum Language  {
 		this.caption = caption;
 	}
 
-	public static List<Language> all = Arrays.asList(values()).stream().sorted(Comparator.comparing(Language::toString)).collect(Collectors.toList());
-	
 	@Override
     public String toString() {
         return caption;

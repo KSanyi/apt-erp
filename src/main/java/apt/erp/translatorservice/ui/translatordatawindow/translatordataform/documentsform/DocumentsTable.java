@@ -41,8 +41,8 @@ class DocumentsTable extends VerticalLayout {
         table.addStyleName(ValoTheme.TABLE_SMALL);
         table.addStyleName(ValoTheme.TABLE_NO_STRIPES);
         table.setPageLength(3);
-        table.setWidth("270px");
-        table.setColumnWidth("name", 110);
+        table.setWidth("310px");
+        table.setColumnWidth("name", 150);
         table.setColumnWidth("date", 110);
         
         addComponent(table);

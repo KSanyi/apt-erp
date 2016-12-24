@@ -23,7 +23,7 @@ public class InvoicingCompanyForm extends Panel {
 
     private final TextField nameField = FormFieldFactory.createFormTextField("Név", 300, true);
     private final TextField taxIdField = FormFieldFactory.createFormTextField("Adószám", 120, false);
-    private final ComboBox invoicingTypeCombo = FormFieldFactory.createComboBox("Számlázási metódus", InvoicingType.all);
+    private final ComboBox invoicingTypeCombo = FormFieldFactory.createEnumComboBox("Számlázási metódus", InvoicingType.class);
     private final AddressTabSheet addressTabSheet;
     private final CheckBox vatFreeCheck = new CheckBox("Áfa mentes");
     

@@ -1,8 +1,5 @@
 package apt.erp.customerservice.domain;
 
-import java.util.Arrays;
-import java.util.List;
-
 public enum Domain {
 
     Finance,
@@ -15,5 +12,4 @@ public enum Domain {
     Science,
     Other;
     
-    public static List<Domain> all = Arrays.asList(values());    
 }

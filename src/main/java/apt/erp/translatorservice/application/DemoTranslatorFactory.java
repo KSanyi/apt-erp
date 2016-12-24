@@ -25,6 +25,7 @@ import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.projectservice.domain.SubTopic;
 import apt.erp.projectservice.domain.Topic;
 import apt.erp.translatorservice.domain.ContactData;
+import apt.erp.translatorservice.domain.ContactData.CommunicationChannel;
 import apt.erp.translatorservice.domain.Document;
 import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
@@ -60,10 +61,11 @@ public class DemoTranslatorFactory {
         EmailAddress emailAddress1 = generateEmailAddress(name);
         PhoneNumber phoneNumber2 = random.nextInt(10) == 0 ? generatePhoneNumber() : PhoneNumber.createEmpty();
         EmailAddress emailAddress2 = random.nextInt(10) == 0 ? generateEmailAddress(name) : EmailAddress.createEmpty();
-        
+        String skypeId = generateSkypeId(name);
+        CommunicationChannel preferredCommunicationChannel = randomEnumValue(CommunicationChannel.class);
         List<LanguageServiceType> serviceTypes = generateServiceTypes();
         
-        return new ContactData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, serviceTypes);
+        return new ContactData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, skypeId, preferredCommunicationChannel, serviceTypes);
 	}
 	
     private EmailAddress generateEmailAddress(Name name) {
@@ -72,6 +74,10 @@ public class DemoTranslatorFactory {
             case 0: return new EmailAddress(name.cleanName().replaceAll("\\s+","")+ "@" + carriers[random.nextInt(3)]);
             default: return new EmailAddress(name.cleanName().replaceAll("\\s+","") + random.nextInt(100) + "@" + carriers[random.nextInt(3)]);
         }
+    }
+    
+    private String generateSkypeId(Name name) {
+        return name.cleanName().replaceAll("\\s+","") + random.nextInt(100);
     }
     
     private PhoneNumber generatePhoneNumber() {
@@ -90,7 +96,7 @@ public class DemoTranslatorFactory {
         languages.add(Language.Hungarian);
         int numberOfLanguages = randomInt(1, 3);
         for(int i=0;i<numberOfLanguages;i++) {
-            languages.add(Language.all.get(random.nextInt(Language.all.size())));
+            languages.add(randomEnumValue(Language.class));
         }
         return new ArrayList<>(languages);
     }
@@ -100,7 +106,7 @@ public class DemoTranslatorFactory {
         int numberOfServiceTypes = random.nextInt(3);
         serviceTypes.add(LanguageServiceType.Translation);
         for(int i=0;i<numberOfServiceTypes;i++) {
-            serviceTypes.add(LanguageServiceType.all.get(random.nextInt(LanguageServiceType.all.size())));
+            serviceTypes.add(randomEnumValue(LanguageServiceType.class));
         }
         return serviceTypes.stream().sorted().collect(Collectors.toList());
     }
@@ -118,8 +124,8 @@ public class DemoTranslatorFactory {
     }
 	
 	private PaymentInfo generatePaymentInfo() {
-		SettlementMode settlementMode = SettlementMode.values()[random.nextInt(SettlementMode.values().length)];
-		PaymentMode paymentMode = PaymentMode.values()[random.nextInt(PaymentMode.values().length)];
+		SettlementMode settlementMode = randomEnumValue(SettlementMode.class);
+		PaymentMode paymentMode = randomEnumValue(PaymentMode.class);
 		int paymentDeadlineDays = randomInt(10, 20);
 		return new PaymentInfo(settlementMode, paymentDeadlineDays, paymentMode);
 	}
@@ -130,7 +136,7 @@ public class DemoTranslatorFactory {
     	} else {
     		String name = companyNamePicker.pickRandomWord();
     		TaxId  taxId = generateTaxId();
-    		InvoicingType invoicingType = InvoicingType.values()[random.nextInt(InvoicingType.values().length)];
+    		InvoicingType invoicingType = randomEnumValue(InvoicingType.class);
     		Address address = generateAddress();
     		boolean invoiceAddressIsTheSame = random.nextInt(10) > 0;
     		Optional<Address> invoiceAddress = invoiceAddressIsTheSame ? Optional.empty() : Optional.of(generateAddress());
@@ -170,7 +176,7 @@ public class DemoTranslatorFactory {
     	List<LanguageService> services = new ArrayList<>();
     	int numberOfServices = random.nextInt(3) + 1;
     	for(int i=0;i<numberOfServices;i++) {
-    		Language language = Language.all.get(random.nextInt(Language.all.size()));
+    		Language language = randomEnumValue(Language.class);
     		services.add(new LanguageService(language, Language.Hungarian, LanguageServiceType.Translation));
     		if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, LanguageServiceType.Translation));
     		if(random.nextInt(5) == 0) {
@@ -182,7 +188,6 @@ public class DemoTranslatorFactory {
     			if(random.nextInt(5) != 0) services.add(new LanguageService(Language.Hungarian, language, LanguageServiceType.Lectoring));
     		}
     	}
-    	
         return services;
     }
     
@@ -212,7 +217,7 @@ public class DemoTranslatorFactory {
         List<Document> docs = new ArrayList<>();
         int numberOfDocs = randomInt(0, 10);
         for(int i=0;i<numberOfDocs;i++) {
-            Document.Type docType = Document.Type.values()[random.nextInt(Document.Type.values().length)];
+            Document.Type docType = randomEnumValue(Document.Type.class);
             docs.add(new Document(docType, docType.toString() + ".doc", generateRecentDateTime()));
         }
         return docs;
@@ -232,6 +237,10 @@ public class DemoTranslatorFactory {
     
 	private int createRandomDigit() {
 		return random.nextInt(10);
+	}
+	
+	private <T> T randomEnumValue(Class<T> enumClass) {
+	    return enumClass.getEnumConstants()[random.nextInt(enumClass.getEnumConstants().length)];
 	}
 	
 }

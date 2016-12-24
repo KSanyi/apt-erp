@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
@@ -19,6 +20,7 @@ import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.translatorservice.domain.ContactData;
+import apt.erp.translatorservice.domain.ContactData.CommunicationChannel;
 
 @SuppressWarnings("serial")
 public class ContactDataForm extends VerticalLayout {
@@ -28,9 +30,11 @@ public class ContactDataForm extends VerticalLayout {
     private final TextField phoneField2 = FormFieldFactory.createFormTextField("Telefon 2", 200, false);
     private final TextField emailField1 = FormFieldFactory.createFormTextField("Email 1", 200, false);
     private final TextField emailField2 = FormFieldFactory.createFormTextField("Email 2", 200, false);
+    private final TextField skypeIdField = FormFieldFactory.createFormTextField("Skype id", 200, false);
+    private final ComboBox preferredCommunicationCombo = FormFieldFactory.createEnumComboBox("Preferált kommunikáció", CommunicationChannel.class);
     private final TwinColSelect serviceTypeSelect = new TwinColSelect("Szolgáltatások", LanguageServiceType.all);
 	
-	private final List<Field<?>> dataFields = Arrays.asList(nameField, phoneField1, phoneField2, emailField1, emailField2, serviceTypeSelect);
+	private final List<Field<?>> dataFields = Arrays.asList(nameField, phoneField1, phoneField2, emailField1, emailField2, skypeIdField, preferredCommunicationCombo, serviceTypeSelect);
 	
 	public ContactDataForm(ContactData contactData) {
 		createLayout();
@@ -45,6 +49,8 @@ public class ContactDataForm extends VerticalLayout {
 		phoneField2.setPropertyDataSource(new ObjectProperty<String>(contactData.phoneNumber2.value));
 		emailField1.setPropertyDataSource(new ObjectProperty<String>(contactData.emailAddress1.value));
 		emailField2.setPropertyDataSource(new ObjectProperty<String>(contactData.emailAddress2.value));
+		skypeIdField.setPropertyDataSource(new ObjectProperty<String>(contactData.skypeId));
+		preferredCommunicationCombo.setPropertyDataSource(new ObjectProperty<CommunicationChannel>(contactData.preferredCommunicationChannel));
 		serviceTypeSelect.setPropertyDataSource(new ObjectProperty<Set<LanguageServiceType>>(new HashSet<>(contactData.serviceTypes)));
 		serviceTypeSelect.setBuffered(true);
 		serviceTypeSelect.setMultiSelect(true);
@@ -61,9 +67,13 @@ public class ContactDataForm extends VerticalLayout {
 	    addComponents(nameField, 
 	            LayoutFactory.createHorizontalLayout(phoneField1, phoneField2),
 	            LayoutFactory.createHorizontalLayout(emailField1, emailField2),
+	            skypeIdField,
+	            preferredCommunicationCombo,
 	            serviceTypeSelect);
 	    
 		nameField.focus();
+		
+		preferredCommunicationCombo.setWidth("120px");
 		
 		serviceTypeSelect.setLeftColumnCaption("Összes");
 		serviceTypeSelect.setRightColumnCaption("Ajánlott");
@@ -85,6 +95,7 @@ public class ContactDataForm extends VerticalLayout {
 	    Set<LanguageServiceType> selectedServiceTypes = (Set<LanguageServiceType>)serviceTypeSelect.getValue();
 	    
 	    return new ContactData(new Name(nameField.getValue()), new PhoneNumber(phoneField1.getValue()), new PhoneNumber(phoneField2.getValue()), 
-	            new EmailAddress(emailField1.getValue()), new EmailAddress(emailField2.getValue()), new ArrayList<>(selectedServiceTypes));
+	            new EmailAddress(emailField1.getValue()), new EmailAddress(emailField2.getValue()), skypeIdField.getValue(),
+	            (CommunicationChannel)preferredCommunicationCombo.getValue(), new ArrayList<>(selectedServiceTypes));
 	}
 }

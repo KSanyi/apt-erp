@@ -19,7 +19,8 @@ public class Document {
     }
 
     public static enum Type {
-        CV("Önéletrajz"), DataForm("Adatlap"), ConfidentialityDeclaration("Titoktartási nyilatkozat"), LoyaltyDeclaration("Hűségnyilatkozat"), Other("Egyedi nyilatkozat");
+        CV("Önéletrajz"), DataForm("Adatlap"), ConfidentialityDeclaration("Titoktartási nyilatkozat"),
+        LoyaltyDeclaration("Hűségnyilatkozat"), Diploma("Diploma"), Other("Egyedi nyilatkozat");
         
     	public static final List<Type> all = Arrays.asList(values());
     	
