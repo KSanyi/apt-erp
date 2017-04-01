@@ -22,17 +22,25 @@ public class ErpUI extends UI {
 	
 	private ApplicationService applicationService = ((ErpServlet)VaadinServlet.getCurrent()).applicationService;
 
+	private User user;
+	
 	@Override
 	protected void init(VaadinRequest request) {
 
-		User user = new User("ksanyi", "Kocso Sandor");
-		
-		buildUI(user);
-		
         logger.debug("ErpUI initialized");
+        
+        if(user == null) {
+            showLogin();
+        }
+	}
+	
+	private void showLogin() {
+	    LoginWindow loginWindow = new LoginWindow(applicationService.authenticator, this::buildUI);
+	    addWindow(loginWindow);
 	}
 	
 	private void buildUI(User user) {
+		logger.info("User " + user.name + " logged in");
 		setContent(new VerticalLayout(new Header(user), new Menu()));
 	}
 	

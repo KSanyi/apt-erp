@@ -5,6 +5,7 @@ import apt.erp.customerservice.application.DemoCustomerRepository;
 import apt.erp.infrastructure.server.ApplicationService;
 import apt.erp.infrastructure.server.ErpServer;
 import apt.erp.translatorservice.application.DemoTranslatorRepository;
+import apt.erp.userservice.application.DemoAuthenticator;
 
 public class Main {
 
@@ -13,6 +14,7 @@ public class Main {
 	    int port = getPort();
 	    
 	    ApplicationService applicationService = new ApplicationService(
+	    		new DemoAuthenticator(),
 	            new DemoCustomerRepository(100), 
 	            new DemoTranslatorRepository(50),
 	            new ZipTownMap());

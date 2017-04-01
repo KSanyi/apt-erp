@@ -72,7 +72,7 @@ public class Header extends HorizontalLayout implements Button.ClickListener {
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if (event.getButton() == logoutButton) {
-			logger.info("User logged out");
+			logger.info("User " + user.name + " logged out");
 			application.close();
 		} 
 	}
