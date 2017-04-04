@@ -29,7 +29,9 @@ public class DemoAuthenticator implements Authenticator {
     static {
         Map<User, String> map = new HashMap<>();
         map.put(new User("tpalasti", "Tibot Palásti", UserRole.Manager), "xxx");
-        map.put(new User("jkerekes", "Judir Kerekes", UserRole.Manager), "xxx");
+        map.put(new User("jkerekes", "Judit Kerekes", UserRole.Manager), "xxx");
+        map.put(new User("mtajcs", "Tajcs Mónika", UserRole.Manager), "xxx");
+        map.put(new User("rczinege", "Czinege Renáta", UserRole.Manager), "xxx");
         map.put(new User("skocso", "Kócsó Sándor", UserRole.Admin), "xxx");
         users = Collections.unmodifiableMap(map);
     }
