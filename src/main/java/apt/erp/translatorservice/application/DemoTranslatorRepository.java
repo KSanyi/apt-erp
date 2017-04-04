@@ -2,7 +2,6 @@ package apt.erp.translatorservice.application;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ public class DemoTranslatorRepository implements TranslatorRepository {
 	
 	public DemoTranslatorRepository(int numberOfTranslators) {
 	    translators = generateRandomTranslators(numberOfTranslators);
-		logger.debug("Translator created: " + translators.stream().map(Translator::toDetailedString).collect(Collectors.joining("\n")));
+		logger.debug("Translators created");
 	}
 	
 	private List<Translator> generateRandomTranslators(int n) {

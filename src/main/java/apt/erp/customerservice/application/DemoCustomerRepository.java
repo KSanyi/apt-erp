@@ -1,15 +1,15 @@
 package apt.erp.customerservice.application;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import apt.erp.customerservice.domain.CustomerData;
-import apt.erp.customerservice.domain.CustomerId;
 import apt.erp.customerservice.domain.CustomerDataRepository;
+import apt.erp.customerservice.domain.CustomerId;
 
 public class DemoCustomerRepository implements CustomerDataRepository {
 
@@ -21,7 +21,7 @@ public class DemoCustomerRepository implements CustomerDataRepository {
 	
 	public DemoCustomerRepository(int numberOfCustomers) {
 	    customerDatas = generateRandomCustomers(numberOfCustomers);
-		logger.debug("Customers created: " + customerDatas.stream().map(CustomerData::toDetailedString).collect(Collectors.joining("\n")));
+		logger.debug("Customers created");
 	}
 	
 	public List<CustomerData> loadAllCustomerDatas() {
@@ -44,11 +44,10 @@ public class DemoCustomerRepository implements CustomerDataRepository {
 	}
 	
 	private List<CustomerData> generateRandomCustomers(int n) {
-		List<CustomerData> customerDatas = new LinkedList<CustomerData>();
-		for(int i=0;i<n;i++) {
-		    customerDatas.add(demoCustomerDataFactory.createRandomCustomerData());
-		}
-		return customerDatas;
+		return IntStream
+				.range(1, n+1)
+				.mapToObj(i -> demoCustomerDataFactory.createRandomCustomerData())
+				.collect(Collectors.toList());
 	}
 
 	@Override

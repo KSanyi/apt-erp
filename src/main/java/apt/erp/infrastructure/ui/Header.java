@@ -25,8 +25,6 @@ public class Header extends HorizontalLayout implements Button.ClickListener {
 
 	private final Button logoutButton = new Button("Kijelentkezés", this);
 
-	private final ErpUI application = (ErpUI)UI.getCurrent();
-	
 	private final User user;
 
 	public Header(User user) {
@@ -73,7 +71,8 @@ public class Header extends HorizontalLayout implements Button.ClickListener {
 	public void buttonClick(ClickEvent event) {
 		if (event.getButton() == logoutButton) {
 			logger.info("User " + user.name + " logged out");
-			application.close();
+			UI.getCurrent().getPage().setLocation("/");
+			UI.getCurrent().getSession().close();
 		} 
 	}
 }
