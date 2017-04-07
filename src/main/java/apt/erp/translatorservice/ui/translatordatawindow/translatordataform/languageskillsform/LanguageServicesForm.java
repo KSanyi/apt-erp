@@ -37,7 +37,7 @@ public class LanguageServicesForm extends Panel {
 	}
 
 	private void createLayout() {
-		setCaption("Fordítási szolgáltatások");
+		setCaption("Szállítói szolgáltatások");
 	    addServiceButton.addStyleName(ValoTheme.BUTTON_TINY);
 	    addServiceButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 	    
@@ -78,7 +78,8 @@ public class LanguageServicesForm extends Panel {
 	}
 	
 	public boolean isDataValid() {
-		return serviceForms.stream().allMatch(LanguageServiceForm::isDataValid);
+		boolean formsAreValid = serviceForms.stream().allMatch(LanguageServiceForm::isDataValid);
+		return formsAreValid;
 	}
 	
 	public List<LanguageService> getLanguageServices() {

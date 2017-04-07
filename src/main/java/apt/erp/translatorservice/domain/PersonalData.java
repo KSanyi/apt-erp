@@ -1,14 +1,10 @@
 package apt.erp.translatorservice.domain;
 
-import java.util.Collections;
-import java.util.List;
-
 import apt.erp.common.domain.EmailAddress;
 import apt.erp.common.domain.Name;
 import apt.erp.common.domain.PhoneNumber;
-import apt.erp.projectservice.domain.LanguageServiceType;
 
-public class ContactData {
+public class PersonalData {
 
     public final Name name;
     
@@ -22,10 +18,10 @@ public class ContactData {
     
     public final CommunicationChannel preferredCommunicationChannel;
     
-    public final List<LanguageServiceType> serviceTypes;
+    public final String comments;
     
-    public ContactData(Name name, PhoneNumber phoneNumber1, PhoneNumber phoneNumber2, EmailAddress emailAddress1, EmailAddress emailAddress2, String skypeId,
-            CommunicationChannel preferredCommunicationChannel, List<LanguageServiceType> serviceTypes) {
+    public PersonalData(Name name, PhoneNumber phoneNumber1, PhoneNumber phoneNumber2, EmailAddress emailAddress1, EmailAddress emailAddress2, String skypeId,
+            CommunicationChannel preferredCommunicationChannel, String comments) {
         this.name = name;
         this.phoneNumber1 = phoneNumber1;
         this.phoneNumber2 = phoneNumber2;
@@ -33,7 +29,7 @@ public class ContactData {
         this.emailAddress2 = emailAddress2;
         this.skypeId = skypeId;
         this.preferredCommunicationChannel = preferredCommunicationChannel;
-        this.serviceTypes = serviceTypes;
+        this.comments = comments;
     }
 
     @Override
@@ -41,18 +37,18 @@ public class ContactData {
         return "Name: " + name + " phone: " + phoneNumber1 + " " + phoneNumber2 + " email: " + emailAddress1 + " " + emailAddress2;
     }
 
-    public static ContactData createEmpty() {
-        return new ContactData(Name.createEmpty(), PhoneNumber.createEmpty(), PhoneNumber.createEmpty(), EmailAddress.createEmpty(), EmailAddress.createEmpty(), "", 
-                CommunicationChannel.Phone, Collections.emptyList());
+    public static PersonalData createEmpty() {
+        return new PersonalData(Name.createEmpty(), PhoneNumber.createEmpty(), PhoneNumber.createEmpty(), EmailAddress.createEmpty(), EmailAddress.createEmpty(), "", 
+                CommunicationChannel.PHONE, "");
     }
 
     public boolean matches(String filter) {
-        return name.matches(filter) || emailAddress1.matches(filter) || emailAddress2.matches(filter);
+        return name.matches(filter) || emailAddress1.matches(filter) || emailAddress2.matches(filter) || comments.toLowerCase().contains(filter.toLowerCase());
     }
     
     public enum CommunicationChannel {
         
-        Phone("Telefon"), Sms("SMS"), Skype("Skype"), Viber("Viber"), Whatsup("Whatsupp"), Facebook("Facebook");
+        PHONE("Telefon"), SMS("SMS"), SKYPE("Skype"), VIBER("Viber"), WHATSAPP("Whatsapp"), FACEBOOK("Facebook");
         
         private String caption;
         

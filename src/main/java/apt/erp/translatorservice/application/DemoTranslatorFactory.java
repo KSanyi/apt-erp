@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import apt.erp.common.demo.RandomWordPicker;
@@ -24,8 +23,8 @@ import apt.erp.projectservice.domain.LanguageService;
 import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.projectservice.domain.SubTopic;
 import apt.erp.projectservice.domain.Topic;
-import apt.erp.translatorservice.domain.ContactData;
-import apt.erp.translatorservice.domain.ContactData.CommunicationChannel;
+import apt.erp.translatorservice.domain.PersonalData;
+import apt.erp.translatorservice.domain.PersonalData.CommunicationChannel;
 import apt.erp.translatorservice.domain.Document;
 import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
@@ -52,10 +51,10 @@ public class DemoTranslatorFactory {
 		
 		List<Language> languages = generateLanguages();
 		
-		return new Translator(IdGenerator.generateTranslatorId(), generateContactData(), generateInvoicingData(), languages, generateLanguageSkills(), generateDocuments(), comment);
+		return new Translator(IdGenerator.generateTranslatorId(), generatePersonalData(), generateInvoicingData(), languages, generateLanguageSkills(), generateDocuments(), comment);
 	}
 	
-    private ContactData generateContactData() {
+    private PersonalData generatePersonalData() {
 	    Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
         PhoneNumber phoneNumber1 = generatePhoneNumber();
         EmailAddress emailAddress1 = generateEmailAddress(name);
@@ -63,9 +62,8 @@ public class DemoTranslatorFactory {
         EmailAddress emailAddress2 = random.nextInt(10) == 0 ? generateEmailAddress(name) : EmailAddress.createEmpty();
         String skypeId = generateSkypeId(name);
         CommunicationChannel preferredCommunicationChannel = randomEnumValue(CommunicationChannel.class);
-        List<LanguageServiceType> serviceTypes = generateServiceTypes();
         
-        return new ContactData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, skypeId, preferredCommunicationChannel, serviceTypes);
+        return new PersonalData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, skypeId, preferredCommunicationChannel, "");
 	}
 	
     private EmailAddress generateEmailAddress(Name name) {
@@ -99,16 +97,6 @@ public class DemoTranslatorFactory {
             languages.add(randomEnumValue(Language.class));
         }
         return new ArrayList<>(languages);
-    }
-    
-    private List<LanguageServiceType> generateServiceTypes() {
-        Set<LanguageServiceType> serviceTypes = new HashSet<>();
-        int numberOfServiceTypes = random.nextInt(3);
-        serviceTypes.add(LanguageServiceType.Translation);
-        for(int i=0;i<numberOfServiceTypes;i++) {
-            serviceTypes.add(randomEnumValue(LanguageServiceType.class));
-        }
-        return serviceTypes.stream().sorted().collect(Collectors.toList());
     }
     
     private InvoicingData generateInvoicingData() {

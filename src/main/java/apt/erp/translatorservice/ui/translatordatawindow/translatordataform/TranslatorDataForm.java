@@ -13,7 +13,7 @@ import apt.erp.translatorservice.ui.translatordatawindow.translatordataform.lang
 @SuppressWarnings("serial")
 public class TranslatorDataForm extends TabSheet {
 
-    private final ContactDataForm contactDataForm;
+    private final PersonalDataForm personalDataForm;
     private final InvoicingDataForm invoicingDataForm;
     private final LanguageSkillsForm languageSkillsForm;
     private final DocumentsForm documentsForm;
@@ -24,12 +24,12 @@ public class TranslatorDataForm extends TabSheet {
         
         this.translator = translator;
         
-        contactDataForm = new ContactDataForm(translator.contactData);
+        personalDataForm = new PersonalDataForm(translator.personalData);
         invoicingDataForm = new InvoicingDataForm(translator.invoicingData, zipTownMap);
         languageSkillsForm = new LanguageSkillsForm(translator.languageSkills);
         documentsForm = new DocumentsForm(translator.documents());
         
-        addTab(contactDataForm, "Kontakt adatok");
+        addTab(personalDataForm, "Személyes adatok");
         addTab(invoicingDataForm, "Számlázási adatok");
         addTab(languageSkillsForm, "Nyelvi képzettség");
         addTab(documentsForm, "Dokumentumok");
@@ -41,16 +41,16 @@ public class TranslatorDataForm extends TabSheet {
     }
     
     public Translator getTranslator() {
-        return translator.updated(contactDataForm.getContactData(), invoicingDataForm.getInvoicingData(), translator.languages(),
+        return translator.updated(personalDataForm.getPersonalData(), invoicingDataForm.getInvoicingData(), translator.languages(),
         		languageSkillsForm.getLanguageSkills(), documentsForm.getDocuments(), translator.comment);
     }
 
     public boolean isDataValid() {
-        return contactDataForm.isDataValid() && invoicingDataForm.isDataValid() && languageSkillsForm.isDataValid();
+        return personalDataForm.isDataValid() && invoicingDataForm.isDataValid() && languageSkillsForm.isDataValid();
     }
 
     public boolean isDataModified() {
-        return contactDataForm.isDataModified() || invoicingDataForm.isDataModified() || languageSkillsForm.isDataModified();
+        return personalDataForm.isDataModified() || invoicingDataForm.isDataModified() || languageSkillsForm.isDataModified();
     }
     
 }

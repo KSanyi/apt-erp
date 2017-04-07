@@ -20,13 +20,13 @@ import apt.erp.projectservice.domain.Language;
 @SuppressWarnings("serial")
 public class LanguageServiceForm extends HorizontalLayout {
 
-    private ComboBox languageFrom = FormFieldFactory.createEnumComboBox("", Language.class);
+    private ComboBox languageForm = FormFieldFactory.createEnumComboBox("", Language.class);
     private ComboBox languageTo = FormFieldFactory.createEnumComboBox("", Language.class);
     private CheckBox translateCheck = new CheckBox("Fordítás");
     private CheckBox interpretCheck = new CheckBox("Tolmácskodás");
     private CheckBox lectorCheck = new CheckBox("Lektorálás");
     
-    private final List<Field<?>> dataFields = Arrays.asList(languageFrom, languageTo, translateCheck, interpretCheck, lectorCheck);
+    private final List<Field<?>> dataFields = Arrays.asList(languageForm, languageTo, translateCheck, interpretCheck, lectorCheck);
     
     LanguageServiceForm(LanguageServiceFormData serviceFormData) {
     	bindData(serviceFormData);
@@ -34,7 +34,7 @@ public class LanguageServiceForm extends HorizontalLayout {
     }
     
     private void bindData(LanguageServiceFormData serviceFormData) {
-    	languageFrom.setPropertyDataSource(new ObjectProperty<>(serviceFormData.languageFrom));
+    	languageForm.setPropertyDataSource(new ObjectProperty<>(serviceFormData.languageFrom));
     	languageTo.setPropertyDataSource(new ObjectProperty<>(serviceFormData.languageTo));
     	
     	translateCheck.setPropertyDataSource(new ObjectProperty<>(serviceFormData.translation));
@@ -48,14 +48,14 @@ public class LanguageServiceForm extends HorizontalLayout {
     private void createLayout() {
         setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
         setSpacing(true);
-        languageFrom.setWidth("110px");
-        languageFrom.setStyleName(ValoTheme.COMBOBOX_TINY);
+        languageForm.setWidth("110px");
+        languageForm.setStyleName(ValoTheme.COMBOBOX_TINY);
         languageTo.setWidth("110px");
         languageTo.setStyleName(ValoTheme.COMBOBOX_TINY);
         
         Label arrow = new Label(FontAwesome.ARROW_RIGHT.getHtml(), ContentMode.HTML);
-        addComponents(languageFrom, arrow, languageTo, translateCheck, interpretCheck, lectorCheck);
-        setComponentAlignment(languageFrom, Alignment.MIDDLE_CENTER);
+        addComponents(languageForm, arrow, languageTo, translateCheck, interpretCheck, lectorCheck);
+        setComponentAlignment(languageForm, Alignment.MIDDLE_CENTER);
         setComponentAlignment(languageTo, Alignment.MIDDLE_CENTER);
     }
     
@@ -64,11 +64,13 @@ public class LanguageServiceForm extends HorizontalLayout {
 	}
 	
 	boolean isDataValid() {
-		return dataFields.stream().allMatch(Field::isValid);
+		boolean someServiceCheck = translateCheck.getValue() && interpretCheck.getValue() && lectorCheck.getValue();
+		boolean differentSourceAndDestLanguage = !languageForm.getValue().equals(languageTo.getValue());
+		return someServiceCheck && differentSourceAndDestLanguage;
 	}
 	
 	LanguageServiceFormData getServiceFormData() {
-		return new LanguageServiceFormData((Language)languageFrom.getValue(), (Language)languageTo.getValue(), translateCheck.getValue(), interpretCheck.getValue(), lectorCheck.getValue());
+		return new LanguageServiceFormData((Language)languageForm.getValue(), (Language)languageTo.getValue(), translateCheck.getValue(), interpretCheck.getValue(), lectorCheck.getValue());
 	}
     
 }

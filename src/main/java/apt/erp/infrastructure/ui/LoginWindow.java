@@ -40,7 +40,7 @@ class LoginWindow extends Window {
         this.authenticator = authenticator;
         this.successFulLoginHandler = successFulLoginHandler;
         
-        setCaption("Loan Application Engine");
+        setCaption("APT ERP");
         setModal(true);
         setClosable(false);
         setResizable(false);

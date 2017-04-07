@@ -10,21 +10,21 @@ import apt.erp.projectservice.domain.Language;
 public class Translator {
 
     public static Translator createEmpty() {
-        return new Translator(TranslatorId.newId, ContactData.createEmpty(), InvoicingData.createEmpty(),
+        return new Translator(TranslatorId.newId, PersonalData.createEmpty(), InvoicingData.createEmpty(),
                 Collections.emptyList(), LanguageSkills.empty, Collections.emptyList(), "");
     }
     
     public final TranslatorId id;
-    public final ContactData contactData;
+    public final PersonalData personalData;
     public final InvoicingData invoicingData;
     private final List<Language> languages;
     private final List<Document> documents;
     public final LanguageSkills languageSkills;
     public final String comment;
     
-    public Translator(TranslatorId id, ContactData contactData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
+    public Translator(TranslatorId id, PersonalData personalData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
         this.id = id;
-        this.contactData = contactData;
+        this.personalData = personalData;
         this.invoicingData = invoicingData;
         this.languages = languages;
         this.languageSkills = languageSkills;
@@ -32,8 +32,8 @@ public class Translator {
         this.comment = comment;
     }
     
-    public Translator updated(ContactData contactData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
-        return new Translator(id, contactData, invoicingData, languages, languageSkills, documents, comment);
+    public Translator updated(PersonalData personalData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
+        return new Translator(id, personalData, invoicingData, languages, languageSkills, documents, comment);
     }
     
     public List<Language> languages() {
@@ -48,19 +48,19 @@ public class Translator {
         String[] filterParts = filter.split(" ");
         return Stream.of(filterParts).allMatch(filterPart -> 
                id.matches(filterPart) ||
-               contactData.matches(filterPart) ||
+               personalData.matches(filterPart) ||
                comment != null && comment.contains(filterPart));
     }
 
     @Override
     public String toString() {
-        return "Name: " + contactData.name + " (" + languages + ")";
+        return "Name: " + personalData.name + " (" + languages + ")";
     }
 
     public String toDetailedString(){
         return new StringBuilder()
         .append("Id: ").append(id).append(" ")
-        .append("ContactData: ").append(contactData).append(", ")
+        .append("PersonalData: ").append(personalData).append(", ")
         .append("languages: ").append(languages).append(", ")
         .append("language skills: ").append(languageSkills).append(", ")
         .append("comment: ").append(comment).toString();
