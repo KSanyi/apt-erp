@@ -3,10 +3,13 @@ package apt.erp.translatorservice.domain;
 import apt.erp.common.domain.EmailAddress;
 import apt.erp.common.domain.Name;
 import apt.erp.common.domain.PhoneNumber;
+import apt.erp.projectservice.domain.LanguageServiceType;
 
 public class PersonalData {
 
     public final Name name;
+    
+    public final LanguageServiceType mainServiceType;
     
     public final PhoneNumber phoneNumber1;
     public final PhoneNumber phoneNumber2;
@@ -20,9 +23,10 @@ public class PersonalData {
     
     public final String comments;
     
-    public PersonalData(Name name, PhoneNumber phoneNumber1, PhoneNumber phoneNumber2, EmailAddress emailAddress1, EmailAddress emailAddress2, String skypeId,
+    public PersonalData(Name name, LanguageServiceType mainServiceType, PhoneNumber phoneNumber1, PhoneNumber phoneNumber2, EmailAddress emailAddress1, EmailAddress emailAddress2, String skypeId,
             CommunicationChannel preferredCommunicationChannel, String comments) {
         this.name = name;
+        this.mainServiceType = mainServiceType;
         this.phoneNumber1 = phoneNumber1;
         this.phoneNumber2 = phoneNumber2;
         this.emailAddress1 = emailAddress1;
@@ -38,7 +42,7 @@ public class PersonalData {
     }
 
     public static PersonalData createEmpty() {
-        return new PersonalData(Name.createEmpty(), PhoneNumber.createEmpty(), PhoneNumber.createEmpty(), EmailAddress.createEmpty(), EmailAddress.createEmpty(), "", 
+        return new PersonalData(Name.createEmpty(), LanguageServiceType.Translation, PhoneNumber.createEmpty(), PhoneNumber.createEmpty(), EmailAddress.createEmpty(), EmailAddress.createEmpty(), "", 
                 CommunicationChannel.PHONE, "");
     }
 

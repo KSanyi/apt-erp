@@ -23,7 +23,7 @@ public class LanguageServicesForm extends Panel {
 	
 	private final List<LanguageServiceForm> serviceForms = new ArrayList<>();
     
-    private final Button addServiceButton = new Button("Új nyelvi készség");
+    private final Button addServiceButton = new Button("Új nyelvpár");
     
     private boolean addOrRemoveButtonWasCicked = false;
     
@@ -78,7 +78,7 @@ public class LanguageServicesForm extends Panel {
 	}
 	
 	public boolean isDataValid() {
-		boolean formsAreValid = serviceForms.stream().allMatch(LanguageServiceForm::isDataValid);
+		boolean formsAreValid = serviceForms.stream().allMatch(LanguageServiceForm::isValid);
 		return formsAreValid;
 	}
 	

@@ -3,11 +3,9 @@ package apt.erp.translatorservice.application;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 import apt.erp.common.demo.RandomWordPicker;
@@ -23,8 +21,6 @@ import apt.erp.projectservice.domain.LanguageService;
 import apt.erp.projectservice.domain.LanguageServiceType;
 import apt.erp.projectservice.domain.SubTopic;
 import apt.erp.projectservice.domain.Topic;
-import apt.erp.translatorservice.domain.PersonalData;
-import apt.erp.translatorservice.domain.PersonalData.CommunicationChannel;
 import apt.erp.translatorservice.domain.Document;
 import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
@@ -33,6 +29,8 @@ import apt.erp.translatorservice.domain.LanguageSkills;
 import apt.erp.translatorservice.domain.PaymentInfo;
 import apt.erp.translatorservice.domain.PaymentInfo.PaymentMode;
 import apt.erp.translatorservice.domain.PaymentInfo.SettlementMode;
+import apt.erp.translatorservice.domain.PersonalData;
+import apt.erp.translatorservice.domain.PersonalData.CommunicationChannel;
 import apt.erp.translatorservice.domain.Translator;
 
 public class DemoTranslatorFactory {
@@ -49,13 +47,12 @@ public class DemoTranslatorFactory {
 		
 		String comment = random.nextInt(10) == 0 ? "Fontos ugyfel" : "";
 		
-		List<Language> languages = generateLanguages();
-		
-		return new Translator(IdGenerator.generateTranslatorId(), generatePersonalData(), generateInvoicingData(), languages, generateLanguageSkills(), generateDocuments(), comment);
+		return new Translator(IdGenerator.generateTranslatorId(), generatePersonalData(), generateInvoicingData(), generateLanguageSkills(), generateDocuments(), comment);
 	}
 	
     private PersonalData generatePersonalData() {
 	    Name name = new Name(lastNamePicker.pickRandomWord() + " " + firstNamePicker.pickRandomWord());
+	    LanguageServiceType mainServiceType =generateMainServiceType();
         PhoneNumber phoneNumber1 = generatePhoneNumber();
         EmailAddress emailAddress1 = generateEmailAddress(name);
         PhoneNumber phoneNumber2 = random.nextInt(10) == 0 ? generatePhoneNumber() : PhoneNumber.createEmpty();
@@ -63,9 +60,13 @@ public class DemoTranslatorFactory {
         String skypeId = generateSkypeId(name);
         CommunicationChannel preferredCommunicationChannel = randomEnumValue(CommunicationChannel.class);
         
-        return new PersonalData(name, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, skypeId, preferredCommunicationChannel, "");
+        return new PersonalData(name, mainServiceType, phoneNumber1, phoneNumber2, emailAddress1, emailAddress2, skypeId, preferredCommunicationChannel, "");
 	}
 	
+    private LanguageServiceType generateMainServiceType() {
+    	return LanguageServiceType.all.get(random.nextInt(LanguageServiceType.all.size()));
+    }
+    
     private EmailAddress generateEmailAddress(Name name) {
         String[] carriers = new String[]{"gmail.com", "fremail.hu", "hotmail.com"};
         switch(random.nextInt(2)) {
@@ -89,16 +90,6 @@ public class DemoTranslatorFactory {
         return new PhoneNumber(stringBuilder.toString());
     }
 
-    private List<Language> generateLanguages() {
-        Set<Language> languages = new HashSet<>();
-        languages.add(Language.Hungarian);
-        int numberOfLanguages = randomInt(1, 3);
-        for(int i=0;i<numberOfLanguages;i++) {
-            languages.add(randomEnumValue(Language.class));
-        }
-        return new ArrayList<>(languages);
-    }
-    
     private InvoicingData generateInvoicingData() {
 		return new InvoicingData(generateContractDate(), generatePaymentInfo(), generateInvoicingCompany());
 	}
@@ -157,7 +148,7 @@ public class DemoTranslatorFactory {
 	}
 	
 	private LanguageSkills generateLanguageSkills() {
-		return new LanguageSkills(generateServices(), generateSubTopics());
+		return new LanguageSkills(generateServices(), generateSubTopics(), Optional.empty(), Optional.empty());
 	}
 	
     private List<LanguageService> generateServices() {

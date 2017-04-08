@@ -41,7 +41,7 @@ public class TranslatorDataForm extends TabSheet {
     }
     
     public Translator getTranslator() {
-        return translator.updated(personalDataForm.getPersonalData(), invoicingDataForm.getInvoicingData(), translator.languages(),
+        return translator.updated(personalDataForm.getPersonalData(), invoicingDataForm.getInvoicingData(),
         		languageSkillsForm.getLanguageSkills(), documentsForm.getDocuments(), translator.comment);
     }
 

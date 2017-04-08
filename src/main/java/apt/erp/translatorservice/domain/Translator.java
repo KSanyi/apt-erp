@@ -11,33 +11,31 @@ public class Translator {
 
     public static Translator createEmpty() {
         return new Translator(TranslatorId.newId, PersonalData.createEmpty(), InvoicingData.createEmpty(),
-                Collections.emptyList(), LanguageSkills.empty, Collections.emptyList(), "");
+                LanguageSkills.empty, Collections.emptyList(), "");
     }
     
     public final TranslatorId id;
     public final PersonalData personalData;
     public final InvoicingData invoicingData;
-    private final List<Language> languages;
     private final List<Document> documents;
     public final LanguageSkills languageSkills;
     public final String comment;
     
-    public Translator(TranslatorId id, PersonalData personalData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
+    public Translator(TranslatorId id, PersonalData personalData, InvoicingData invoicingData, LanguageSkills languageSkills, List<Document> documents, String comment) {
         this.id = id;
         this.personalData = personalData;
         this.invoicingData = invoicingData;
-        this.languages = languages;
         this.languageSkills = languageSkills;
         this.documents = documents;
         this.comment = comment;
     }
     
-    public Translator updated(PersonalData personalData, InvoicingData invoicingData, List<Language> languages, LanguageSkills languageSkills, List<Document> documents, String comment) {
-        return new Translator(id, personalData, invoicingData, languages, languageSkills, documents, comment);
+    public Translator updated(PersonalData personalData, InvoicingData invoicingData, LanguageSkills languageSkills, List<Document> documents, String comment) {
+        return new Translator(id, personalData, invoicingData, languageSkills, documents, comment);
     }
     
     public List<Language> languages() {
-        return new ArrayList<>(languages);
+    	return languageSkills.languages();
     }
     
     public List<Document> documents() {
@@ -54,14 +52,13 @@ public class Translator {
 
     @Override
     public String toString() {
-        return "Name: " + personalData.name + " (" + languages + ")";
+        return "Name: " + personalData.name + " (" + languages() + ")";
     }
 
     public String toDetailedString(){
         return new StringBuilder()
         .append("Id: ").append(id).append(" ")
         .append("PersonalData: ").append(personalData).append(", ")
-        .append("languages: ").append(languages).append(", ")
         .append("language skills: ").append(languageSkills).append(", ")
         .append("comment: ").append(comment).toString();
     }
