@@ -1,11 +1,10 @@
 package apt.erp.translatorservice.ui.translatordatawindow.translatordataform.languageskillsform;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Field;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -14,50 +13,46 @@ import apt.erp.projectservice.domain.SubTopic;
 import apt.erp.projectservice.domain.Topic;
 
 @SuppressWarnings("serial")
-class TopicSelectorForm extends HorizontalLayout {
+class TopicSelectorForm extends CustomField<SubTopic> {
 
-	private final ComboBox topicSelectorCombo = FormFieldFactory.createComboBox("", Topic.allTopics);
-	private final ComboBox subTopicSelectorCombo = FormFieldFactory.createComboBox("", Collections.emptyList());
-	
-	private final List<Field<?>> dataFields = Arrays.asList(topicSelectorCombo, subTopicSelectorCombo);
+	private final ComboBox<Topic> topicSelectorCombo = FormFieldFactory.createComboBox("", Topic.allTopics);
+	private final ComboBox<SubTopic> subTopicSelectorCombo = FormFieldFactory.createComboBox("", Collections.emptyList());
 	
 	TopicSelectorForm(SubTopic subTopic) {
 		bind(subTopic);
 		
-		topicSelectorCombo.addValueChangeListener(event -> topicChanged((Topic)event.getProperty().getValue()));
-		
-		createLayout();
+		topicSelectorCombo.addValueChangeListener(e -> topicChanged(e.getValue()));
 	}
 	
 	private void topicChanged(Topic newTopic) {
-		subTopicSelectorCombo.removeAllItems();
-		subTopicSelectorCombo.addItems(newTopic.subTopics());
+		subTopicSelectorCombo.setItems(newTopic.subTopics());
 		subTopicSelectorCombo.setValue(newTopic.subTopics().get(0));
 	}
 	
 	private void bind(SubTopic subTopic) {
 		Topic topic = Topic.findForSubTopic(subTopic);
 		topicSelectorCombo.setValue(topic);
-		subTopicSelectorCombo.addItems(topic.subTopics());
+		subTopicSelectorCombo.setItems(topic.subTopics());
 		subTopicSelectorCombo.setValue(subTopic);
 	}
 	
-	private void createLayout() {
-		setSpacing(true);
+	@Override
+	public SubTopic getValue() {
+		return subTopicSelectorCombo.getValue();
+	}
+
+	@Override
+	protected Component initContent() {
 		topicSelectorCombo.setWidth("120px");
 		topicSelectorCombo.setStyleName(ValoTheme.COMBOBOX_TINY);
 		subTopicSelectorCombo.setWidth("180px");
 		subTopicSelectorCombo.setStyleName(ValoTheme.COMBOBOX_TINY);
-		addComponents(topicSelectorCombo, subTopicSelectorCombo);
+		return new HorizontalLayout(topicSelectorCombo, subTopicSelectorCombo);
 	}
-	
-	boolean isDataModified() {
-		return dataFields.stream().anyMatch(Field::isModified);
+
+	@Override
+	protected void doSetValue(SubTopic value) {
+		throw new UnsupportedOperationException();
 	}
-	
-	SubTopic getSubTopic() {
-		return (SubTopic)subTopicSelectorCombo.getValue();
-	}
-	
 	
 }

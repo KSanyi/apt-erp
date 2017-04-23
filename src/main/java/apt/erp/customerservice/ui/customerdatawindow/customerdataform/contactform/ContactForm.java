@@ -1,10 +1,7 @@
 package apt.erp.customerservice.ui.customerdatawindow.customerdataform.contactform;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.vaadin.data.util.ObjectProperty;
-import com.vaadin.ui.Field;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -15,45 +12,38 @@ import apt.erp.common.vaadin.FormFieldFactory;
 import apt.erp.customerservice.domain.Contact;
 
 @SuppressWarnings("serial")
-class ContactForm extends VerticalLayout {
+class ContactForm extends CustomField<Contact> {
 
 	private final TextField nameField = FormFieldFactory.createFormTextField("Név", 200, true);
 	private final TextField phoneField = FormFieldFactory.createFormTextField("Telefon", 200, false);
 	private final TextField emailField = FormFieldFactory.createFormTextField("Email", 200, false);
 
-	private final List<Field<?>> dataFields = Arrays.asList(nameField, phoneField, emailField);
-	
 	ContactForm(Contact contact) {
-		
 		bindData(contact);
-		
-		createLayout();
-	}
-	
-	Contact getContact() {
-		return new Contact(new Name(nameField.getValue()), new PhoneNumber(phoneField.getValue()), new EmailAddress(emailField.getValue()));
 	}
 	
 	private void bindData(Contact contact) {
-		nameField.setPropertyDataSource(new ObjectProperty<String>(contact.name.value));
-		phoneField.setPropertyDataSource(new ObjectProperty<String>(contact.phoneNumber.value));
-		emailField.setPropertyDataSource(new ObjectProperty<String>(contact.emailAddress.value));
+		nameField.setValue(contact.name.value);
+		phoneField.setValue(contact.phoneNumber.value);
+		emailField.setValue(contact.emailAddress.value);
 	}
 	
-	boolean isDataModified() {
-		return dataFields.stream().anyMatch(Field::isModified);
+	@Override
+	public Contact getValue() {
+		return new Contact(new Name(nameField.getValue()), new PhoneNumber(phoneField.getValue()), new EmailAddress(emailField.getValue()));
 	}
-	
-	boolean isValid() {
-		return dataFields.stream().allMatch(Field::isValid);
-	}
-	
-	private void createLayout() {
-		setSpacing(true);
-		setMargin(true);
-		addComponents(nameField, phoneField, emailField);
+
+	@Override
+	protected Component initContent() {
+		VerticalLayout layout = new VerticalLayout(nameField, phoneField, emailField);
 		nameField.setSizeFull();
-		setSizeFull();
+		layout.setSizeFull();
+		return layout;
+	}
+
+	@Override
+	protected void doSetValue(Contact value) {
+		throw new UnsupportedOperationException();
 	}
 	
 }

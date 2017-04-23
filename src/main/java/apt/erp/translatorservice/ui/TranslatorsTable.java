@@ -1,13 +1,12 @@
 package apt.erp.translatorservice.ui;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.ui.Table;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.themes.ValoTheme;
 
+import apt.erp.common.vaadin.KitsTheme;
 import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.projectservice.domain.Language;
 import apt.erp.translatorservice.domain.Translator;
@@ -15,27 +14,25 @@ import apt.erp.translatorservice.domain.TranslatorService;
 import apt.erp.translatorservice.ui.translatordatawindow.UpdateTranslatorDataWindow;
 
 @SuppressWarnings("serial")
-class TranslatorsTable extends Table {
+class TranslatorsTable extends Grid<Translator> {
 
 	private final TranslatorService translatorService;
 	
 	public TranslatorsTable(TranslatorService translatorService, ZipTownMap zipTownMap) {
 	    this.translatorService = translatorService;
 		
-		addContainerProperty("Name", String.class, null);
-		addContainerProperty("Languages", String.class, null);
-
-		setSortContainerPropertyId("Name");
+	    addColumn(t -> t.personalData.name).setCaption("Név").setId("name");
+	    addColumn(t -> t.languages().stream().map(Language::toString).collect(Collectors.joining(", "))).setCaption("Nyelvek");
+	    
+	    sort("name");
+	    
 		refresh();
 
-		setColumnHeaders("Név", "Nyelvek");
-		
-		addStyleName(ValoTheme.TABLE_SMALL);
+		addStyleName(KitsTheme.GRID_SMALL);
 		setSizeFull();
-		setSelectable(true);
 
 		addItemClickListener(event -> {
-			Translator translator = (Translator)event.getItemId();
+			Translator translator = event.getItem();
 			UpdateTranslatorDataWindow updateTranslatorWindow = new UpdateTranslatorDataWindow(translatorService, translator, zipTownMap);
 			updateTranslatorWindow.addTranslatorDataChangeListener(c -> refresh());
 			UI.getCurrent().addWindow(updateTranslatorWindow);
@@ -43,19 +40,16 @@ class TranslatorsTable extends Table {
 	}
 	
 	public void refresh() {
+		Set<Translator> selectedItems = getSelectedItems();
 		
-		Object selectedItem = getValue();
-		int currentPageFirstItemIndex = getCurrentPageFirstItemIndex();
+		setItems(translatorService.loadAllTranslators());
 		
-	    removeAllItems();
-		for(Translator translator : translatorService.loadAllTranslators()) {
-			addItem(new Object[]{translator.personalData.name.toString(), translator.languages().stream().map(Language::toString).collect(Collectors.joining(", "))}, translator);
+		if(!selectedItems.isEmpty()) {
+			select(selectedItems.iterator().next());
 		}
-		sort();
-		
-		setValue(selectedItem, true);
-		setCurrentPageFirstItemIndex(currentPageFirstItemIndex);
 	}
+	
+	/*
 	
 	public void filter(String filterString) {
 		IndexedContainer container = (IndexedContainer)getContainerDataSource();
@@ -80,5 +74,7 @@ class TranslatorsTable extends Table {
 			return false;
 		}
 	}
+	
+	*/
 
 }

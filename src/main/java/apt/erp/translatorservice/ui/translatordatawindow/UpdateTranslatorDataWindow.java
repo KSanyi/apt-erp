@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -39,11 +41,11 @@ public class UpdateTranslatorDataWindow extends Window {
 		setCaption("Translator Id: " + translator.id.value);
 		
 		translatorDataForm = new TranslatorDataForm(translator, zipTownMap);
-		createLayout();
+		setContent(createLayout());
 		
-		setPositionY(50);
-        setPositionX(400);
+		center();
         setWidth("1000px");
+        setHeight("500px");
         
         deleteButton.addClickListener(click -> {
         	ConfirmationDialog.show("Megerősítés", "Biztosan törli a fordítót?", this::deleteTranslator);
@@ -51,21 +53,13 @@ public class UpdateTranslatorDataWindow extends Window {
 	}
 	
 	private void updateTranslatorData() {
-		if(translatorDataForm.isDataModified()) {
-			if(translatorDataForm.isDataValid()) {
-				try {
-					translatorService.updateTranslator(translatorDataForm.getTranslator());
-					Notification.show("Fordító adatok frissítve");
-					notifyTranslatorDataChangeListeners();
-					this.close();
-				} catch (ValidationError ex) {
-					Notification.show("Validációs hiba: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
-				}
-			} else {
-				Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
-			}
-		} else {
+		try {
+			translatorService.updateTranslator(translatorDataForm.getValue());
+			Notification.show("Fordító adatok frissítve");
+			notifyTranslatorDataChangeListeners();
 			this.close();
+		} catch (ValidationError ex) {
+			Notification.show("Validációs hiba: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
 		}
 	}
 	
@@ -76,12 +70,14 @@ public class UpdateTranslatorDataWindow extends Window {
 		this.close();
 	}
 	
-	private void createLayout() {
+	private Layout createLayout() {
 		updateButton.setWidth("100px");
 		deleteButton.setWidth("100px");
-		HorizontalLayout buttonsLayout = LayoutFactory.createHorizontalLayout(updateButton, deleteButton);
-		VerticalLayout layout = LayoutFactory.createCenteredVerticalLayout(translatorDataForm, buttonsLayout);
-		setContent(layout);
+		HorizontalLayout buttonBar = new HorizontalLayout(updateButton, deleteButton);
+		VerticalLayout layout = new VerticalLayout(translatorDataForm, buttonBar);
+		layout.setSizeFull();
+		layout.setComponentAlignment(buttonBar, Alignment.BOTTOM_CENTER);
+		return layout;
 	}
 	
 	public void addTranslatorDataChangeListener(TranslatorDataChangeListener translatorDataChangeListener) {

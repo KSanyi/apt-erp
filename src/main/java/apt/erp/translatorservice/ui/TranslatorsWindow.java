@@ -1,6 +1,6 @@
 package apt.erp.translatorservice.ui;
 
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
@@ -27,9 +27,9 @@ public class TranslatorsWindow extends Window {
 
 		TextField filter = new TextField("Szűrő");
 		filter.setStyleName(ValoTheme.TEXTFIELD_SMALL);
-		filter.addTextChangeListener(textChangeEvent -> translatorsTable.filter(textChangeEvent.getText()));
+		//filter.addValueChangeListener(e -> translatorsTable.filter(e.getValue()));
 		
-		Button addButton = FormFieldFactory.createFormButton("Új fordító", FontAwesome.PLUS, ValoTheme.BUTTON_PRIMARY);
+		Button addButton = FormFieldFactory.createFormButton("Új fordító", VaadinIcons.PLUS, ValoTheme.BUTTON_PRIMARY);
 		
 		addButton.addClickListener(e -> {
 		    CreateTranslatorDataWindow createTranslatorDataWindow = new CreateTranslatorDataWindow(translatorService, zipTownMap);

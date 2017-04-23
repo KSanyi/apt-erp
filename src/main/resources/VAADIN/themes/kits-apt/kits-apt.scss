@@ -27,4 +27,14 @@ $v-font-family: 'Lora', sans-serif, 'Source Sans Pro';
         font-weight: bold;
     }
     
+    .gridSmall .v-grid-body .v-grid-cell {  
+    	line-height: 30px;
+    	font-size: 14px;
+	}
+	
+	.gridTiny .v-grid-body .v-grid-cell {  
+    	line-height: 26px;
+    	font-size: 12px;
+	}
+	
 }

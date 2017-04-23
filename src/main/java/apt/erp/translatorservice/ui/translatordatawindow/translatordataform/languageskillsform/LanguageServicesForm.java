@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -17,7 +18,7 @@ import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.projectservice.domain.LanguageService;
 
 @SuppressWarnings("serial")
-public class LanguageServicesForm extends Panel {
+public class LanguageServicesForm extends CustomField<List<LanguageService>> {
 
 	private final Layout serviceFormsLayout = new VerticalLayout();
 	
@@ -25,37 +26,19 @@ public class LanguageServicesForm extends Panel {
     
     private final Button addServiceButton = new Button("Új nyelvpár");
     
-    private boolean addOrRemoveButtonWasCicked = false;
-    
     public LanguageServicesForm(List<LanguageService> services) {
     	bindData(services);
-		createValidators();
 
 		addServiceButton.addClickListener(click -> addServiceForm(LanguageServiceFormData.createEmpty()));
-		
-		createLayout();
-	}
-
-	private void createLayout() {
-		setCaption("Szállítói szolgáltatások");
-	    addServiceButton.addStyleName(ValoTheme.BUTTON_TINY);
-	    addServiceButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
-	    
-	    setContent(LayoutFactory.createCenteredVerticalLayout(serviceFormsLayout, addServiceButton));
 	}
 
 	private void bindData(List<LanguageService> services) {
 		LanguageServiceFormData.createServiceFormDatas(services).stream().forEach(this::addServiceForm);
 	}
 	
-	private void createValidators() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	private void addServiceForm(LanguageServiceFormData serviceFormData) {
 	    LanguageServiceForm serviceForm = new LanguageServiceForm(serviceFormData);
-	    Button removeButton = new Button(FontAwesome.CLOSE);
+	    Button removeButton = new Button(VaadinIcons.CLOSE);
 	    removeButton.addStyleName(ValoTheme.BUTTON_TINY);
 	    removeButton.addStyleName(ValoTheme.BUTTON_DANGER);
         
@@ -66,23 +49,28 @@ public class LanguageServicesForm extends Panel {
 	    removeButton.addClickListener(click -> {
 	    	serviceFormsLayout.removeComponent(layout);
 	    	serviceForms.remove(serviceForm);
-	    	addOrRemoveButtonWasCicked = true;
 	    });
 			
 	    serviceFormsLayout.addComponent(layout);
-	    addOrRemoveButtonWasCicked = true;
 	}
 	
-	public boolean isDataModified() {
-		return serviceForms.stream().anyMatch(LanguageServiceForm::isDataModified) || addOrRemoveButtonWasCicked;
+	@Override
+	public List<LanguageService> getValue() {
+		return LanguageServiceFormData.createLanguageServices(serviceForms.stream().map(LanguageServiceForm::getValue).collect(Collectors.toList()));
 	}
-	
-	public boolean isDataValid() {
-		boolean formsAreValid = serviceForms.stream().allMatch(LanguageServiceForm::isValid);
-		return formsAreValid;
+
+	@Override
+	protected Component initContent() {
+		setCaption("Szállítói szolgáltatások");
+	    addServiceButton.addStyleName(ValoTheme.BUTTON_TINY);
+	    addServiceButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+	    
+	    return LayoutFactory.createCenteredVerticalLayout(serviceFormsLayout, addServiceButton);
 	}
-	
-	public List<LanguageService> getLanguageServices() {
-		return LanguageServiceFormData.createLanguageServices(serviceForms.stream().map(LanguageServiceForm::getServiceFormData).collect(Collectors.toList()));
+
+	@Override
+	protected void doSetValue(List<LanguageService> value) {
+		throw new UnsupportedOperationException();
+		
 	}
 }

@@ -1,14 +1,11 @@
 package apt.erp.translatorservice.ui.translatordatawindow.translatordataform.invoicingdataform;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 
 import apt.erp.common.domain.TaxId;
 import apt.erp.common.vaadin.AddressTabSheet;
@@ -19,53 +16,48 @@ import apt.erp.translatorservice.domain.InvoicingCompany;
 import apt.erp.translatorservice.domain.InvoicingCompany.InvoicingType;
 
 @SuppressWarnings("serial")
-public class InvoicingCompanyForm extends Panel {
+public class InvoicingCompanyForm extends CustomField<InvoicingCompany> {
 
     private final TextField nameField = FormFieldFactory.createFormTextField("Név", 300, true);
     private final TextField taxIdField = FormFieldFactory.createFormTextField("Adószám", 120, false);
-    private final ComboBox invoicingTypeCombo = FormFieldFactory.createEnumComboBox("Számlázási metódus", InvoicingType.class);
+    private final ComboBox<InvoicingType> invoicingTypeCombo = FormFieldFactory.createEnumComboBox("Számlázási metódus", InvoicingType.class);
     private final AddressTabSheet addressTabSheet;
     private final CheckBox vatFreeCheck = new CheckBox("Áfa mentes");
-    
-    private final List<Field<?>> dataFields = Arrays.asList(nameField, taxIdField, invoicingTypeCombo, vatFreeCheck);
     
     public InvoicingCompanyForm(InvoicingCompany invoicingCompany, ZipTownMap zipTownMap) {
         setCaption("Számlázó cég");
         addressTabSheet = new AddressTabSheet(invoicingCompany.postalAddress, invoicingCompany.invoiceAddress, zipTownMap);
         bindData(invoicingCompany);
-        createLayout();
     }
     
     private void bindData(InvoicingCompany invoicingCompany) {
-        nameField.setPropertyDataSource(new ObjectProperty<>(invoicingCompany.name));
-        taxIdField.setPropertyDataSource(new ObjectProperty<>(invoicingCompany.taxId.value));
-        invoicingTypeCombo.setPropertyDataSource(new ObjectProperty<>(invoicingCompany.invoicingType));
-        invoicingTypeCombo.setBuffered(true);
-        vatFreeCheck.setPropertyDataSource(new ObjectProperty<>(invoicingCompany.vatFree));
-        vatFreeCheck.setBuffered(true);
+        nameField.setValue(invoicingCompany.name);
+        taxIdField.setValue(invoicingCompany.taxId.value);
+        invoicingTypeCombo.setValue(invoicingCompany.invoicingType);
+        vatFreeCheck.setValue(invoicingCompany.vatFree);
     }
     
-    private void createLayout() {
-        invoicingTypeCombo.setWidth("100");
-        setContent(LayoutFactory.createVerticalLayout(nameField, 
+	@Override
+	public InvoicingCompany getValue() {
+		return new InvoicingCompany(nameField.getValue(), new TaxId(taxIdField.getValue()), invoicingTypeCombo.getValue(),
+                addressTabSheet.getAddress(), addressTabSheet.getInvoiceAddress(), vatFreeCheck.getValue());
+	}
+
+	@Override
+	protected void doSetValue(InvoicingCompany value) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected Component initContent() {
+		invoicingTypeCombo.setWidth("100");
+        VerticalLayout layout = new VerticalLayout(nameField, 
                 LayoutFactory.createHorizontalLayout(taxIdField, invoicingTypeCombo),
                 vatFreeCheck,
-                addressTabSheet));
+                addressTabSheet);
         setSizeFull();        
         nameField.focus();
-    }
-    
-    public boolean isDataModified() {
-        return dataFields.stream().anyMatch(Field::isModified) || addressTabSheet.isDataModified();
-    }
-    
-    public boolean isDataValid() {
-        return dataFields.stream().allMatch(Field::isValid) && addressTabSheet.isValid();
-    }
-
-    public InvoicingCompany getInvoicingCompany() {
-        return new InvoicingCompany(nameField.getValue(), new TaxId(taxIdField.getValue()), (InvoicingType)invoicingTypeCombo.getValue(),
-                addressTabSheet.getAddress(), addressTabSheet.getInvoiceAddress(), vatFreeCheck.getValue());
-    }
+        return layout;
+	}
     
 }

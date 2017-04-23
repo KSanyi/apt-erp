@@ -1,12 +1,10 @@
 package apt.erp.common.vaadin;
 
 import com.google.gwt.thirdparty.guava.common.base.Predicate;
-import com.vaadin.data.Container.Filter;
-import com.vaadin.data.Item;
 
 @SuppressWarnings("serial")
-public class TableFilter<T> implements Filter {
-
+public class TableFilter<T> {
+/*
 	private final Predicate<T> filterPredicate;
 	
 	public TableFilter(Predicate<T> filterPredicate){
@@ -23,5 +21,5 @@ public class TableFilter<T> implements Filter {
 	public boolean appliesToProperty(Object propertyId) {
 		return false;
 	}
-
+*/
 }

@@ -42,15 +42,11 @@ public class CreateTranslatorDataWindow extends Window {
 	}
 	
 	private void createTranslatorData() {
-		if(translatorDataForm.isDataValid()) {
-			Translator translator = translatorDataForm.getTranslator();
-			translatorService.createTranslator(translator);
-			Notification.show("Fodító létrehozva");
-			notifyTranslatorDataChangeListeners(translator);
-			this.close();
-		} else {
-			Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
-		}
+		Translator translator = translatorDataForm.getValue();
+		translatorService.createTranslator(translator);
+		Notification.show("Fodító létrehozva");
+		notifyTranslatorDataChangeListeners(translator);
+		this.close();
 	}
 	
 	public void addTranslatorDataChangeListener(TranslatorDataChangeListener translatorDataChangeListener) {

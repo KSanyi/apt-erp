@@ -7,8 +7,8 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
+import apt.erp.common.vaadin.LayoutFactory;
 import apt.erp.infrastructure.server.ApplicationService;
 import apt.erp.infrastructure.server.ErpServlet;
 import apt.erp.userservice.User;
@@ -41,7 +41,7 @@ public class ErpUI extends UI {
 	
 	private void buildUI(User user) {
 		logger.info("User " + user.name + " logged in");
-		setContent(new VerticalLayout(new Header(user), new Menu()));
+		setContent(LayoutFactory.createSimpleVerticalLayout(new Header(user), new Menu()));
 	}
 	
 	public static ErpUI getCurrent() {

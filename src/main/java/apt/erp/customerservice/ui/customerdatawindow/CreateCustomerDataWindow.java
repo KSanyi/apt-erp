@@ -39,15 +39,11 @@ public class CreateCustomerDataWindow extends Window {
 	}
 	
 	private void createCustomerData() {
-		if(customerDataForm.isDataValid()) {
-			CustomerData customerData = customerDataForm.getCustomerData();
-			customerService.createCustomer(customerData);
-			Notification.show("Customer has been created");
-			notifyCustomerChangeListeners(customerData);
-			this.close();
-		} else {
-			Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
-		}
+		CustomerData customerData = customerDataForm.getValue();
+		customerService.createCustomer(customerData);
+		Notification.show("Customer has been created");
+		notifyCustomerChangeListeners(customerData);
+		this.close();
 	}
 	
 	public void addCustomerChangeListener(CustomerDataChangeListener customerDataChangeListener) {

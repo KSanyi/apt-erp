@@ -3,7 +3,6 @@ package apt.erp.common.vaadin;
 import java.util.Optional;
 
 import com.vaadin.data.Validator;
-import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
@@ -11,7 +10,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
-public class OptionalTextFieldWidget extends CustomField<String>{
+public class OptionalTextFieldWidget extends CustomField<Optional<String>>{
 
 	private final CheckBox checkBox = new CheckBox();
 	private final TextField textField = new TextField();
@@ -21,14 +20,15 @@ public class OptionalTextFieldWidget extends CustomField<String>{
 		checkBox.setValue(value.isPresent());
 		
 		textField.setCaption(textFieldCaption);
-		textField.setPropertyDataSource(new ObjectProperty<String>(value.orElse("")));
+		textField.setValue(value.orElse(""));
 		if(!value.isPresent()) {
 			textField.setVisible(false);
 		}
 		textField.addStyleName(ValoTheme.TEXTFIELD_SMALL);
 		
-		checkBox.addValueChangeListener(e -> textField.setVisible((boolean)e.getProperty().getValue()));
+		checkBox.addValueChangeListener(e -> textField.setVisible(e.getValue()));
 		
+		/*
 		addValidator(new Validator() {
 			@Override
 			public void validate(Object value) throws InvalidValueException {
@@ -37,14 +37,7 @@ public class OptionalTextFieldWidget extends CustomField<String>{
 				}
 			}
 		});
-	}
-	
-	public Optional<String> getOptionalValue() {
-		if(checkBox.getValue()) {
-			return Optional.of(textField.getValue());
-		} else {
-			return Optional.empty();
-		}
+		*/
 	}
 	
 	@Override
@@ -53,8 +46,24 @@ public class OptionalTextFieldWidget extends CustomField<String>{
 	}
 
 	@Override
-	public Class<? extends String> getType() {
-		return String.class;
+	public Optional<String> getValue() {
+		if(checkBox.getValue()) {
+			return Optional.of(textField.getValue());
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	protected void doSetValue(Optional<String> value) {
+		if(value.isPresent()) {
+			checkBox.setValue(true);
+			textField.setValue(value.get());
+		} else {
+			checkBox.setValue(false);
+			textField.setValue("");
+			textField.setVisible(false);
+		}
 	}
 
 }

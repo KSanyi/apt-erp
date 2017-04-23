@@ -21,10 +21,9 @@ public interface FormFieldFactory {
 			textField.setWidth(width + "px");
 		}
 		
-		textField.setBuffered(true);
-		textField.setRequired(required);
+		textField.setRequiredIndicatorVisible(required);
 		if(required) {
-			textField.setRequiredError(caption + " is required");
+			//textField.setRequiredError(caption + " is required");
 		}
 		textField.addStyleName(ValoTheme.TEXTFIELD_SMALL);
 		return textField;
@@ -57,17 +56,16 @@ public interface FormFieldFactory {
 		return button;
 	}
 	
-	static ComboBox createComboBox(String caption, Collection<?> items) {
-	    ComboBox combo = new ComboBox(caption, items);
-	    combo.setNullSelectionAllowed(false);
+	static <T> ComboBox<T> createComboBox(String caption, Collection<T> items) {
+	    ComboBox<T> combo = new ComboBox<T>(caption, items);
+	    combo.setEmptySelectionAllowed(false);
 	    combo.setWidth("140px");
-	    combo.setBuffered(true);
 	    combo.addStyleName(ValoTheme.COMBOBOX_SMALL);
 	    combo.setTextInputAllowed(false);
 	    return combo;
 	}
 	
-	static ComboBox createEnumComboBox(String caption, Class<?> enumClass) {
+	static <T> ComboBox<T> createEnumComboBox(String caption, Class<T> enumClass) {
 	    return createComboBox(caption, Arrays.asList(enumClass.getEnumConstants()));
     }
 	

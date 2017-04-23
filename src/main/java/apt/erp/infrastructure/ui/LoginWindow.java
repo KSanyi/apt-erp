@@ -8,15 +8,16 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.PopupView;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+import apt.erp.common.vaadin.KitsTheme;
 import apt.erp.userservice.Authenticator;
 import apt.erp.userservice.Authenticator.AuthenticationException;
 import apt.erp.userservice.Authenticator.WrongPasswordException;
@@ -78,18 +79,17 @@ class LoginWindow extends Window {
         }
     }
     
-    private static class UsersTable extends Table {
+    private static class UsersTable extends Grid<User> {
         
         UsersTable() {
-            addContainerProperty("UserId", String.class, "");
-            addContainerProperty("Role", String.class, "");
-            
-            for(User userInfo : DemoAuthenticator.users.keySet()) {
-                addItem(new Object[]{userInfo.userId, userInfo.role.toString()}, userInfo);
-            }
-            
-            setPageLength(0);
-            addStyleName(ValoTheme.TABLE_SMALL);
+        	setItems(DemoAuthenticator.users.keySet());
+        	addColumn(u -> u.userId).setCaption("UserId").setWidth(90);
+        	addColumn(u -> u.name).setCaption("Role").setWidth(140);
+        	
+        	setSelectionMode(SelectionMode.NONE);
+        	setHeightByRows(DemoAuthenticator.users.size());
+        	addStyleName(KitsTheme.GRID_TINY);
+        	setWidth("230px");
         }
     }
     

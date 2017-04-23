@@ -1,6 +1,6 @@
 package apt.erp.customerservice.ui;
 
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
@@ -27,9 +27,9 @@ public class CustomersWindow extends Window {
 
 		TextField filter = new TextField("Szűrő");
 		filter.setStyleName(ValoTheme.TEXTFIELD_SMALL);
-		filter.addTextChangeListener(textChangeEvent -> customersTable.filter(textChangeEvent.getText()));
+		//filter.addValueChangeListener(e -> customersTable.filter(e.getValue()));
 		
-		Button addButton = FormFieldFactory.createFormButton("Add customer", FontAwesome.PLUS, ValoTheme.BUTTON_PRIMARY);
+		Button addButton = FormFieldFactory.createFormButton("Add customer", VaadinIcons.PLUS, ValoTheme.BUTTON_PRIMARY);
 		addButton.addClickListener(e -> {
 			CreateCustomerDataWindow createCustomerDataWindow = new CreateCustomerDataWindow(customerService, zipTownMap);
 			createCustomerDataWindow.addCustomerChangeListener(c -> customersTable.refresh());

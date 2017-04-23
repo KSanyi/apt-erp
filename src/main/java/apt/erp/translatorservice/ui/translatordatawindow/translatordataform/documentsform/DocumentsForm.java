@@ -33,7 +33,7 @@ public class DocumentsForm extends VerticalLayout implements Receiver, Succeeded
 
     private final Map<Document.Type, DocumentsTable> docTables;
     
-    private final ComboBox docTypeCombo = createDocTypeCombo();
+    private final ComboBox<Document.Type> docTypeCombo = createDocTypeCombo();
     
     private final Upload upload = createUpload();
     
@@ -45,7 +45,7 @@ public class DocumentsForm extends VerticalLayout implements Receiver, Succeeded
     private static Map<Document.Type, DocumentsTable> createDocTables(List<Document> docs) {
     	Map<Document.Type, DocumentsTable> docTables = new LinkedHashMap<>();
         Collections.sort(docs, Comparator.comparing((Document doc )-> doc.uploadDate).reversed());
-        Stream.of(Document.Type.values()).forEachOrdered(docType -> docTables.put(docType, new DocumentsTable(filterDocs(docs, docType), docType)));
+        //Stream.of(Document.Type.values()).forEachOrdered(docType -> docTables.put(docType, new DocumentsTable(filterDocs(docs, docType), docType)));
         return docTables;
     }
     
@@ -53,8 +53,8 @@ public class DocumentsForm extends VerticalLayout implements Receiver, Succeeded
        return docs.stream().filter(doc -> doc.type == docType).collect(Collectors.toList()); 
     }
     
-    private static ComboBox createDocTypeCombo() {
-    	ComboBox docTypeCombo = FormFieldFactory.createEnumComboBox("Dokumentum típusa", Document.Type.class);
+    private static ComboBox<Document.Type> createDocTypeCombo() {
+    	ComboBox<Document.Type> docTypeCombo = FormFieldFactory.createEnumComboBox("Dokumentum típusa", Document.Type.class);
     	docTypeCombo.setValue(Document.Type.CV);
     	return docTypeCombo;
     }

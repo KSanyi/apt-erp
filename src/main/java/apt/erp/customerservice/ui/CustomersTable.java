@@ -1,38 +1,36 @@
 package apt.erp.customerservice.ui;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.themes.ValoTheme;
+import java.util.Set;
 
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.UI;
+
+import apt.erp.common.vaadin.KitsTheme;
 import apt.erp.common.vaadin.ZipTownMap;
 import apt.erp.customerservice.domain.CustomerData;
 import apt.erp.customerservice.domain.CustomerService;
 import apt.erp.customerservice.ui.customerdatawindow.UpdateCustomerDataWindow;
 
 @SuppressWarnings("serial")
-class CustomersTable extends Table {
+class CustomersTable extends Grid<CustomerData> {
 
 	private final CustomerService customerService;
 	
 	public CustomersTable(CustomerService customerService, ZipTownMap zipTownMap) {
 	    this.customerService = customerService;
 		
-		addContainerProperty("Name", String.class, null);
-		addContainerProperty("Address", String.class, null);
-		
-		setColumnHeaders("Név", "Cím");
+	    addColumn(c -> c.name).setCaption("Név").setId("name");
+	    addColumn(c -> c.address.toString()).setCaption("Cím");
 
-		setSortContainerPropertyId("Name");
+	    sort("name");
+	    
 		refresh();
 
-		addStyleName(ValoTheme.TABLE_SMALL);
+		addStyleName(KitsTheme.GRID_SMALL);
 		setSizeFull();
-		setSelectable(true);
 
 		addItemClickListener(event -> {
-			CustomerData customerData = (CustomerData)event.getItemId();
+			CustomerData customerData = event.getItem();
 			UpdateCustomerDataWindow updateCustomerDataWindow = new UpdateCustomerDataWindow(customerService, customerData, zipTownMap);
 			updateCustomerDataWindow.addCustomerChangeListener(c -> refresh());
 			UI.getCurrent().addWindow(updateCustomerDataWindow);
@@ -40,20 +38,16 @@ class CustomersTable extends Table {
 	}
 	
 	public void refresh() {
+		Set<CustomerData> selectedItems = getSelectedItems();
 		
-		Object selectedItem = getValue();
-		int currentPageFirstItemIndex = getCurrentPageFirstItemIndex();
+		setItems(customerService.loadAllCustomers());
 		
-	    removeAllItems();
-		for(CustomerData customerData : customerService.loadAllCustomers()) {
-			addItem(new Object[]{customerData.name.toString(), customerData.address.toString()}, customerData);
+		if(!selectedItems.isEmpty()) {
+			select(selectedItems.iterator().next());
 		}
-		sort();
-		
-		setValue(selectedItem, true);
-		setCurrentPageFirstItemIndex(currentPageFirstItemIndex);
 	}
 	
+	/*
 	public void filter(String filterString) {
 		IndexedContainer container = (IndexedContainer)getContainerDataSource();
 		container.removeAllContainerFilters();
@@ -77,5 +71,6 @@ class CustomersTable extends Table {
 			return false;
 		}
 	}
+	*/
 
 }

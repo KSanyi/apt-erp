@@ -3,7 +3,9 @@ package apt.erp.customerservice.ui.customerdatawindow;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -28,7 +30,7 @@ public class UpdateCustomerDataWindow extends Window {
 	private final CustomerDataForm customerDataForm;
 	
 	private final Button updateButton = FormFieldFactory.createFormButton("Mentés", FontAwesome.SAVE, ValoTheme.BUTTON_PRIMARY, click -> updateCustomerData());
-	private final Button deleteButton = FormFieldFactory.createFormButton("Törlés", FontAwesome.REMOVE, ValoTheme.BUTTON_DANGER, click -> deleteCustomerData());
+	private final Button deleteButton = FormFieldFactory.createFormButton("Törlés", VaadinIcons.CLOSE_CIRCLE, ValoTheme.BUTTON_DANGER, click -> deleteCustomerData());
 	
 	private final List<CustomerDataChangeListener> customerDataChangeListeners = new ArrayList<>();
 	
@@ -38,27 +40,21 @@ public class UpdateCustomerDataWindow extends Window {
 		setCaption("Ügyfél azonosító: " + customerData.customerId.value);
 		
 		customerDataForm = new CustomerDataForm(customerData, zipTownMap);
-		createLayout();
+		setContent(createLayout());
 		
 		center();
+		setWidth("700px");
+		setHeight("600");
 	}
 	
 	private void updateCustomerData() {
-		if(customerDataForm.isDataModified()) {
-			if(customerDataForm.isDataValid()) {
-				try {
-					customerService.updateCustomerData(customerDataForm.getCustomerData());
-					Notification.show("Customer has been updated");
-					notifyCustomerChangeListeners();
-					this.close();
-				} catch (ValidationError ex) {
-					Notification.show("Validációs hiba: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
-				}
-			} else {
-				Notification.show("Hibás adatok", Notification.Type.WARNING_MESSAGE);
-			}
-		} else {
+		try {
+			customerService.updateCustomerData(customerDataForm.getValue());
+			Notification.show("Customer has been updated");
+			notifyCustomerChangeListeners();
 			this.close();
+		} catch (ValidationError ex) {
+			Notification.show("Validációs hiba: " + ex.getMessage(), Notification.Type.WARNING_MESSAGE);
 		}
 	}
 	
@@ -69,11 +65,12 @@ public class UpdateCustomerDataWindow extends Window {
 		this.close();
 	}
 	
-	private void createLayout() {
-		HorizontalLayout buttonsLayout = LayoutFactory.createHorizontalLayout(updateButton, deleteButton);
-		VerticalLayout layout = LayoutFactory.createCenteredVerticalLayout(customerDataForm, buttonsLayout);
-		setContent(layout);
-		setWidth("700px");
+	private VerticalLayout createLayout() {
+		HorizontalLayout buttonBar = new HorizontalLayout(updateButton, deleteButton);
+		VerticalLayout layout = new VerticalLayout(customerDataForm, buttonBar);
+		layout.setComponentAlignment(buttonBar, Alignment.BOTTOM_CENTER);
+		layout.setSizeFull();
+		return layout;
 	}
 	
 	public void addCustomerChangeListener(CustomerDataChangeListener customerDataChangeListener) {
